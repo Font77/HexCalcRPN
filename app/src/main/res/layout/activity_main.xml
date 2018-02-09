@@ -20,10 +20,12 @@
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
-        app:buttonsText="ONE;TWO;THREE"
         android:onClick="onClick"
+        app:buttonsText="ONE;TWO;THREE"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:textColor="?attr/colorPrimary"
+        app:textSize="18sp" />
 
 </android.support.constraint.ConstraintLayout>

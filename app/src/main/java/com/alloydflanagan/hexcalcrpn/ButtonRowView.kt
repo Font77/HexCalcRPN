@@ -1,7 +1,10 @@
 package com.alloydflanagan.hexcalcrpn
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
@@ -60,6 +63,11 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
      * The color of the text labels.
      */
     var textColor = 0
+        set(value) {
+            field = value
+            invalidate()
+            // shouldn't change layout
+        }
 
     /**
      * Set up component from XML attributes.
@@ -71,7 +79,7 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
             textSize = a.getDimension(R.styleable.ButtonRowView_textSize,
                 12f)
             textColor = a.getColor(R.styleable.ButtonRowView_textColor,
-                0)
+                0xFFFFFF)
             // set text last, it will trigger creation of buttons
             buttonsText = a.getString(R.styleable.ButtonRowView_buttonsText)
         } finally {
@@ -85,12 +93,14 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
     private fun createButtons() {
         for (p in buttonsText.split(";".toRegex())) {
             val btn = Button(context)
+            // bit awkward setting color, possibly(?) because java ints are signed
+            btn.setTextColor(Color.argb(0xFF, Color.red(textColor), Color.green(textColor), Color.blue(textColor)))
+            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
             btn.text = p
-            btn.textSize = textSize
-            btn.setTextColor(textColor)
             btn.setOnClickListener(this)
             addView(btn)
         }
+        Log.d(tag, "Created buttons with textColor ${textColor.toString(16).toUpperCase()} and textSize $textSize")
     }
 
 
@@ -100,6 +110,7 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
      */
     override fun onClick(view: View) {
         clickedText = (view as Button).text.toString()
+        Log.d(tag, "Click on button set clickedText to $clickedText")
         performClick()
     }
 }
