@@ -4,7 +4,6 @@ import java.io.Serializable
 import java.math.BigInteger
 import java.util.ArrayDeque
 import java.util.Deque
-import java.util.Stack
 
 /**
  * A class to manage a stack of hexadecimal values.
@@ -20,20 +19,21 @@ class HexStack(numElements: Int = 16) : Serializable {
     /**
      * Constructs a HexStack containing the elements of the specified
      * collection, in the order they are returned by the collection's
-     * iterator.  Note that we actually store the result of `toLong()`
-     * on each item.
+     * iterator.
      *
      * @param c the collection whose elements are to be placed into the stack
      */
-    constructor(c: Collection<out Number>) : this(c.size) {
-        for (num in c) stack.push(BigInteger.valueOf(num.toLong()))
+    constructor(c: Collection<Long>) : this(c.size) {
+        for (num in c) stack.addLast(BigInteger.valueOf(num))
+        // below more elegant, may be less efficient:
+        // stack.addAll(c.map { BigInteger.valueOf(it) })
     }
 
     /**
      * Copy constructor. We do not implement Cloneable.
      */
     constructor(hs: HexStack) : this(hs.size()) {
-        for (num in hs.stack) stack.push(num)
+        stack.addAll(hs.stack)
     }
 
     val isEmpty get() = stack.isEmpty()
@@ -41,7 +41,7 @@ class HexStack(numElements: Int = 16) : Serializable {
     /**
      * @return String with each element as a hex number, separated by newlines.
      */
-    override fun toString() = stack.joinToString("\n").toUpperCase();
+    override fun toString() = stack.joinToString("\n").toUpperCase()
 
     /**
      * Pops the top two elements off the stack, and pushes the result of multiplying them.
@@ -118,15 +118,20 @@ class HexStack(numElements: Int = 16) : Serializable {
         push(a.mod(b))
     }
 
-    fun peek() = stack.peek()
+    fun peek(): BigInteger? = stack.peek()
 
     fun push(bigInteger: BigInteger) = stack.push(bigInteger)
 
-    fun pop() = stack.pop()
+    /** @throws NoSuchElementException - if queue is empty */
+    fun pop(): BigInteger = stack.pop()
 
     fun clear() = stack.clear()
 
-    operator fun contains(o: Any) = stack.contains(o)
+    operator fun contains(o: BigInteger) = stack.contains(o)
+
+    operator fun contains(o: Long) = stack.contains(BigInteger.valueOf(o))
+
+    operator fun contains(o: Int) = stack.contains(BigInteger.valueOf(o.toLong()))
 
     fun size() = stack.size
 }
