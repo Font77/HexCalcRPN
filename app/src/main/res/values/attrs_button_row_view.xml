@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="ButtonRowView">
+        <attr name="buttonsText" format="string" />
+        <!-- these attributes are the same for each button -->
+        <attr name="textSize" format="dimension" />
+        <attr name="textColor" format="color" />
+    </declare-styleable>
+</resources>
