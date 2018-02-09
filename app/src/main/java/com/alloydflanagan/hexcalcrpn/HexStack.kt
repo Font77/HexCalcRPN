@@ -122,6 +122,8 @@ class HexStack(numElements: Int = 16) : Serializable {
 
     fun push(bigInteger: BigInteger) = stack.push(bigInteger)
 
+    fun push(aNum: Long) = stack.push(BigInteger.valueOf(aNum))
+
     /** @throws NoSuchElementException - if queue is empty */
     fun pop(): BigInteger = stack.pop()
 

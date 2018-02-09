@@ -1,10 +1,8 @@
 package com.alloydflanagan.hexcalcrpn
 
-import org.junit.Test
-
 import java.math.BigInteger
 
-import org.junit.Assert.assertEquals
+import kotlin.test.*
 
 /**
  * Test the utility class HexStack.
@@ -78,5 +76,58 @@ class HexStackUnitTest {
         bamBam.push(BigInteger("1324322342", 10))
         bamBam.mod()
         assertEquals(BigInteger.valueOf(75229214), bamBam.pop())
+    }
+
+    @Test
+    fun copyConstructor_isCorrect() {
+        val original = HexStack()
+        original.push(15)
+        original.push(7)
+        original.push(23)
+        val copy = HexStack(original)
+
+        while (!original.isEmpty) {
+            val a = original.pop()
+            val b = copy.pop()
+            assertEquals(a, b)
+        }
+    }
+
+    @Test
+    fun collectionConstructor_isCorrect() {
+        val original = ArrayList<Long>()
+        original.add(15)
+        original.add(7)
+        original.add(23)
+        val copy = HexStack(original)
+        for (i in original.indices) {
+            val a = copy.pop()
+            assertEquals(original[i], a.toLong())
+        }
+    }
+
+    @Test
+    fun toString_isCorrect() {
+        val original = HexStack()
+        original.push(15)
+        original.push(7)
+        original.push(23)
+        assertEquals("23\n7\n15", original.toString())
+        original.clear()
+        assertEquals("", original.toString())
+    }
+
+    @Test
+    fun contains_isCorrect() {
+        val hs = HexStack()
+        hs.push(15)
+        hs.push(7)
+        hs.push(23)
+        assert(hs.contains(15))
+        assert(hs.contains(15L))
+        assert(hs.contains(BigInteger.valueOf(15L)))
+        assertFalse { hs.contains(12) }
+        assertFalse { hs.contains(12L) }
+        assertFalse { hs.contains(BigInteger.valueOf(12L)) }
     }
 }
