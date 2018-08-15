@@ -6,17 +6,19 @@
     android:layout_height="match_parent"
     tools:context="com.alloydflanagan.hexcalcrpn.MainActivity">
 
-    <EditText
-        android:id="@+id/outputText"
+    <TextView
+        android:id="@+id/tv_output"
         android:layout_width="0dp"
         android:layout_height="@dimen/output_height"
-        android:ems="10"
-        android:inputType="textLongMessage"
-        android:scrollbars="vertical"
+        android:paddingStart="@dimen/tv_output_horiz_padding"
+        android:paddingTop="@dimen/tv_output_vert_padding"
+        android:paddingEnd="@dimen/tv_output_horiz_padding"
+        android:paddingBottom="@dimen/tv_output_vert_padding"
         app:layout_constraintBottom_toTopOf="@+id/brv_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14ABCD\n33A7" />
 
     <com.alloydflanagan.hexcalcrpn.ButtonRowView
         android:id="@+id/brv_1"
@@ -28,6 +30,8 @@
         app:buttonsText="1;2;3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_output"
+        app:layout_constraintBottom_toTopOf="@id/brv_2"
         app:textColor="?attr/colorPrimary"
         app:textSize="@dimen/button_text_size">
 
@@ -45,6 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/brv_1"
+        app:layout_constraintBottom_toTopOf="@id/brv_3"
         app:textSize="@dimen/button_text_size">
 
     </com.alloydflanagan.hexcalcrpn.ButtonRowView>

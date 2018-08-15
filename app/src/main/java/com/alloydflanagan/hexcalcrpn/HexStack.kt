@@ -6,7 +6,9 @@ import java.util.ArrayDeque
 import java.util.Deque
 
 /**
- * A class to manage a stack of hexadecimal values.
+ * A class to manage a stack of BigIntegers as hexadecimal values.
+ *
+ * TODO: parameterize integer type.
  *
  * Created by aflanagan on 1/18/18.
  */
