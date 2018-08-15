@@ -26,9 +26,7 @@ class HexStack(numElements: Int = 16) : Serializable {
      * @param c the collection whose elements are to be placed into the stack
      */
     constructor(c: Collection<Long>) : this(c.size) {
-        for (num in c) stack.addLast(BigInteger.valueOf(num))
-        // below more elegant, may be less efficient:
-        // stack.addAll(c.map { BigInteger.valueOf(it) })
+        stack.addAll(c.map { BigInteger.valueOf(it) })
     }
 
     /**

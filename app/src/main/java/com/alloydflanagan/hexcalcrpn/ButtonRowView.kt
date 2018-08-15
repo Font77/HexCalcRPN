@@ -81,7 +81,7 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
             textColor = a.getColor(R.styleable.ButtonRowView_textColor,
                 0xFFFFFF)
             // set text last, it will trigger creation of buttons
-            buttonsText = a.getString(R.styleable.ButtonRowView_buttonsText)
+            buttonsText = a.getString(R.styleable.ButtonRowView_buttonsText) ?: ""
         } finally {
             a.recycle()
         }
