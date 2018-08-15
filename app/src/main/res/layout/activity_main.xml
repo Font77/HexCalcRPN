@@ -6,26 +6,61 @@
     android:layout_height="match_parent"
     tools:context="com.alloydflanagan.hexcalcrpn.MainActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <EditText
+        android:id="@+id/outputText"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/output_height"
+        android:ems="10"
+        android:inputType="textLongMessage"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/brv_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.alloydflanagan.hexcalcrpn.ButtonRowView
+        android:id="@+id/brv_1"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_row_horiz_margin"
+        android:layout_marginEnd="@dimen/button_row_horiz_margin"
         android:onClick="onClick"
-        app:buttonsText="ONE;TWO;THREE"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:buttonsText="1;2;3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:textColor="?attr/colorPrimary"
-        app:textSize="18sp" />
+        app:textSize="@dimen/button_text_size">
+
+    </com.alloydflanagan.hexcalcrpn.ButtonRowView>
+
+    <com.alloydflanagan.hexcalcrpn.ButtonRowView
+        android:id="@+id/brv_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_row_horiz_margin"
+        android:layout_marginTop="@dimen/button_row_sep"
+        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:onClick="onClick"
+        app:buttonsText="4;5;6;7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brv_1"
+        app:textSize="@dimen/button_text_size">
+
+    </com.alloydflanagan.hexcalcrpn.ButtonRowView>
+
+    <com.alloydflanagan.hexcalcrpn.ButtonRowView
+        android:id="@+id/brv_3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/button_row_horiz_margin"
+        android:layout_marginTop="@dimen/button_row_sep"
+        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:onClick="onClick"
+        app:buttonsText="8;9;A;B"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brv_2"
+        app:textSize="@dimen/button_text_size" />
 
 </android.support.constraint.ConstraintLayout>
