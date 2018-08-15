@@ -1,4 +1,4 @@
-package com.alloydflanagan.hexcalcrpn
+package com.alloydflanagan.hexcalcrpn.model
 
 import java.io.Serializable
 import java.math.BigInteger
@@ -15,7 +15,7 @@ import java.util.Deque
 
 class HexStack(numElements: Int = 16) : Serializable {
 
-    // don't inherit from Deque it's got a bunch of methods I don't want.
+    // we don't implement all methods of a Deque, so keep it private
     private var stack: Deque<BigInteger> = ArrayDeque<BigInteger>(numElements)
 
     /**

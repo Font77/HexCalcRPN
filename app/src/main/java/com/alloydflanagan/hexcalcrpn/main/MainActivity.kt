@@ -1,10 +1,12 @@
-package com.alloydflanagan.hexcalcrpn
+package com.alloydflanagan.hexcalcrpn.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Toast
+import com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+import com.alloydflanagan.hexcalcrpn.R
 
 /**
  * Main activity: displays output, current entry, and keys. Handles key clicks.

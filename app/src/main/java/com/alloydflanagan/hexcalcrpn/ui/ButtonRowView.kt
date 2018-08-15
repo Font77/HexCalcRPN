@@ -1,4 +1,4 @@
-package com.alloydflanagan.hexcalcrpn
+package com.alloydflanagan.hexcalcrpn.ui
 
 import android.content.Context
 import android.graphics.Color
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.LinearLayout
+import com.alloydflanagan.hexcalcrpn.R
 
 /**
  * A component to display one or more buttons in a horizontal row.

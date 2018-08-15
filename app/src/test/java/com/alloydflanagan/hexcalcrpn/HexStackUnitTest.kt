@@ -1,5 +1,6 @@
 package com.alloydflanagan.hexcalcrpn
 
+import com.alloydflanagan.hexcalcrpn.model.HexStack
 import java.math.BigInteger
 
 import kotlin.test.*

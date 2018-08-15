@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.alloydflanagan.hexcalcrpn.MainActivity">
+    tools:context="com.alloydflanagan.hexcalcrpn.main.MainActivity">
 
     <TextView
         android:id="@+id/tv_output"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="14ABCD\n33A7" />
 
-    <com.alloydflanagan.hexcalcrpn.ButtonRowView
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -36,9 +36,9 @@
         app:textColor="?attr/colorPrimary"
         app:textSize="@dimen/button_text_size">
 
-    </com.alloydflanagan.hexcalcrpn.ButtonRowView>
+    </com.alloydflanagan.hexcalcrpn.ui.ButtonRowView>
 
-    <com.alloydflanagan.hexcalcrpn.ButtonRowView
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -53,9 +53,9 @@
         app:layout_constraintBottom_toTopOf="@id/brv_3"
         app:textSize="@dimen/button_text_size">
 
-    </com.alloydflanagan.hexcalcrpn.ButtonRowView>
+    </com.alloydflanagan.hexcalcrpn.ui.ButtonRowView>
 
-    <com.alloydflanagan.hexcalcrpn.ButtonRowView
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
