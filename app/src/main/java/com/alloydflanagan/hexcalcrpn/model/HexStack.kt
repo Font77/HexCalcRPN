@@ -13,7 +13,7 @@ import java.util.Deque
  * Created by aflanagan on 1/18/18.
  */
 
-class HexStack(numElements: Int = 16) : Serializable {
+class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     // we don't implement all methods of a Deque, so keep it private
     private var stack: Deque<BigInteger> = ArrayDeque<BigInteger>(numElements)
@@ -36,7 +36,7 @@ class HexStack(numElements: Int = 16) : Serializable {
         stack.addAll(hs.stack)
     }
 
-    val isEmpty get() = stack.isEmpty()
+    override val isEmpty get() = stack.isEmpty()
 
     /**
      * @return String with each element as a hex number, separated by newlines.
@@ -118,9 +118,9 @@ class HexStack(numElements: Int = 16) : Serializable {
         push(a.mod(b))
     }
 
-    fun peek(): BigInteger? = stack.peek()
+    override fun peek(): BigInteger? = stack.peek()
 
-    fun push(bigInteger: BigInteger) = stack.push(bigInteger)
+    fun push(value: BigInteger) = stack.push(value)
 
     fun push(aNum: Long) = stack.push(BigInteger.valueOf(aNum))
 
@@ -129,11 +129,15 @@ class HexStack(numElements: Int = 16) : Serializable {
 
     fun clear() = stack.clear()
 
-    operator fun contains(o: BigInteger) = stack.contains(o)
+    override operator fun contains(o: BigInteger) = stack.contains(o)
 
     operator fun contains(o: Long) = stack.contains(BigInteger.valueOf(o))
 
-    operator fun contains(o: Int) = stack.contains(BigInteger.valueOf(o.toLong()))
+    override operator fun contains(o: Int) = stack.contains(BigInteger.valueOf(o.toLong()))
 
-    fun size() = stack.size
+    override fun size() = stack.size
+
+    // safe because BigInteger is immutable class
+    override fun contents() = stack.map { it }
+
 }
