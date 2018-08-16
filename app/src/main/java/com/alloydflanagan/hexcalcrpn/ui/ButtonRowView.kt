@@ -7,9 +7,12 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.core.view.updateLayoutParams
 import com.alloydflanagan.hexcalcrpn.R
+import timber.log.Timber
 
 /**
  * A component to display one or more buttons in a horizontal row.
@@ -100,8 +103,12 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
             btn.text = p
             btn.setOnClickListener(this)
             addView(btn)
+            btn.updateLayoutParams<LinearLayout.LayoutParams> {
+                weight = 1.0f
+
+            }
         }
-        Log.d(tag, "Created buttons with textColor ${textColor.toString(16).toUpperCase()} and textSize $textSize")
+        Timber.d("Created buttons with textColor ${textColor.toString(16).toUpperCase()} and textSize $textSize")
     }
 
 
@@ -111,7 +118,7 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
      */
     override fun onClick(view: View) {
         clickedText = (view as Button).text.toString()
-        Log.d(tag, "Click on button set clickedText to $clickedText")
+        Timber.d("Click on button set clickedText to $clickedText")
         performClick()
     }
 }
