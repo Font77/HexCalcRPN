@@ -14,7 +14,13 @@ class HexStackUnitTest {
 
     @Test
     fun constructFromCollection() {
-
+        val list = arrayListOf(10L, 0xBEEFL,
+                37L)
+        val hs = HexStack(list)
+        assertEquals(BigInteger.TEN, hs.pop())
+        assertEquals(BigInteger.valueOf(0xBEEFL), hs.pop())
+        assertEquals(BigInteger.valueOf(37L), hs.pop())
+        assertEquals(0, hs.size)
     }
 
     @Test
@@ -23,7 +29,7 @@ class HexStackUnitTest {
         fred.push(BigInteger.valueOf(7))
         fred.push(BigInteger.valueOf(3))
         fred.add()
-        assertEquals(fred.size(), 1)
+        assertEquals(fred.size, 1)
         assertEquals(fred.pop(), BigInteger.valueOf(10))
     }
 
@@ -33,7 +39,7 @@ class HexStackUnitTest {
         wilma.push(BigInteger.valueOf(7))
         wilma.push(BigInteger.valueOf(3))
         wilma.subtract()
-        assertEquals(wilma.size(), 1)
+        assertEquals(wilma.size, 1)
         assertEquals(wilma.pop(), BigInteger.valueOf(4))
     }
 
@@ -43,11 +49,11 @@ class HexStackUnitTest {
         pebbles.push(BigInteger.valueOf(3))
         pebbles.push(BigInteger.valueOf(5))
         pebbles.multiply()
-        assertEquals(pebbles.size(), 1)
+        assertEquals(pebbles.size, 1)
         assertEquals(pebbles.peek(), BigInteger.valueOf(15))
         pebbles.push(BigInteger.valueOf(-5))
         pebbles.multiply()
-        assertEquals(pebbles.size(), 1)
+        assertEquals(pebbles.size, 1)
         assertEquals(pebbles.peek(), BigInteger.valueOf(-75))
     }
 
@@ -57,13 +63,13 @@ class HexStackUnitTest {
         pebbles.push(BigInteger.valueOf(8))
         pebbles.push(BigInteger.valueOf(5))
         pebbles.divide()
-        assertEquals(pebbles.size(), 1)
-        assertEquals(pebbles.pop(), BigInteger.valueOf(1))
+        assertEquals(1, pebbles.size)
+        assertEquals(BigInteger.valueOf(1), pebbles.pop())
         pebbles.push(BigInteger.valueOf(400))
         pebbles.push(BigInteger.valueOf(20))
         pebbles.divide()
-        assertEquals(pebbles.size(), 1)
-        assertEquals(pebbles.peek(), BigInteger.valueOf(20))
+        assertEquals(1, pebbles.size)
+        assertEquals(BigInteger.valueOf(20), pebbles.peek())
     }
 
     @Test
@@ -113,9 +119,17 @@ class HexStackUnitTest {
         original.push(15)
         original.push(7)
         original.push(23)
-        assertEquals("23\n7\n15", original.toString())
-        original.clear()
+        assertEquals("17\n7\nF", original.toString())
+        // verify stack not damaged
+        assertEquals(BigInteger.valueOf(23), original.pop())
+        assertEquals(BigInteger.valueOf(7), original.pop())
+        assertEquals(BigInteger.valueOf(15), original.pop())
+        assertEquals(0, original.size)
         assertEquals("", original.toString())
+
+        original.push(0xFACE)
+        original.push(0xBEEF)
+        assertEquals("BEEF\nFACE", original.toString())
     }
 
     @Test
@@ -130,5 +144,26 @@ class HexStackUnitTest {
         assertFalse { hs.contains(12) }
         assertFalse { hs.contains(12L) }
         assertFalse { hs.contains(BigInteger.valueOf(12L)) }
+    }
+
+    @Test
+    fun in_isCorrect() {
+        val hs = HexStack()
+        hs.push(15)
+        hs.push(7)
+        hs.push(23)
+        assert(15 in hs)
+        assert(15L in hs)
+        assert(BigInteger.valueOf(15L) in hs)
+        assertFalse { 12 in hs }
+        assertFalse { 12L in hs }
+        assertFalse { BigInteger.valueOf(12L) in hs }
+    }
+
+    @Test
+    fun pop_throwsOnUnderflow() {
+        val fred = HexStack(arrayListOf(7L))
+        assertEquals(BigInteger.valueOf(7L), fred.pop())
+        assertFailsWith(NoSuchElementException::class, {fred.pop()})
     }
 }

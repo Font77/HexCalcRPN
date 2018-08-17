@@ -11,7 +11,7 @@ interface ReadStack<T> {
     val isEmpty: Boolean
 
     /**
-     * Returns the current top of the stack, without altering the stack.
+     * Returns the _current top of the stack, without altering the stack.
      */
     fun peek(): T?
 
@@ -30,11 +30,11 @@ interface ReadStack<T> {
     /**
      * Number of elements on the stack.
      */
-    fun size(): Int
+    val size: Int
 
     /**
      * A list of the contents of the stack, such that index 0 is top of stack.
      * Elements are copies, or references to immutable objects.
      */
-    fun contents(): List<T>
+    val contents: List<T>
 }

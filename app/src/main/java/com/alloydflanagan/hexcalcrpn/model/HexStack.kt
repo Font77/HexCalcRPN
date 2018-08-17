@@ -6,11 +6,12 @@ import java.util.ArrayDeque
 import java.util.Deque
 
 /**
- * A class to manage a stack of BigIntegers as hexadecimal values.
+ * A class to manage a stack of BigIntegers with operators.
+
+ * TODO: must provide "number of bits" setting
  *
- * TODO: parameterize integer type.
- *
- * Created by aflanagan on 1/18/18.
+ * (Do we need to keep record of actual numbers entered, so we can change on-the-fly without clearing
+ * stack??)
  */
 
 class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
@@ -32,7 +33,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     /**
      * Copy constructor. We do not implement Cloneable.
      */
-    constructor(hs: HexStack) : this(hs.size()) {
+    constructor(hs: HexStack) : this(hs.size) {
         stack.addAll(hs.stack)
     }
 
@@ -40,8 +41,21 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     /**
      * @return String with each element as a hex number, separated by newlines.
+     *
+     * TOS will be at the bottom, stack grows up.
      */
-    override fun toString() = stack.joinToString("\n").toUpperCase()
+    override fun toString(): String {
+        val bldr = StringBuilder()
+        // pop each item, convert to string, add it back to deque
+        for (i in 0 until stack.size) {
+            val value = stack.pop()
+            val asString = value.toString(16).toUpperCase()
+            if (i != 0) bldr.insert(0, '\n')
+            bldr.insert(0, asString)
+            stack.addLast(value)
+        }
+        return bldr.toString()
+    }
 
     /**
      * Pops the top two elements off the stack, and pushes the result of multiplying them.
@@ -135,9 +149,11 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     override operator fun contains(o: Int) = stack.contains(BigInteger.valueOf(o.toLong()))
 
-    override fun size() = stack.size
+    override val size
+            get() = stack.size
 
     // safe because BigInteger is immutable class
-    override fun contents() = stack.map { it }
+    override val contents
+            get() = stack.map { it }
 
 }
