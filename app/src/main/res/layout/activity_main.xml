@@ -52,12 +52,12 @@
         android:layout_marginTop="@dimen/button_row_sep"
         android:layout_marginEnd="@dimen/button_row_horiz_margin"
         android:onClick="onClick"
-        app:buttonsText="C;D;E;F;/"
-        app:layout_constraintVertical_weight="1.0"
+        app:buttonsText="C;D;E;F;/;c"
         app:layout_constraintBottom_toTopOf="@id/brv_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_current"
+        app:layout_constraintVertical_weight="1.0"
         app:textColor="@color/colorPrimary"
         app:textSize="@dimen/button_text_size">
 
@@ -71,12 +71,12 @@
         android:layout_marginTop="@dimen/button_row_sep"
         android:layout_marginEnd="@dimen/button_row_horiz_margin"
         android:onClick="onClick"
-        app:buttonsText="8;9;A;B;*"
-        app:layout_constraintVertical_weight="1.0"
+        app:buttonsText="8;9;A;B;*;~"
         app:layout_constraintBottom_toTopOf="@id/brv_3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/brv_1"
+        app:layout_constraintVertical_weight="1.0"
         app:textColor="@color/colorPrimary"
         app:textSize="@dimen/button_text_size">
 
@@ -90,12 +90,12 @@
         android:layout_marginTop="@dimen/button_row_sep"
         android:layout_marginEnd="@dimen/button_row_horiz_margin"
         android:onClick="onClick"
-        app:buttonsText="4;5;6;7;-"
-        app:layout_constraintVertical_weight="1.0"
+        app:buttonsText="4;5;6;7;-;&amp;"
         app:layout_constraintBottom_toTopOf="@id/brv_4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/brv_2"
+        app:layout_constraintVertical_weight="1.0"
         app:textColor="@color/colorPrimary"
         app:textSize="@dimen/button_text_size" />
 
@@ -107,12 +107,12 @@
         android:layout_marginTop="@dimen/button_row_sep"
         android:layout_marginEnd="@dimen/button_row_horiz_margin"
         android:onClick="onClick"
-        app:buttonsText="0;1;2;3;+"
-        app:layout_constraintVertical_weight="1.0"
+        app:buttonsText="0;1;2;3;+;|"
         app:layout_constraintBottom_toTopOf="@+id/btn_equals"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/brv_3"
+        app:layout_constraintVertical_weight="1.0"
         app:textColor="@color/colorPrimary"
         app:textSize="@dimen/button_text_size" />
 

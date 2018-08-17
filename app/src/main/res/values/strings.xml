@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">HexCalcRPN</string>
-    <string name="btn_equals_text">=</string>
+    <string name="btn_equals_text">"==>"</string>
 </resources>
