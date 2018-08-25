@@ -119,7 +119,7 @@ class HexStackUnitTest {
         original.push(15)
         original.push(7)
         original.push(23)
-        assertEquals("17\n7\nF", original.toString())
+        assertEquals("F\n7\n17", original.toString())
         // verify stack not damaged
         assertEquals(BigInteger.valueOf(23), original.pop())
         assertEquals(BigInteger.valueOf(7), original.pop())
@@ -129,7 +129,7 @@ class HexStackUnitTest {
 
         original.push(0xFACE)
         original.push(0xBEEF)
-        assertEquals("BEEF\nFACE", original.toString())
+        assertEquals("FACE\nBEEF", original.toString())
     }
 
     @Test
