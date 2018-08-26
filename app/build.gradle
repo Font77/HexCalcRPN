@@ -54,6 +54,7 @@ dependencies {
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test:runner:$androidxTestVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test:rules:$androidxTestVersion"
 
     // dependency injection
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodeinVersion"
@@ -70,16 +71,15 @@ dependencies {
 
     // timber for nicer logging
     implementation "com.jakewharton.timber:timber:$timberVersion"
-
 }
 
 dokka {
     moduleName 'HexCalcRPN'
     outputFormat 'html'
     outputDirectory "$buildDir/javadoc"
-//    kotlinTasks {
-//        defaultKotlinTasks()
-//    }
+    kotlinTasks {
+        defaultKotlinTasks()
+    }
     jdkVersion 8
     reportUndocumented true
     skipEmptyPackages true
