@@ -24,7 +24,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      */
     fun setBits(value: BitsMode) {
         // decided not to check if _bits == value; always clear stack for consistency.
-        _bits == value
+        _bits = value
         stack.clear()
     }
 
