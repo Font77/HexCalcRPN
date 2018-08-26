@@ -8,7 +8,7 @@ import java.math.BigInteger
 class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
 
     /**
-     * we maintain a value as a StringBuilder privately so we can just stick digits on to the end.
+     * we maintain a value as a [StringBuilder] privately so we can just stick digits on to the end.
      */
     private var _currStr = StringBuilder()
 
@@ -18,7 +18,7 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
     private val _stack = MutableLiveData<HexStack>()
 
     /**
-     * private mutable BigiInteger value being entered by user. We expose it read-only in
+     * private mutable [BigInteger] value being entered by user. We expose it read-only in
      * [HexStackViewModel.getCurrent].
      */
     val _current = MutableLiveData<BigInteger>()

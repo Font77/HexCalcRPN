@@ -37,12 +37,28 @@
         android:gravity="center_vertical|end"
         android:padding="@dimen/current_padding"
         android:textSize="@dimen/output_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/brv_1"
+        app:layout_constraintBottom_toTopOf="@+id/brv_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_output"
         app:layout_constraintVertical_weight="1.0"
         tools:text="AB7D8832" />
+
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        android:id="@+id/brv_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_row_horiz_margin"
+        android:layout_marginTop="@dimen/button_row_sep"
+        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:onClick="onClick"
+        app:buttonsText="8;16;32;64;&#8734;;SIGN"
+        app:layout_constraintBottom_toTopOf="@+id/brv_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_current"
+        app:layout_constraintVertical_weight="1.0"
+        app:textColor="?android:attr/colorFocusedHighlight" />
 
     <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_1"
@@ -56,12 +72,10 @@
         app:layout_constraintBottom_toTopOf="@id/brv_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_current"
+        app:layout_constraintTop_toBottomOf="@+id/brv_5"
         app:layout_constraintVertical_weight="1.0"
         app:textColor="@color/colorPrimary"
-        app:textSize="@dimen/button_text_size">
-
-    </com.alloydflanagan.hexcalcrpn.ui.ButtonRowView>
+        app:textSize="@dimen/button_text_size" />
 
     <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_2"
@@ -78,11 +92,9 @@
         app:layout_constraintTop_toBottomOf="@+id/brv_1"
         app:layout_constraintVertical_weight="1.0"
         app:textColor="@color/colorPrimary"
-        app:textSize="@dimen/button_text_size">
+        app:textSize="@dimen/button_text_size" />
 
-    </com.alloydflanagan.hexcalcrpn.ui.ButtonRowView>
-
-    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,17 +135,29 @@
         android:layout_marginStart="@dimen/button_row_horiz_margin"
         android:layout_marginTop="@dimen/button_row_sep"
         android:layout_marginEnd="@dimen/button_row_horiz_margin"
-        android:layout_marginBottom="@dimen/outer_vertical_margin"
         android:onClick="onClick"
         android:text="@string/btn_equals_text"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/equals_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_status"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/brv_4"
         app:layout_constraintVertical_weight="1.0" />
 
-
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/button_row_horiz_margin"
+        android:layout_marginTop="@dimen/button_row_sep"
+        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:layout_marginBottom="@dimen/outer_vertical_margin"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_equals"
+        tools:text="unsigned          64 bits" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

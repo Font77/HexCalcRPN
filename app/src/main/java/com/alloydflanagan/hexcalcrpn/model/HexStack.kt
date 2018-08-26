@@ -7,17 +7,26 @@ import java.util.Deque
 
 /**
  * A class to manage a stack of BigIntegers with operators.
-
- * TODO: must provide "number of bits" setting
- *
- * (Do we need to keep record of actual numbers entered, so we can change on-the-fly without clearing
- * stack??)
  */
 
 class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     // we don't implement all methods of a Deque, so keep it private
     private var stack: Deque<BigInteger> = ArrayDeque<BigInteger>(numElements)
+
+    private var _bits: BitsMode = BitsMode.INFINITE
+
+    override fun getBits() = _bits
+
+    /**
+     * Set number of bits assumed for calculations. NOTE: resets the
+     * stack to empty.
+     */
+    fun setBits(value: BitsMode) {
+        // decided not to check if _bits == value; always clear stack for consistency.
+        _bits == value
+        stack.clear()
+    }
 
     /**
      * Constructs a HexStack containing the elements of the specified
@@ -34,6 +43,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      * Copy constructor. We do not implement Cloneable.
      */
     constructor(hs: HexStack) : this(hs.size) {
+        _bits = hs._bits
         stack.addAll(hs.stack)
     }
 
