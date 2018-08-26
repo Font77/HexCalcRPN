@@ -41,10 +41,12 @@ class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
     }
 
     override fun onClick(v: View) {
-        if (v is ButtonRowView) {
-            viewModel.handleInput(v.clickedText[0])
-        } else if (v is Button) {
-            viewModel.handleInput(v.text[0])
+        when (v) {
+            is ButtonRowView -> if (v.id == brv_modes.id)
+                    viewModel.handleModeInput(v.clickedText[0])
+                else
+                    viewModel.handleInput(v.clickedText[0])
+            is Button -> viewModel.handleInput(v.text[0])
         }
     }
 }
