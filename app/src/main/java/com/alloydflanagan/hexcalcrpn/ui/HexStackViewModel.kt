@@ -1,6 +1,7 @@
 package com.alloydflanagan.hexcalcrpn.ui
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.HexStack
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
@@ -26,6 +27,7 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
 
     init {
         mStack.postValue(HexStack())
+        mCurrent.postValue(BigInteger.valueOf(0))
     }
 
     /**

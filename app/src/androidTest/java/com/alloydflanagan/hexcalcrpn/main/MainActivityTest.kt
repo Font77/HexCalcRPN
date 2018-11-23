@@ -4,7 +4,6 @@ package com.alloydflanagan.hexcalcrpn.main
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
-import androidx.annotation.LayoutRes
 import androidx.test.InstrumentationRegistry
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
@@ -17,7 +16,6 @@ import androidx.test.runner.AndroidJUnit4
 import com.alloydflanagan.hexcalcrpn.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert
@@ -32,232 +30,6 @@ class MainActivityTest {
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
-
-    // TODO: Figure out how to write custom matcher for buttons in button rows
-    private fun buttonAt(@IdRes buttonRowId: Int, buttonPosition: Int): ViewInteraction {
-        return onView(
-                allOf(childAtPosition(
-                        allOf(withId(buttonRowId),
-                                childAtPosition(
-                                        withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")), buttonPosition)),
-                        0),
-                        isDisplayed()))
-    }
-
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        Assert.assertEquals("com.alloydflanagan.hexcalcrpn", appContext.packageName)
-    }
-
-    @Test
-    fun mainActivityTest() {
-//        val button_8 = onView(
-//                allOf(withText("8"),
-//                        childAtPosition(
-//                                allOf(withId(R.id.brv_2),
-//                                        childAtPosition(
-//                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-//                                                4)),
-//                                0),
-//                        isDisplayed()))
-        val button_8 = buttonAt(R.id.brv_2, 4)
-        button_8.perform(click())
-
-        val tv_current = onView(
-                allOf(withId(R.id.tv_current),
-                        isDisplayed()))
-        tv_current.check(matches(withText("8")))
-
-        val button_F = onView(
-                allOf(withText("F"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_1),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                3)),
-                                3),
-                        isDisplayed()))
-        button_F.perform(click())
-
-        val button_A = onView(
-                allOf(withText("A"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_2),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                4)),
-                                2),
-                        isDisplayed()))
-        button_A.perform(click())
-
-        val button_6 = onView(
-                allOf(withText("6"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_3),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                5)),
-                                2),
-                        isDisplayed()))
-        button_6.perform(click())
-
-        val button_5 = onView(
-                allOf(withText("5"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_3),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                5)),
-                                1),
-                        isDisplayed()))
-        button_5.perform(click())
-
-        val button_4 = onView(
-                allOf(withText("4"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_3),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                5)),
-                                0),
-                        isDisplayed()))
-        button_4.perform(click())
-
-        val button_0 = onView(
-                allOf(withText("0"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_4),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                0),
-                        isDisplayed()))
-        button_0.perform(click())
-
-        val button_1 = onView(
-                allOf(withText("1"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_4),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                1),
-                        isDisplayed()))
-        button_1.perform(click())
-
-        val button_2 = onView(
-                allOf(withText("2"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_4),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                2),
-                        isDisplayed()))
-        button_2.perform(click())
-
-        val button_3 = onView(
-                allOf(withText("3"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_4),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                6)),
-                                3),
-                        isDisplayed()))
-        button_3.perform(click())
-        button_4.perform(click())
-        button_5.perform(click())
-        button_6.perform(click())
-
-        val button_7 = onView(
-                allOf(withText("7"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_3),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                5)),
-                                3),
-                        isDisplayed()))
-        button_7.perform(click())
-        button_8.perform(click())
-
-        val button_9 = onView(
-                allOf(withText("9"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_2),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                4)),
-                                1),
-                        isDisplayed()))
-        button_9.perform(click())
-
-        button_A.perform(click())
-
-        val button_B = onView(
-                allOf(withText("B"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_2),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                4)),
-                                3),
-                        isDisplayed()))
-        button_B.perform(click())
-
-        val button_C = onView(
-                allOf(withText("C"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_1),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                3)),
-                                0),
-                        isDisplayed()))
-        button_C.perform(click())
-
-        val button_D = onView(
-                allOf(withText("D"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_1),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                3)),
-                                1),
-                        isDisplayed()))
-        button_D.perform(click())
-
-        val button_E = onView(
-                allOf(withText("E"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_1),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                3)),
-                                2),
-                        isDisplayed()))
-        button_E.perform(click())
-
-        button_F.perform(click())
-
-        tv_current.check(matches(withText("8FA6540123456789ABCDEF")))
-
-        val button_Clear = onView(
-                allOf(withText("c"),
-                        childAtPosition(
-                                allOf(withId(R.id.brv_1),
-                                        childAtPosition(
-                                                withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
-                                                3)),
-                                5),
-                        isDisplayed()))
-        button_Clear.perform(click())
-
-        tv_current.check(matches(withText("0")))
-    }
 
     private fun childAtPosition(
             parentMatcher: Matcher<View>, position: Int): Matcher<View> {
@@ -274,5 +46,91 @@ class MainActivityTest {
                         && view == parent.getChildAt(position)
             }
         }
+    }
+
+    // TODO: Figure out how to write custom matcher for buttons in button rows
+    private fun buttonAt(@IdRes buttonRowId: Int, buttonPosition: Int): ViewInteraction {
+        return onView(
+                allOf(childAtPosition(
+                        withId(buttonRowId),
+                        buttonPosition),
+                      isDisplayed()
+                ))
+    }
+
+    @Test
+    fun useAppContext() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getTargetContext()
+        Assert.assertEquals("com.alloydflanagan.hexcalcrpn", appContext.packageName)
+    }
+
+    /**
+     * Verify that pressing a series of digits creates a number in the current value register,
+     * and that pressing "clear" resets that number to 0.
+     */
+    @Test
+    fun mainActivityTest() {
+        val tv_current = onView(
+                allOf(withId(R.id.tv_current),
+                        isDisplayed()))
+        tv_current.check(matches(withText("0")))
+
+        val buttonInRow1 = { position: Int -> buttonAt(R.id.brv_1, position) }
+        val buttonC = buttonInRow1(0)
+        val buttonD = buttonInRow1(1)
+        val buttonE = buttonInRow1(2)
+        val buttonF = buttonInRow1(3)
+        val buttonClear = buttonInRow1(5)
+
+        val buttonInRow2 = { position: Int -> buttonAt(R.id.brv_2, position) }
+        val button8 = buttonInRow2(0)
+        val button9 = buttonInRow2(1)
+        val buttonA = buttonInRow2(2)
+        val buttonB = buttonInRow2(3)
+
+        val buttonInRow3 = { position: Int -> buttonAt(R.id.brv_3, position) }
+        val button4 = buttonInRow3(0)
+        val button5 = buttonInRow3(1)
+        val button6 = buttonInRow3(2)
+        val button7 = buttonInRow3(3)
+
+        val buttonInRow4 = { position: Int -> buttonAt(R.id.brv_4, position) }
+        val button0 = buttonInRow4(0)
+        val button1 = buttonInRow4(1)
+        val button2 = buttonInRow4(2)
+        val button3 = buttonInRow4(3)
+
+        button8.perform(click())
+
+        tv_current.check(matches(withText("8")))
+
+        buttonF.perform(click())
+        buttonA.perform(click())
+        button6.perform(click())
+        button5.perform(click())
+        button4.perform(click())
+        button0.perform(click())
+        button1.perform(click())
+        button2.perform(click())
+        button3.perform(click())
+        button4.perform(click())
+        button5.perform(click())
+        button6.perform(click())
+        button7.perform(click())
+        button8.perform(click())
+        button9.perform(click())
+        buttonA.perform(click())
+        buttonB.perform(click())
+        buttonC.perform(click())
+        buttonD.perform(click())
+        buttonE.perform(click())
+        buttonF.perform(click())
+
+        tv_current.check(matches(withText("8FA6540123456789ABCDEF")))
+
+        buttonClear.perform(click())
+
+        tv_current.check(matches(withText("0")))
     }
 }
