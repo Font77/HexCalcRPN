@@ -27,6 +27,36 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest {
 
+    private fun buttonInRow1(position: Int) =  buttonAt(R.id.brv_1, position)
+    private val buttonC = buttonInRow1(0)
+    private val buttonD = buttonInRow1(1)
+    private val buttonE = buttonInRow1(2)
+    private val buttonF = buttonInRow1(3)
+    private val buttonClear = buttonInRow1(5)
+
+    private fun buttonInRow2(position: Int) = buttonAt(R.id.brv_2, position)
+    private val button8 = buttonInRow2(0)
+    private val button9 = buttonInRow2(1)
+    private val buttonA = buttonInRow2(2)
+    private val buttonB = buttonInRow2(3)
+
+    private fun buttonInRow3(position: Int) = buttonAt(R.id.brv_3, position)
+    private val button4 = buttonInRow3(0)
+    private val button5 = buttonInRow3(1)
+    private val button6 = buttonInRow3(2)
+    private val button7 = buttonInRow3(3)
+
+    private fun buttonInRow4(position: Int) = buttonAt(R.id.brv_4, position)
+    private val button0 = buttonInRow4(0)
+    private val button1 = buttonInRow4(1)
+    private val button2 = buttonInRow4(2)
+    private val button3 = buttonInRow4(3)
+    private val buttonPlus = buttonInRow4(4)
+
+    private val buttonEntry = onView(allOf(withId(R.id.btn_equals), isDisplayed()))
+    private val tvCurrent = onView(allOf(withId(R.id.tv_current), isDisplayed()))
+    private val tvOutput = onView(allOf(withId(R.id.tv_output), isDisplayed()))
+
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
@@ -70,40 +100,13 @@ class MainActivityTest {
      * and that pressing "clear" resets that number to 0.
      */
     @Test
-    fun mainActivityTest() {
-        val tv_current = onView(
-                allOf(withId(R.id.tv_current),
-                        isDisplayed()))
-        tv_current.check(matches(withText("0")))
+    fun numberEntryTest() {
 
-        val buttonInRow1 = { position: Int -> buttonAt(R.id.brv_1, position) }
-        val buttonC = buttonInRow1(0)
-        val buttonD = buttonInRow1(1)
-        val buttonE = buttonInRow1(2)
-        val buttonF = buttonInRow1(3)
-        val buttonClear = buttonInRow1(5)
-
-        val buttonInRow2 = { position: Int -> buttonAt(R.id.brv_2, position) }
-        val button8 = buttonInRow2(0)
-        val button9 = buttonInRow2(1)
-        val buttonA = buttonInRow2(2)
-        val buttonB = buttonInRow2(3)
-
-        val buttonInRow3 = { position: Int -> buttonAt(R.id.brv_3, position) }
-        val button4 = buttonInRow3(0)
-        val button5 = buttonInRow3(1)
-        val button6 = buttonInRow3(2)
-        val button7 = buttonInRow3(3)
-
-        val buttonInRow4 = { position: Int -> buttonAt(R.id.brv_4, position) }
-        val button0 = buttonInRow4(0)
-        val button1 = buttonInRow4(1)
-        val button2 = buttonInRow4(2)
-        val button3 = buttonInRow4(3)
+        tvCurrent.check(matches(withText("0")))
 
         button8.perform(click())
 
-        tv_current.check(matches(withText("8")))
+        tvCurrent.check(matches(withText("8")))
 
         buttonF.perform(click())
         buttonA.perform(click())
@@ -127,10 +130,36 @@ class MainActivityTest {
         buttonE.perform(click())
         buttonF.perform(click())
 
-        tv_current.check(matches(withText("8FA6540123456789ABCDEF")))
+        tvCurrent.check(matches(withText("8FA6540123456789ABCDEF")))
 
         buttonClear.perform(click())
 
-        tv_current.check(matches(withText("0")))
+        tvCurrent.check(matches(withText("0")))
+    }
+
+    /**
+     * Verify that we can do simple addition.
+     */
+    @Test
+    fun numberAddTest() {
+
+        tvCurrent.check(matches(withText("0")))
+
+        button1.perform(click())
+        button2.perform(click())
+        button3.perform(click())
+        button4.perform(click())
+        buttonEntry.perform(click())
+
+        buttonA.perform(click())
+        buttonB.perform(click())
+        buttonC.perform(click())
+        buttonEntry.perform(click())
+
+        buttonPlus.perform(click())
+
+        val result = "1CF0"
+
+        tvOutput.check(matches(withText(result)))
     }
 }
