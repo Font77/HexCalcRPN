@@ -38,16 +38,16 @@ dependencies {
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
     // ktx extensions
-    implementation "androidx.core:core-ktx:$ktxVersion"
-    implementation "androidx.fragment:fragment-ktx:$ktxVersion"
-    implementation "androidx.collection:collection-ktx:$ktxVersion"
+    implementation "androidx.core:core-ktx:$coreKtxVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
+    implementation "androidx.collection:collection-ktx:$collectionKtxVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
 
     // ktx for navigation. not sure if really needed
     implementation "android.arch.navigation:navigation-common-ktx:$navigationVersion"
     implementation "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "android.arch.navigation:navigation-runtime-ktx:$navigationVersion"
-    implementation "android.arch.navigation:navigation-testing-ktx:$navigationVersion"
+    implementation "android.arch.navigation:navigation-testing-ktx:$navigationTestVersion"
     implementation "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
 
     // testing basics
@@ -76,7 +76,10 @@ dependencies {
 dokka {
     moduleName 'HexCalcRPN'
     outputFormat 'html'
-    outputDirectory "$buildDir/javadoc"
+    // outputDirectory "$buildDir/javadoc"
+    // $buildDir = app/build, but that variable is (inexplicably) private
+    outputDirectory "app/build/javadoc"
+
     kotlinTasks {
         defaultKotlinTasks()
     }
