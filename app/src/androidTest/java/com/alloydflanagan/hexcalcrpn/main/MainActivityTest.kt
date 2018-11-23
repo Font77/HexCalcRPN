@@ -14,11 +14,13 @@ import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import com.alloydflanagan.hexcalcrpn.R
+import kotlinx.android.synthetic.main.activity_main.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -45,6 +47,7 @@ class MainActivityTest {
     private val button5 = buttonInRow3(1)
     private val button6 = buttonInRow3(2)
     private val button7 = buttonInRow3(3)
+    private val buttonMinus = buttonInRow3(4)
 
     private fun buttonInRow4(position: Int) = buttonAt(R.id.brv_4, position)
     private val button0 = buttonInRow4(0)
@@ -56,6 +59,9 @@ class MainActivityTest {
     private val buttonEntry = onView(allOf(withId(R.id.btn_equals), isDisplayed()))
     private val tvCurrent = onView(allOf(withId(R.id.tv_current), isDisplayed()))
     private val tvOutput = onView(allOf(withId(R.id.tv_output), isDisplayed()))
+
+    private fun checkCurrentIs(value: String) = tvCurrent.check(matches(withText(value)))
+    private fun checkOutputIs(value: String) = tvOutput.check(matches(withText(value)))
 
     @Rule
     @JvmField
@@ -88,6 +94,19 @@ class MainActivityTest {
                 ))
     }
 
+    /**
+     * clears both current value and stack outputs. Prevents failed test from affecting others.
+     */
+    @Before
+    fun clearOutputs() {
+        while (mActivityTestRule.activity.tv_current.text != "0" || mActivityTestRule.activity.tv_output.text != "") {
+            buttonClear.perform(click())
+        }
+    }
+
+    /**
+     * Verify we can get application context, and it is what I think it is.
+     */
     @Test
     fun useAppContext() {
         // Context of the app under test.
@@ -101,12 +120,8 @@ class MainActivityTest {
      */
     @Test
     fun numberEntryTest() {
-
-        tvCurrent.check(matches(withText("0")))
-
         button8.perform(click())
-
-        tvCurrent.check(matches(withText("8")))
+        checkCurrentIs("8")
 
         buttonF.perform(click())
         buttonA.perform(click())
@@ -129,12 +144,10 @@ class MainActivityTest {
         buttonD.perform(click())
         buttonE.perform(click())
         buttonF.perform(click())
-
-        tvCurrent.check(matches(withText("8FA6540123456789ABCDEF")))
+        checkCurrentIs("8FA6540123456789ABCDEF")
 
         buttonClear.perform(click())
-
-        tvCurrent.check(matches(withText("0")))
+        checkCurrentIs("0")
     }
 
     /**
@@ -142,9 +155,6 @@ class MainActivityTest {
      */
     @Test
     fun numberAddTest() {
-
-        tvCurrent.check(matches(withText("0")))
-
         button1.perform(click())
         button2.perform(click())
         button3.perform(click())
@@ -158,8 +168,81 @@ class MainActivityTest {
 
         buttonPlus.perform(click())
 
-        val result = "1CF0"
-
-        tvOutput.check(matches(withText(result)))
+        checkOutputIs("1CF0")
     }
+
+    /**
+     * Verify that we can do simple subtraction.
+     */
+    @Test
+    fun subtractTest() {
+        button1.perform(click())
+        button2.perform(click())
+        button3.perform(click())
+        button4.perform(click())
+        buttonEntry.perform(click())
+
+        buttonA.perform(click())
+        buttonB.perform(click())
+        buttonC.perform(click())
+        buttonEntry.perform(click())
+
+        buttonMinus.perform(click())
+
+        checkOutputIs("778")
+    }
+
+    /**
+     * Verify that pressing "c" clears the current value if any, otherwise removes one entry from
+     * stack.
+     */
+    @Test
+    fun clearTest() {
+        button1.perform(click())
+        button2.perform(click())
+        button3.perform(click())
+        button4.perform(click())
+        buttonEntry.perform(click())
+
+        checkCurrentIs("0")
+        checkOutputIs("1234")
+
+        buttonA.perform(click())
+        buttonB.perform(click())
+        buttonC.perform(click())
+        buttonEntry.perform(click())
+
+        checkCurrentIs("0")
+        checkOutputIs("1234\nABC")
+
+        button7.perform(click())
+        button4.perform(click())
+        button7.perform(click())
+
+        checkCurrentIs("747")
+
+        buttonClear.perform(click())
+
+        checkCurrentIs("0")
+        checkOutputIs("1234\nABC")
+
+        buttonClear.perform(click())
+
+        checkOutputIs("1234")
+
+        buttonClear.perform(click())
+
+        checkOutputIs("")
+    }
+
+    /**
+     * Verify pressing "clear" with no input and no stack does nothing.
+     */
+    @Test
+    fun clearNullTest() {
+        buttonClear.perform(click())  // should do nothing
+        checkOutputIs("")
+        checkCurrentIs("0")
+    }
+
 }
