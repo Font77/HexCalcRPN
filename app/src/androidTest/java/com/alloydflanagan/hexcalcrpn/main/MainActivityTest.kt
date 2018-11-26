@@ -30,31 +30,20 @@ import org.junit.runner.RunWith
 class MainActivityTest {
 
     private fun buttonInRow1(position: Int) =  buttonAt(R.id.brv_1, position)
-    private val buttonC = buttonInRow1(0)
-    private val buttonD = buttonInRow1(1)
-    private val buttonE = buttonInRow1(2)
-    private val buttonF = buttonInRow1(3)
-    private val buttonClear = buttonInRow1(5)
-
     private fun buttonInRow2(position: Int) = buttonAt(R.id.brv_2, position)
-    private val button8 = buttonInRow2(0)
-    private val button9 = buttonInRow2(1)
-    private val buttonA = buttonInRow2(2)
-    private val buttonB = buttonInRow2(3)
-
     private fun buttonInRow3(position: Int) = buttonAt(R.id.brv_3, position)
-    private val button4 = buttonInRow3(0)
-    private val button5 = buttonInRow3(1)
-    private val button6 = buttonInRow3(2)
-    private val button7 = buttonInRow3(3)
-    private val buttonMinus = buttonInRow3(4)
-
     private fun buttonInRow4(position: Int) = buttonAt(R.id.brv_4, position)
-    private val button0 = buttonInRow4(0)
-    private val button1 = buttonInRow4(1)
-    private val button2 = buttonInRow4(2)
-    private val button3 = buttonInRow4(3)
-    private val buttonPlus = buttonInRow4(4)
+
+    private val buttonMap = mapOf<Char, ViewInteraction>(
+            '0' to buttonInRow4(0), '1' to buttonInRow4(1), '2' to buttonInRow4(2),
+            '3' to buttonInRow4(3), '+' to buttonInRow4(4),
+            '4' to buttonInRow3(0), '5' to buttonInRow3(1), '6' to buttonInRow3(2),
+            '7' to buttonInRow3(3), '-' to buttonInRow3(4),
+            '8' to buttonInRow2(0), '9' to buttonInRow2(1), 'A' to buttonInRow2(2),
+            'B' to buttonInRow2(3), '*' to buttonInRow2(4),
+            'C' to buttonInRow1(0), 'D' to buttonInRow1(1), 'E' to buttonInRow1(2),
+            'F' to buttonInRow1(3), 'c' to  buttonInRow1(5)
+    )
 
     private val buttonEntry = onView(allOf(withId(R.id.btn_equals), isDisplayed()))
     private val tvCurrent = onView(allOf(withId(R.id.tv_current), isDisplayed()))
@@ -66,6 +55,16 @@ class MainActivityTest {
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
+
+    private fun enterKeys(value: String) {
+        for (digit in value) {
+            buttonMap[digit]?.perform(click())
+        }
+    }
+
+    private fun enter () {
+        buttonEntry.perform(click())
+    }
 
     private fun childAtPosition(
             parentMatcher: Matcher<View>, position: Int): Matcher<View> {
@@ -99,8 +98,11 @@ class MainActivityTest {
      */
     @Before
     fun clearOutputs() {
+        /** guard against infinite loop if other checks fail */
+        var limit = 15
         while (mActivityTestRule.activity.tv_current.text != "0" || mActivityTestRule.activity.tv_output.text != "") {
-            buttonClear.perform(click())
+            enterKeys("c")
+            if (--limit < 0) break
         }
     }
 
@@ -119,34 +121,14 @@ class MainActivityTest {
      * and that pressing "clear" resets that number to 0.
      */
     @Test
-    fun numberEntryTest() {
-        button8.perform(click())
+    fun testEntry() {
+        enterKeys("8")
         checkCurrentIs("8")
+        enterKeys("FA6540123456789ABCDEF")
 
-        buttonF.perform(click())
-        buttonA.perform(click())
-        button6.perform(click())
-        button5.perform(click())
-        button4.perform(click())
-        button0.perform(click())
-        button1.perform(click())
-        button2.perform(click())
-        button3.perform(click())
-        button4.perform(click())
-        button5.perform(click())
-        button6.perform(click())
-        button7.perform(click())
-        button8.perform(click())
-        button9.perform(click())
-        buttonA.perform(click())
-        buttonB.perform(click())
-        buttonC.perform(click())
-        buttonD.perform(click())
-        buttonE.perform(click())
-        buttonF.perform(click())
         checkCurrentIs("8FA6540123456789ABCDEF")
 
-        buttonClear.perform(click())
+        enterKeys("c")
         checkCurrentIs("0")
     }
 
@@ -154,19 +136,14 @@ class MainActivityTest {
      * Verify that we can do simple addition.
      */
     @Test
-    fun numberAddTest() {
-        button1.perform(click())
-        button2.perform(click())
-        button3.perform(click())
-        button4.perform(click())
-        buttonEntry.perform(click())
+    fun testAdd() {
+        enterKeys("1234")
+        enter()
 
-        buttonA.perform(click())
-        buttonB.perform(click())
-        buttonC.perform(click())
-        buttonEntry.perform(click())
+        enterKeys("ABC")
+        enter()
 
-        buttonPlus.perform(click())
+        enterKeys("+")
 
         checkOutputIs("1CF0")
     }
@@ -175,21 +152,29 @@ class MainActivityTest {
      * Verify that we can do simple subtraction.
      */
     @Test
-    fun subtractTest() {
-        button1.perform(click())
-        button2.perform(click())
-        button3.perform(click())
-        button4.perform(click())
-        buttonEntry.perform(click())
+    fun testSubtract() {
+        enterKeys("1234")
+        enter()
 
-        buttonA.perform(click())
-        buttonB.perform(click())
-        buttonC.perform(click())
-        buttonEntry.perform(click())
-
-        buttonMinus.perform(click())
+        enterKeys("ABC")
+        enter()
+        enterKeys("-")
 
         checkOutputIs("778")
+    }
+
+    @Test
+    fun testMultiply() {
+        enterKeys("AC57")
+        enter()
+
+        enterKeys("FACE")
+        enter()
+
+        checkOutputIs("AC57\nFACE")
+
+        enterKeys("*")
+        checkOutputIs("A8D7A402")
     }
 
     /**
@@ -197,40 +182,30 @@ class MainActivityTest {
      * stack.
      */
     @Test
-    fun clearTest() {
-        button1.perform(click())
-        button2.perform(click())
-        button3.perform(click())
-        button4.perform(click())
-        buttonEntry.perform(click())
-
+    fun testClear() {
+        enterKeys("1234")
+        enter()
         checkCurrentIs("0")
         checkOutputIs("1234")
 
-        buttonA.perform(click())
-        buttonB.perform(click())
-        buttonC.perform(click())
-        buttonEntry.perform(click())
-
+        enterKeys("ABC")
+        enter()
         checkCurrentIs("0")
         checkOutputIs("1234\nABC")
 
-        button7.perform(click())
-        button4.perform(click())
-        button7.perform(click())
-
+        enterKeys("747")
         checkCurrentIs("747")
 
-        buttonClear.perform(click())
+        enterKeys("c")
 
         checkCurrentIs("0")
         checkOutputIs("1234\nABC")
 
-        buttonClear.perform(click())
+        enterKeys("c")
 
         checkOutputIs("1234")
 
-        buttonClear.perform(click())
+        enterKeys("c")
 
         checkOutputIs("")
     }
@@ -239,8 +214,8 @@ class MainActivityTest {
      * Verify pressing "clear" with no input and no stack does nothing.
      */
     @Test
-    fun clearNullTest() {
-        buttonClear.perform(click())  // should do nothing
+    fun testClearNull() {
+        enterKeys("c") // should do nothing
         checkOutputIs("")
         checkCurrentIs("0")
     }
