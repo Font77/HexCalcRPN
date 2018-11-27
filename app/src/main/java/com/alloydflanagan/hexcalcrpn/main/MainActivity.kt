@@ -1,16 +1,17 @@
 package com.alloydflanagan.hexcalcrpn.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
 import com.alloydflanagan.hexcalcrpn.R
+import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
 import com.alloydflanagan.hexcalcrpn.model.SignModes
 import com.alloydflanagan.hexcalcrpn.ui.AbstractStackViewModel
+import com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
 import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
@@ -44,12 +45,20 @@ class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
     }
 
     private fun updateStatus(stack: ReadStack<BigInteger>) {
-        val label = getString(R.string.bits_label)
         tv_status.text = getString(R.string.mode_display,
                 getString(if (stack.signed == SignModes.SIGNED) R.string.signed_mode else R.string.unsigned_mode),
                 getString(R.string.bits_label),
                 stack.bits.toString()
         )
+
+        // some operations don't make sense in some modes
+        if (stack.bits == BitsMode.INFINITE) {
+            brv_2.disableButton(5)  // '~'
+            brv_modes.disableButton(5) // SIGN
+        } else {
+            brv_2.enableButton(5)  // '~'
+            brv_modes.enableButton(5) // SIGN
+        }
     }
 
     override fun onClick(v: View) {
