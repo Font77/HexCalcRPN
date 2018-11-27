@@ -1,9 +1,15 @@
 package com.alloydflanagan.hexcalcrpn.model
 
+enum class BitsMode(private val numBits: Int) {
+    EIGHT(8), SIXTEEN(16), THIRTY_TWO(32), SIXTY_FOUR(64), INFINITE(0);
 
-@Suppress("UNUSED_PARAMETER")
-enum class BitsMode(numBits: Int) {
-    EIGHT(8), SIXTEEN(16), THIRTY_TWO(32), SIXTY_FOUR(64), INFINITE(0)
+    override fun toString(): String {
+        return if (numBits == 0) "\u221E" else numBits.toString()
+    }
+}
+
+enum class SignModes {
+    SIGNED, UNSIGNED
 }
 
 /**
@@ -16,7 +22,9 @@ enum class BitsMode(numBits: Int) {
 interface ReadStack<T> {
     val isEmpty: Boolean
 
-    fun getBits(): BitsMode
+    var bits: BitsMode
+
+    var signed: SignModes
 
     /**
      * Returns the _current top of the stack, without altering the stack.

@@ -14,19 +14,31 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     // we don't implement all methods of a Deque, so keep it private
     private var stack: Deque<BigInteger> = ArrayDeque<BigInteger>(numElements)
 
-    private var _bits: BitsMode = BitsMode.INFINITE
+    override var bits = BitsMode.INFINITE
+            /**
+             * Set number of bits assumed for calculations. NOTE: resets the
+             * stack to empty.
+             */
+            set(value) {
+                // decided not to check if _bits == value; always clear stack for consistency.
+                field = value
+                stack.clear()
+            }
 
-    override fun getBits() = _bits
+    override var signed = SignModes.UNSIGNED
+            /**
+             * Set displayed signed mode. NOTE: if bits mode == INFINITE, mode is UNSIGNED.
+             */
+            set(value: SignModes) =
+                if (bits != BitsMode.INFINITE) field = value else field = SignModes.UNSIGNED
 
-    /**
-     * Set number of bits assumed for calculations. NOTE: resets the
-     * stack to empty.
-     */
-    fun setBits(value: BitsMode) {
-        // decided not to check if _bits == value; always clear stack for consistency.
-        _bits = value
-        stack.clear()
-    }
+
+    override val size
+        get() = stack.size
+
+    // safe because BigInteger is immutable class
+    override val contents
+        get() = stack.map { it }
 
     /**
      * Constructs a HexStack containing the elements of the specified
@@ -35,7 +47,11 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      *
      * @param c the collection whose elements are to be placed into the stack
      */
-    constructor(c: Collection<Long>) : this(c.size) {
+    constructor(c: Collection<Long>,
+                bits: BitsMode = BitsMode.INFINITE,
+                signed: SignModes = SignModes.UNSIGNED) : this(c.size) {
+        this.bits = bits
+        this.signed = signed
         stack.addAll(c.map { BigInteger.valueOf(it) })
     }
 
@@ -43,7 +59,8 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      * Copy constructor. We do not implement Cloneable.
      */
     constructor(hs: HexStack) : this(hs.size) {
-        _bits = hs._bits
+        bits = hs.bits
+        signed = hs.signed
         stack.addAll(hs.stack)
     }
 
@@ -151,19 +168,11 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     /** @throws NoSuchElementException - if queue is empty */
     fun pop(): BigInteger = stack.pop()
 
-    fun clear() = stack.clear()
-
     override operator fun contains(o: BigInteger) = stack.contains(o)
 
     operator fun contains(o: Long) = stack.contains(BigInteger.valueOf(o))
 
     override operator fun contains(o: Int) = stack.contains(BigInteger.valueOf(o.toLong()))
 
-    override val size
-            get() = stack.size
-
-    // safe because BigInteger is immutable class
-    override val contents
-            get() = stack.map { it }
 
 }

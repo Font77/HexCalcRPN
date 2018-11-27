@@ -8,6 +8,8 @@ import android.widget.Button
 import androidx.lifecycle.Observer
 import com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
 import com.alloydflanagan.hexcalcrpn.R
+import com.alloydflanagan.hexcalcrpn.model.ReadStack
+import com.alloydflanagan.hexcalcrpn.model.SignModes
 import com.alloydflanagan.hexcalcrpn.ui.AbstractStackViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.KodeinAware
@@ -37,7 +39,17 @@ class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
         viewModel.getStack().observe(this, Observer {
             val txt = it.toString().toUpperCase()
             if (txt != tv_output.text) tv_output.text = txt
+            updateStatus(it)
         })
+    }
+
+    private fun updateStatus(stack: ReadStack<BigInteger>) {
+        val label = getString(R.string.bits_label)
+        tv_status.text = getString(R.string.mode_display,
+                getString(if (stack.signed == SignModes.SIGNED) R.string.signed_mode else R.string.unsigned_mode),
+                getString(R.string.bits_label),
+                stack.bits.toString()
+        )
     }
 
     override fun onClick(v: View) {

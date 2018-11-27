@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.HexStack
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
+import com.alloydflanagan.hexcalcrpn.model.SignModes
 import java.math.BigInteger
 
 class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
@@ -24,6 +25,7 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
      * [HexStackViewModel.getCurrent].
      */
     private val mCurrent = MutableLiveData<BigInteger>()
+
 
     init {
         mStack.postValue(HexStack())
@@ -160,15 +162,17 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
     }
 
     override fun handleModeInput(input: Char) {
-        if (mStack.value != null) {
+        val stack = mStack.value
+        if (stack != null) {
             when (input) {
-                '8' -> mStack.value?.setBits(BitsMode.EIGHT)
-                '1' -> mStack.value?.setBits(BitsMode.SIXTEEN)
-                '3' -> mStack.value?.setBits(BitsMode.THIRTY_TWO)
-                '6' -> mStack.value?.setBits(BitsMode.SIXTY_FOUR)
-                '\u8734' -> mStack.value?.setBits(BitsMode.INFINITE)
+                '8' -> stack.bits = BitsMode.EIGHT
+                '1' -> stack.bits = BitsMode.SIXTEEN
+                '3' -> stack.bits = BitsMode.THIRTY_TWO
+                '6' -> stack.bits = BitsMode.SIXTY_FOUR
+                '\u221E' -> stack.bits = BitsMode.INFINITE
+                'S' -> stack.signed = if (stack.signed == SignModes.UNSIGNED) SignModes.SIGNED else SignModes.UNSIGNED
             }
-            mStack.postValue(mStack.value)
+            mStack.postValue(stack)
         }
     }
 
