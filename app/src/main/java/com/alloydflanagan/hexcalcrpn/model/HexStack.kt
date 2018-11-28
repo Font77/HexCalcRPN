@@ -2,8 +2,7 @@ package com.alloydflanagan.hexcalcrpn.model
 
 import java.io.Serializable
 import java.math.BigInteger
-import java.util.ArrayDeque
-import java.util.Deque
+import java.util.*
 
 /**
  * A class to manage a stack of BigIntegers with operators.
@@ -41,6 +40,19 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
         get() = stack.map { it }
 
     /**
+     * Truncates the value to fit into the current bits mode.
+     */
+    private fun truncate(value: BigInteger): BigInteger {
+        return when(bits) {
+            BitsMode.INFINITE -> value
+            BitsMode.EIGHT -> value.mod(MOD_8)
+            BitsMode.SIXTEEN -> value.mod(MOD_16)
+            BitsMode.THIRTY_TWO -> value.mod(MOD_32)
+            BitsMode.SIXTY_FOUR -> value.mod(MOD_64)
+        }
+    }
+
+    /**
      * Constructs a HexStack containing the elements of the specified
      * collection, in the order they are returned by the collection's
      * iterator.
@@ -52,7 +64,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
                 signed: SignModes = SignModes.UNSIGNED) : this(c.size) {
         this.bits = bits
         this.signed = signed
-        stack.addAll(c.map { BigInteger.valueOf(it) })
+        stack.addAll(c.map { truncate(BigInteger.valueOf(it)) })
     }
 
     /**
@@ -161,9 +173,9 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     override fun peek(): BigInteger? = stack.peek()
 
-    fun push(value: BigInteger) = stack.push(value)
+    fun push(value: BigInteger) = stack.push(truncate(value))
 
-    fun push(aNum: Long) = stack.push(BigInteger.valueOf(aNum))
+    fun push(aNum: Long) = stack.push(truncate(BigInteger.valueOf(aNum)))
 
     /** @throws NoSuchElementException - if queue is empty */
     fun pop(): BigInteger = stack.pop()
@@ -174,5 +186,11 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     override operator fun contains(o: Int) = stack.contains(BigInteger.valueOf(o.toLong()))
 
-
+    companion object {
+        val MOD_8 = BigInteger.valueOf(0x100)
+        val MOD_16 = BigInteger.valueOf(0x1_0000)
+        val MOD_32 = BigInteger.valueOf(0x1_000_000)
+        // can't represent 64 bits as long literal
+        val MOD_64 = BigInteger.valueOf(0x1000_0000_0000_0000) * BigInteger.valueOf(0x10)
+    }
 }

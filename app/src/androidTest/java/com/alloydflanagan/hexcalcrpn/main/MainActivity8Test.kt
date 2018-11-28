@@ -1,12 +1,10 @@
 package com.alloydflanagan.hexcalcrpn.main
 
 
-import androidx.test.InstrumentationRegistry
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
 import kotlinx.android.synthetic.main.activity_main.*
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,7 +12,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivityInfTest: MainActivityTest() {
+class MainActivity8Test:  MainActivityTest() {
 
     @Rule
     @JvmField
@@ -27,23 +25,11 @@ class MainActivityInfTest: MainActivityTest() {
     fun clearOutputs() {
         /** guard against infinite loop if other checks fail */
         var limit = 15
-        val act = mActivityTestRule.activity
-        while (act.tv_current.text != "0" || act.tv_output.text != "") {
+        while (mActivityTestRule.activity.tv_current.text != "0" || mActivityTestRule.activity.tv_output.text != "") {
             enterKeys("c")
             if (--limit < 0) break
         }
-        // force infinite mode even though it's default
-        enterKeys("I")
-    }
-
-    /**
-     * Verify we can get application context, and it is what I think it is.
-     */
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        Assert.assertEquals("com.alloydflanagan.hexcalcrpn", appContext.packageName)
+        enterKeys("z") // 8-bit mode
     }
 
     /**
@@ -69,13 +55,14 @@ class MainActivityInfTest: MainActivityTest() {
     override fun testAdd() {
         enterKeys("1234")
         enter()
+        checkOutputIs("34")
 
-        enterKeys("ABC")
+        enterKeys("ABCD")  // "CD"
         enter()
 
         enterKeys("+")
 
-        checkOutputIs("1CF0")
+        checkOutputIs("1") // 101 truncated
     }
 
     /**
@@ -83,14 +70,14 @@ class MainActivityInfTest: MainActivityTest() {
      */
     @Test
     override fun testSubtract() {
-        enterKeys("1234")
+        enterKeys("ABC")  // BC
         enter()
 
-        enterKeys("ABC")
+        enterKeys("12")
         enter()
         enterKeys("-")
 
-        checkOutputIs("778")
+        checkOutputIs("AA")
     }
 
     @Test
@@ -101,23 +88,23 @@ class MainActivityInfTest: MainActivityTest() {
         enterKeys("FACE")
         enter()
 
-        checkOutputIs("AC57\nFACE")
+        checkOutputIs("57\nCE")
 
         enterKeys("*")
-        checkOutputIs("A8D7A402")
+        checkOutputIs("2")
     }
 
     @Test
     override fun testDivide() {
-        enterKeys("A8D7A402")
+        enterKeys("A488")
         enter()
-        enterKeys("AC57")
+        enterKeys("2")
         enter()
 
-        checkOutputIs("A8D7A402\nAC57")
+        checkOutputIs("88\n2")
 
         enterKeys("/")
-        checkOutputIs("FACE")
+        checkOutputIs("44")
     }
 
     @Test
@@ -127,10 +114,10 @@ class MainActivityInfTest: MainActivityTest() {
         enterKeys("AC57")
         enter()
 
-        checkOutputIs("FACE\nAC57")
+        checkOutputIs("CE\n57")
 
         enterKeys("&")
-        checkOutputIs("A846")
+        checkOutputIs("46")
     }
 
     @Test
@@ -140,10 +127,10 @@ class MainActivityInfTest: MainActivityTest() {
         enterKeys("AC57")
         enter()
 
-        checkOutputIs("FACE\nAC57")
+        checkOutputIs("CE\n57")
 
         enterKeys("|")
-        checkOutputIs("FEDF")
+        checkOutputIs("DF")
     }
 
     /**
@@ -155,12 +142,12 @@ class MainActivityInfTest: MainActivityTest() {
         enterKeys("1234")
         enter()
         checkCurrentIs("0")
-        checkOutputIs("1234")
+        checkOutputIs("34")
 
         enterKeys("ABC")
         enter()
         checkCurrentIs("0")
-        checkOutputIs("1234\nABC")
+        checkOutputIs("34\nBC")
 
         enterKeys("747")
         checkCurrentIs("747")
@@ -168,11 +155,11 @@ class MainActivityInfTest: MainActivityTest() {
         enterKeys("c")
 
         checkCurrentIs("0")
-        checkOutputIs("1234\nABC")
+        checkOutputIs("34\nBC")
 
         enterKeys("c")
 
-        checkOutputIs("1234")
+        checkOutputIs("34")
 
         enterKeys("c")
 

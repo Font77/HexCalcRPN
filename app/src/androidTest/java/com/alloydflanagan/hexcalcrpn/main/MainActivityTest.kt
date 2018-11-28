@@ -1,6 +1,5 @@
 package com.alloydflanagan.hexcalcrpn.main
 
-
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
@@ -20,10 +19,11 @@ import org.hamcrest.TypeSafeMatcher
  * 
  * Provides a lot of utility functionality, but no actual tests
  */
-open class MainActivityTest {
+abstract class MainActivityTest {
 
     // useful curries for button rows
     private fun buttonInRow1(position: Int) = buttonAt(R.id.brv_1, position)
+
     private fun buttonInRow2(position: Int) = buttonAt(R.id.brv_2, position)
     private fun buttonInRow3(position: Int) = buttonAt(R.id.brv_3, position)
     private fun buttonInRow4(position: Int) = buttonAt(R.id.brv_4, position)
@@ -38,7 +38,12 @@ open class MainActivityTest {
             '8' to buttonInRow2(0), '9' to buttonInRow2(1), 'A' to buttonInRow2(2),
             'B' to buttonInRow2(3), '*' to buttonInRow2(4), '~' to buttonInRow2(5),
             'C' to buttonInRow1(0), 'D' to buttonInRow1(1), 'E' to buttonInRow1(2),
-            'F' to buttonInRow1(3), '/' to buttonInRow1(4), 'c' to buttonInRow1(5)
+            'F' to buttonInRow1(3), '/' to buttonInRow1(4), 'c' to buttonInRow1(5),
+            // and here we see the limitations of using chars as indexes...  :)
+            // 8, 16, 32 bits
+            'z' to buttonInModes(0), 'y' to buttonInModes(1), 'x' to buttonInModes(2),
+            // 64, infinite bits, sign
+            'w' to buttonInModes(3), 'I' to buttonInModes(4), 'S' to buttonInModes(5)
     )
 
     // other controls
@@ -46,8 +51,8 @@ open class MainActivityTest {
     private val tvCurrent = onView(allOf(withId(R.id.tv_current), isDisplayed()))
     private val tvOutput = onView(allOf(withId(R.id.tv_output), isDisplayed()))
 
-    protected fun checkCurrentIs(value: String) = tvCurrent.check(matches(withText(value)))
-    protected fun checkOutputIs(value: String) = tvOutput.check(matches(withText(value)))
+    protected fun checkCurrentIs(value: String): ViewInteraction = tvCurrent.check(matches(withText(value)))
+    protected fun checkOutputIs(value: String): ViewInteraction = tvOutput.check(matches(withText(value)))
 
     /**
      * Given a string, clicks the button associated with each char in the string, in order.
@@ -64,7 +69,7 @@ open class MainActivityTest {
     /**
      * Clicks the entry button.
      */
-    protected fun enter () {
+    protected fun enter() {
         buttonEntry.perform(click())
     }
 
@@ -98,7 +103,17 @@ open class MainActivityTest {
                 allOf(childAtPosition(
                         withId(buttonRowId),
                         buttonPosition),
-                      isDisplayed()
+                        isDisplayed()
                 ))
     }
+
+    abstract fun testClear()
+    abstract fun testEntry()
+    abstract fun testAdd()
+    abstract fun testDivide()
+    abstract fun testMultiply()
+    abstract fun testSubtract()
+    abstract fun testAND()
+    abstract fun testOR()
+    abstract fun testClearNull()
 }
