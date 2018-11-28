@@ -10,7 +10,7 @@ import java.util.*
 
 class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
-    // we don't implement all methods of a Deque, so keep it private
+    // Underlying stack. We don't inherit from Deque because we haven't implemented all the methods
     private var stack: Deque<BigInteger> = ArrayDeque<BigInteger>(numElements)
 
     override var bits = BitsMode.INFINITE
@@ -189,7 +189,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     companion object {
         val MOD_8 = BigInteger.valueOf(0x100)
         val MOD_16 = BigInteger.valueOf(0x1_0000)
-        val MOD_32 = BigInteger.valueOf(0x1_000_000)
+        val MOD_32 = BigInteger.valueOf(0x1_0000_0000)
         // can't represent 64 bits as long literal
         val MOD_64 = BigInteger.valueOf(0x1000_0000_0000_0000) * BigInteger.valueOf(0x10)
     }
