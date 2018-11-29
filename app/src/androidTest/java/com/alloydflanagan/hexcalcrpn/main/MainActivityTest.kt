@@ -56,9 +56,12 @@ abstract class MainActivityTest {
 
     /**
      * Given a string, clicks the button associated with each char in the string, in order.
+     *
+     * The value '_' in the string is ignored, so it can be used as a separator
      */
     protected fun enterKeys(value: String) {
         for (digit in value) {
+            if (digit == '_') continue
             val button = buttonMap[digit]
             if (button != null) {
                 button.perform(click())
