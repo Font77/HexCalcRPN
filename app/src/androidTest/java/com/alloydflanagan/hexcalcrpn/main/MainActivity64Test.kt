@@ -1,12 +1,9 @@
 package com.alloydflanagan.hexcalcrpn.main
 
 
-import androidx.test.InstrumentationRegistry
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-import kotlinx.android.synthetic.main.activity_main.*
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,7 +11,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivityInfTest: MainActivityTest() {
+class MainActivity64Test: MainActivityTest() {
 
     @Rule
     @JvmField
@@ -25,25 +22,8 @@ class MainActivityInfTest: MainActivityTest() {
      */
     @Before
     fun clearOutputs() {
-        /** guard against infinite loop if other checks fail */
-        var limit = 15
-        val act = mActivityTestRule.activity
-        while (act.tv_current.text != "0" || act.tv_output.text != "") {
-            enterKeys("c")
-            if (--limit < 0) break
-        }
-        // force infinite mode even though it's default
-        enterKeys("I")
-    }
-
-    /**
-     * Verify we can get application context, and it is what I think it is.
-     */
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
-        Assert.assertEquals("com.alloydflanagan.hexcalcrpn", appContext.packageName)
+        // enter 64-bit mode, clear input and output as side effect
+        enterKeys("w")
     }
 
     /**
@@ -54,7 +34,7 @@ class MainActivityInfTest: MainActivityTest() {
     override fun testEntry() {
         enterKeys("8")
         checkCurrentIs("8")
-        enterKeys("FA6540123456789ABCDEF")
+        enterKeys("F_A654_0123_4567_89AB_CDEF")
 
         checkCurrentIs("8FA6540123456789ABCDEF")
 
@@ -76,9 +56,8 @@ class MainActivityInfTest: MainActivityTest() {
         checkOutputIs("1234123412341234\nFEDCFEDCFEDCFEDC")
         enterKeys("+")
 
-        checkOutputIs("11111111111111110") // overflows 64 bits
+        checkOutputIs("1111111111111110") // drop 1 from overflow
     }
-
 
     /**
      * Verify that we can do simple subtraction.
@@ -93,59 +72,69 @@ class MainActivityInfTest: MainActivityTest() {
         enterKeys("-")
 
         checkOutputIs("778")
+
+        enterKeys("ABC")
+        enter()
+        enterKeys("-")
+
+        // 0x778 - 0xABC == -0x344
+        // 1100 1011 1100 ==> 0xCBC -- two's complement
+        // 2's complement in 64 bits ==>
+        checkOutputIs("FFFFFFFFFFFFFCBC")
     }
 
     @Test
     override fun testMultiply() {
-        enterKeys("AC57")
+        enterKeys("5FD_9A8F")
         enter()
 
-        enterKeys("FACE")
+        enterKeys("2A_BBBB_BB91")
         enter()
 
-        checkOutputIs("AC57\nFACE")
+        checkOutputIs("5FD9A8F\n2ABBBBBB91")
 
         enterKeys("*")
-        checkOutputIs("A8D7A402")
+        checkOutputIs("FFFFFFFFFFFFFFFF")
     }
 
     @Test
     override fun testDivide() {
-        enterKeys("A8D7A402")
+        enterKeys("FFFF_FFFF_FFFF_FFFF")
         enter()
-        enterKeys("AC57")
+        enterKeys("2A_BBBB_BB91")
         enter()
 
-        checkOutputIs("A8D7A402\nAC57")
+        checkOutputIs("FFFFFFFFFFFFFFFF\n2ABBBBBB91")
 
         enterKeys("/")
-        checkOutputIs("FACE")
+        checkOutputIs("5FD9A8F")
     }
 
     @Test
     override fun testAND() {
-        enterKeys("FACE")
+        enterKeys("12FA_CE0F_F0FF_FACE")
         enter()
-        enterKeys("AC57")
+        enterKeys("BADB_ADBA_DBAD_BEEF")
         enter()
 
-        checkOutputIs("FACE\nAC57")
+        checkOutputIs("12FACE0FF0FFFACE\nBADBADBADBADBEEF")
 
         enterKeys("&")
-        checkOutputIs("A846")
+        checkOutputIs("12DA8C0AD0ADBACE")
     }
 
     @Test
     override fun testOR() {
-        enterKeys("FACE")
+        enterKeys("12FA_CE0F_F0FF_FACE")
         enter()
-        enterKeys("AC57")
+        enterKeys("BADB_ADBA_DBAD_BEEF")
         enter()
 
-        checkOutputIs("FACE\nAC57")
+        checkOutputIs("12FACE0FF0FFFACE\n" +
+                "BADBADBADBADBEEF")
 
         enterKeys("|")
-        checkOutputIs("FEDF")
+        checkOutputIs("BAFBEFBFFBFFFEEF")
     }
 
     /**
