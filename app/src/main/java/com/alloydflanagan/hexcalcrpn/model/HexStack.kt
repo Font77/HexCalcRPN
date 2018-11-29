@@ -58,6 +58,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      * iterator.
      *
      * @param c the collection whose elements are to be placed into the stack
+     * @param bits Number of bits in word size
      */
     constructor(c: Collection<Long>,
                 bits: BitsMode = BitsMode.INFINITE,
@@ -65,6 +66,15 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
         this.bits = bits
         this.signed = signed
         stack.addAll(c.map { truncate(BigInteger.valueOf(it)) })
+    }
+
+    /**
+     * Constructs a HexStack with non-default BitsMode
+     *
+     * @param bits Number of bits in word size
+     */
+    constructor(bits: BitsMode): this() {
+        this.bits = bits
     }
 
     /**
