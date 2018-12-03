@@ -63,10 +63,13 @@ class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
 
     override fun onClick(v: View) {
         when (v) {
-            is ButtonRowView -> if (v.id == brv_modes.id)
-                    viewModel.handleModeInput(v.clickedText[0])
-                else
-                    viewModel.handleInput(v.clickedText[0])
+            is ButtonRowView ->
+                if (v.clickedText != "") {  // right now clickedText == "" is how we know button is disabled
+                    if (v.id == brv_modes.id)
+                        viewModel.handleModeInput(v.clickedText[0])
+                    else
+                        viewModel.handleInput(v.clickedText[0])
+                }
             is Button -> viewModel.handleInput(v.text[0])
         }
     }

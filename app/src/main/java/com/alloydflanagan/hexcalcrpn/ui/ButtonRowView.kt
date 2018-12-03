@@ -159,9 +159,12 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
      * Calls onClick handlers. Handlers can determine what key was clicked using the clickedText
      * property.
      */
+    // FIXME:  Currently the OnClick callback for the row cannot tell if the clicked button was
+    // disabled, except that clickedText == ""
     override fun onClick(view: View) {
         clickedText = (view as Button).text.toString()
         Timber.d("Click on button set clickedText to $clickedText")
+        // and this is NOT sufficient to keep ButtonRowView client OnClick from being called.
         if (view.isEnabled) performClick()
     }
 }
