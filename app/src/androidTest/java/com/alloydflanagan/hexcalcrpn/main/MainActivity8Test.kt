@@ -78,6 +78,15 @@ class MainActivity8Test:  MainActivityTest() {
         enterKeys("-")
 
         checkOutputIs("AA")
+
+        enterKeys("BC")
+        enter()
+        enterKeys("-")
+        // result is -18
+        // 18 ==> 10010
+        // 8-bit complement ==> 11101101
+        // two's complement ==> 11101110
+        checkOutputIs("EE")
     }
 
     @Test
