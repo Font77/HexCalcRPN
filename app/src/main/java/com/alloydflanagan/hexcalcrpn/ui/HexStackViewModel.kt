@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.HexStack
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
-import com.alloydflanagan.hexcalcrpn.model.SignModes
 import java.math.BigInteger
 
 class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
@@ -170,7 +169,7 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
                 '3' -> stack.bits = BitsMode.THIRTY_TWO
                 '6' -> stack.bits = BitsMode.SIXTY_FOUR
                 '\u221E' -> stack.bits = BitsMode.INFINITE
-                'S' -> stack.signed = if (stack.signed == SignModes.UNSIGNED) SignModes.SIGNED else SignModes.UNSIGNED
+                // '2' ->
             }
             mStack.postValue(stack)
         }

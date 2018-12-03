@@ -14,6 +14,10 @@ class HexStackUnitTest32Bit {
 
     private lateinit var stack: HexStack
 
+    private fun assertEquals(expected: Long, actual: BigInteger?, msg: String? = null) {
+        assertEquals(BigInteger.valueOf(expected), actual, msg)
+    }
+
     @BeforeTest
     fun setup() {
         stack = HexStack(BitsMode.THIRTY_TWO)
@@ -25,8 +29,8 @@ class HexStackUnitTest32Bit {
                 0xBADFFFFFFFF)
         val hs = HexStack(list, BitsMode.THIRTY_TWO)
         assertEquals(BigInteger.TEN, hs.pop())
-        assertEquals(0xBADBEEF, hs.pop().toInt())
-        assertEquals(0xFFFFFFFF, hs.pop().toLong())
+        assertEquals(0xBADBEEF, hs.pop())
+        assertEquals(0xFFFFFFFF, hs.pop())
         assertEquals(0, hs.size)
     }
 
@@ -52,17 +56,17 @@ class HexStackUnitTest32Bit {
         stack.push(3)
         stack.add()
         assertEquals(1, stack.size)
-        assertEquals(10, stack.pop().toInt())
+        assertEquals(10, stack.pop())
         stack.push(0xFFFFFFFF)
         stack.push(1)
         stack.add()
         assertEquals(1, stack.size)
-        assertEquals(0, stack.pop().toInt())
+        assertEquals(0, stack.pop())
         stack.push(53)
         stack.push(0xFFFFFFE5)  // 2's comp of 27
         stack.add()
         assertEquals(1, stack.size)
-        assertEquals(26, stack.pop().toInt())
+        assertEquals(26, stack.pop())
     }
 
     @Test
@@ -71,17 +75,17 @@ class HexStackUnitTest32Bit {
         stack.push(3)
         stack.subtract()
         assertEquals(1, stack.size)
-        assertEquals(4, stack.pop().toInt())
+        assertEquals(4, stack.pop())
         stack.push(4)
         stack.push(23)
         stack.subtract()
         assertEquals(1, stack.size)
-        assertEquals(0xFFFF_FFFF - 19 + 1, stack.pop().toLong())
+        assertEquals(0x1_0000_0000 - 19, stack.pop())
         stack.push(0xFFFF_FFFF)
         stack.push(0xABCD)
         stack.subtract()
         assertEquals(1, stack.size)
-        assertEquals(0xFFFF_5432, stack.pop().toLong())
+        assertEquals(0xFFFF_5432, stack.pop())
     }
 
     @Test
@@ -90,17 +94,17 @@ class HexStackUnitTest32Bit {
         stack.push(5)
         stack.multiply()
         assertEquals(1, stack.size)
-        assertEquals(15, stack.peek()?.toInt())
+        assertEquals(15, stack.peek())
         stack.push(-5)
         stack.multiply()
         assertEquals(1, stack.size)
-        assertEquals(0x1_0000_0000 - 75, stack.pop().toLong())
+        assertEquals(0x1_0000_0000 - 75, stack.pop())
         stack.push(0xBADBEEF)
         stack.push(0xFFF)
         // == BAD0413111 ==> D0413111
         stack.multiply()
         assertEquals(1, stack.size)
-        assertEquals(0xD0413111, stack.pop().toLong())
+        assertEquals(0xD0413111, stack.pop())
     }
 
     @Test
@@ -109,12 +113,12 @@ class HexStackUnitTest32Bit {
         stack.push(5)
         stack.divide()
         assertEquals(1, stack.size)
-        assertEquals(1, stack.pop().toInt())
+        assertEquals(1, stack.pop())
         stack.push(0xD0413111)
         stack.push(0xFFF)
         stack.divide()
         assertEquals(1, stack.size)
-        assertEquals(0xD04E3, stack.pop().toInt())
+        assertEquals(0xD04E3, stack.pop())
     }
 
     @Test
@@ -122,23 +126,23 @@ class HexStackUnitTest32Bit {
         stack.push(43)
         stack.push(28)
         stack.mod()
-        assertEquals(15, stack.pop().toInt())
+        assertEquals(15, stack.pop())
         stack.push(BigInteger("12341435134312", 10)) // 0x76DB7168
         stack.push(BigInteger("1324322342", 10)) // 0x4EEF8E26
         stack.mod()
-        assertEquals(BigInteger.valueOf(0x27EBE342), stack.pop())
+        assertEquals(0x27EB_E342, stack.pop())
     }
 
     @Test
     fun toString_isCorrect() {
-        stack.push(0x76DB7168)
-        stack.push(0xD0413111)
+        stack.push(0x76DB_7168)
+        stack.push(0xD041_3111)
         stack.push(0xFFF)
         assertEquals("76DB7168\nD0413111\nFFF", stack.toString())
         // verify stack not damaged
-        assertEquals(0xFFF, stack.pop().toInt())
-        assertEquals(0xD0413111, stack.pop().toLong())
-        assertEquals(0x76DB7168, stack.pop().toInt())
+        assertEquals(0xFFF, stack.pop())
+        assertEquals(0xD041_3111, stack.pop())
+        assertEquals(0x76DB_7168, stack.pop())
         assertEquals(0, stack.size)
         assertEquals("", stack.toString())
 
@@ -176,7 +180,7 @@ class HexStackUnitTest32Bit {
     @Test
     fun pop_throwsOnUnderflow() {
         stack.push(7)
-        assertEquals(7, stack.pop().toInt())
+        assertEquals(7, stack.pop())
         assertFailsWith(NoSuchElementException::class) { stack.pop() }
     }
 }

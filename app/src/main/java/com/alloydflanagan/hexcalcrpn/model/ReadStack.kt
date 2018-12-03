@@ -8,10 +8,6 @@ enum class BitsMode(private val numBits: Int) {
     }
 }
 
-enum class SignModes {
-    SIGNED, UNSIGNED
-}
-
 /**
  * An interface to a stack of values. This implements only read operations.
  *
@@ -23,8 +19,6 @@ interface ReadStack<T> {
     val isEmpty: Boolean
 
     var bits: BitsMode
-
-    var signed: SignModes
 
     /**
      * Returns the _current top of the stack, without altering the stack.

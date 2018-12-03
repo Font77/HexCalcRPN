@@ -24,14 +24,6 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
                 stack.clear()
             }
 
-    override var signed = SignModes.UNSIGNED
-            /**
-             * Set displayed signed mode. NOTE: if bits mode == INFINITE, mode is UNSIGNED.
-             */
-            set(value: SignModes) =
-                if (bits != BitsMode.INFINITE) field = value else field = SignModes.UNSIGNED
-
-
     override val size
         get() = stack.size
 
@@ -61,10 +53,8 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      * @param bits Number of bits in word size
      */
     constructor(c: Collection<Long>,
-                bits: BitsMode = BitsMode.INFINITE,
-                signed: SignModes = SignModes.UNSIGNED) : this(c.size) {
+                bits: BitsMode = BitsMode.INFINITE) : this(c.size) {
         this.bits = bits
-        this.signed = signed
         stack.addAll(c.map { truncate(BigInteger.valueOf(it)) })
     }
 
@@ -82,7 +72,6 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      */
     constructor(hs: HexStack) : this(hs.size) {
         bits = hs.bits
-        signed = hs.signed
         stack.addAll(hs.stack)
     }
 

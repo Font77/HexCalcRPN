@@ -52,7 +52,7 @@
         android:layout_marginTop="@dimen/button_row_sep"
         android:layout_marginEnd="@dimen/button_row_horiz_margin"
         android:onClick="onClick"
-        app:buttonsText="8;16;32;64;&#8734;;SIGN"
+        app:buttonsText="8;16;32;64;&#8734;;2's"
         app:layout_constraintBottom_toTopOf="@+id/brv_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -153,11 +153,13 @@
         android:layout_marginTop="@dimen/button_row_sep"
         android:layout_marginEnd="@dimen/button_row_horiz_margin"
         android:layout_marginBottom="@dimen/outer_vertical_margin"
+        android:clickable="false"
         android:text=""
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_equals"
-        tools:text="unsigned          64 bits" />
+        tools:text="bits: 64" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

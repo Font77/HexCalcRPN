@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import com.alloydflanagan.hexcalcrpn.R
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
-import com.alloydflanagan.hexcalcrpn.model.SignModes
 import com.alloydflanagan.hexcalcrpn.ui.AbstractStackViewModel
 import com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,7 +45,6 @@ class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
 
     private fun updateStatus(stack: ReadStack<BigInteger>) {
         tv_status.text = getString(R.string.mode_display,
-                getString(if (stack.signed == SignModes.SIGNED) R.string.signed_mode else R.string.unsigned_mode),
                 getString(R.string.bits_label),
                 stack.bits.toString()
         )
