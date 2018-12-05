@@ -1,6 +1,8 @@
 package com.alloydflanagan.hexcalcrpn.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
@@ -26,10 +28,15 @@ class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
 
     private val viewModel: AbstractStackViewModel<BigInteger> by instance()
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main, menu)
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(hex_app_bar)
 
         viewModel.getCurrent().observe(this, Observer {
             val fred = it?.toString(16)?.toUpperCase() ?: ""
