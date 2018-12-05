@@ -2,22 +2,47 @@ package com.alloydflanagan.hexcalcrpn.model
 
 import java.io.Serializable
 import java.math.BigInteger
-import java.util.ArrayDeque
-import java.util.Deque
+import java.util.*
 
 /**
  * A class to manage a stack of BigIntegers with operators.
-
- * TODO: must provide "number of bits" setting
- *
- * (Do we need to keep record of actual numbers entered, so we can change on-the-fly without clearing
- * stack??)
  */
 
 class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
-    // we don't implement all methods of a Deque, so keep it private
+    // Underlying stack. We don't inherit from Deque because we haven't implemented all the methods
     private var stack: Deque<BigInteger> = ArrayDeque<BigInteger>(numElements)
+
+    override var bits = BitsMode.INFINITE
+            /**
+             * Set number of bits assumed for calculations. NOTE: resets the
+             * stack to empty.
+             */
+            set(value) {
+                // decided not to check if _bits == value; always clear stack for consistency.
+                field = value
+                stack.clear()
+            }
+
+    override val size
+        get() = stack.size
+
+    // safe because BigInteger is immutable class
+    override val contents
+        get() = stack.map { it }
+
+    /**
+     * Truncates the value to fit into the current bits mode.
+     */
+    private fun truncate(value: BigInteger): BigInteger {
+        return when(bits) {
+            BitsMode.INFINITE -> value
+            BitsMode.EIGHT -> value.mod(MOD_8)
+            BitsMode.SIXTEEN -> value.mod(MOD_16)
+            BitsMode.THIRTY_TWO -> value.mod(MOD_32)
+            BitsMode.SIXTY_FOUR -> value.mod(MOD_64)
+        }
+    }
 
     /**
      * Constructs a HexStack containing the elements of the specified
@@ -25,15 +50,28 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      * iterator.
      *
      * @param c the collection whose elements are to be placed into the stack
+     * @param bits Number of bits in word size
      */
-    constructor(c: Collection<Long>) : this(c.size) {
-        stack.addAll(c.map { BigInteger.valueOf(it) })
+    constructor(c: Collection<Long>,
+                bits: BitsMode = BitsMode.INFINITE) : this(c.size) {
+        this.bits = bits
+        stack.addAll(c.map { truncate(BigInteger.valueOf(it)) })
+    }
+
+    /**
+     * Constructs a HexStack with non-default BitsMode
+     *
+     * @param bits Number of bits in word size
+     */
+    constructor(bits: BitsMode): this() {
+        this.bits = bits
     }
 
     /**
      * Copy constructor. We do not implement Cloneable.
      */
     constructor(hs: HexStack) : this(hs.size) {
+        bits = hs.bits
         stack.addAll(hs.stack)
     }
 
@@ -134,14 +172,12 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     override fun peek(): BigInteger? = stack.peek()
 
-    fun push(value: BigInteger) = stack.push(value)
+    fun push(value: BigInteger) = stack.push(truncate(value))
 
-    fun push(aNum: Long) = stack.push(BigInteger.valueOf(aNum))
+    fun push(aNum: Long) = stack.push(truncate(BigInteger.valueOf(aNum)))
 
     /** @throws NoSuchElementException - if queue is empty */
     fun pop(): BigInteger = stack.pop()
-
-    fun clear() = stack.clear()
 
     override operator fun contains(o: BigInteger) = stack.contains(o)
 
@@ -149,11 +185,11 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     override operator fun contains(o: Int) = stack.contains(BigInteger.valueOf(o.toLong()))
 
-    override val size
-            get() = stack.size
-
-    // safe because BigInteger is immutable class
-    override val contents
-            get() = stack.map { it }
-
+    companion object {
+        val MOD_8 = BigInteger.valueOf(0x100)
+        val MOD_16 = BigInteger.valueOf(0x1_0000)
+        val MOD_32 = BigInteger.valueOf(0x1_0000_0000)
+        // can't represent 64 bits as long literal
+        val MOD_64 = BigInteger.valueOf(0x1000_0000_0000_0000) * BigInteger.valueOf(0x10)
+    }
 }

@@ -164,6 +164,6 @@ class HexStackUnitTest {
     fun pop_throwsOnUnderflow() {
         val fred = HexStack(arrayListOf(7L))
         assertEquals(BigInteger.valueOf(7L), fred.pop())
-        assertFailsWith(NoSuchElementException::class, {fred.pop()})
+        assertFailsWith(NoSuchElementException::class) {fred.pop()}
     }
 }

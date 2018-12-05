@@ -7,13 +7,27 @@
     android:layout_height="match_parent"
     tools:context="com.alloydflanagan.hexcalcrpn.main.MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/hex_app_bar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/app_name" />
+
     <TextView
         android:id="@+id/tv_output"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/button_row_horiz_margin"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
         android:layout_marginTop="@dimen/outer_vertical_margin"
-        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:background="@drawable/stack_border"
         android:outlineProvider="bounds"
         android:paddingStart="@dimen/tv_output_horiz_padding"
@@ -23,21 +37,21 @@
         app:layout_constraintBottom_toTopOf="@id/tv_current"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/hex_app_bar"
         tools:text="14ABCD\n33A7" />
 
     <TextView
         android:id="@+id/tv_current"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_row_horiz_margin"
-        android:layout_marginTop="@dimen/button_row_sep"
-        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/outer_vertical_margin"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:background="@drawable/output_border"
         android:gravity="center_vertical|end"
         android:padding="@dimen/current_padding"
         android:textSize="@dimen/output_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/brv_1"
+        app:layout_constraintBottom_toTopOf="@+id/brv_modes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_output"
@@ -45,31 +59,45 @@
         tools:text="AB7D8832" />
 
     <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        android:id="@+id/brv_modes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/outer_vertical_margin"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
+        android:onClick="onClick"
+        app:buttonsText="8;16;32;64;&#8734;;2's"
+        app:layout_constraintBottom_toTopOf="@+id/brv_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_current"
+        app:layout_constraintVertical_weight="1.0"
+        app:textColor="?android:attr/colorFocusedHighlight" />
+
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_row_horiz_margin"
-        android:layout_marginTop="@dimen/button_row_sep"
-        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/button_row_vert_sep"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:onClick="onClick"
         app:buttonsText="C;D;E;F;/;c"
         app:layout_constraintBottom_toTopOf="@id/brv_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_current"
+        app:layout_constraintTop_toBottomOf="@+id/brv_modes"
         app:layout_constraintVertical_weight="1.0"
         app:textColor="@color/colorPrimary"
-        app:textSize="@dimen/button_text_size">
-
-    </com.alloydflanagan.hexcalcrpn.ui.ButtonRowView>
+        app:textSize="@dimen/button_text_size" />
 
     <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_row_horiz_margin"
-        android:layout_marginTop="@dimen/button_row_sep"
-        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/button_row_vert_sep"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:onClick="onClick"
         app:buttonsText="8;9;A;B;*;~"
         app:layout_constraintBottom_toTopOf="@id/brv_3"
@@ -78,17 +106,15 @@
         app:layout_constraintTop_toBottomOf="@+id/brv_1"
         app:layout_constraintVertical_weight="1.0"
         app:textColor="@color/colorPrimary"
-        app:textSize="@dimen/button_text_size">
+        app:textSize="@dimen/button_text_size" />
 
-    </com.alloydflanagan.hexcalcrpn.ui.ButtonRowView>
-
-    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
         android:id="@+id/brv_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_row_horiz_margin"
-        android:layout_marginTop="@dimen/button_row_sep"
-        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/button_row_vert_sep"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:onClick="onClick"
         app:buttonsText="4;5;6;7;-;&amp;"
         app:layout_constraintBottom_toTopOf="@id/brv_4"
@@ -103,9 +129,9 @@
         android:id="@+id/brv_4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_row_horiz_margin"
-        android:layout_marginTop="@dimen/button_row_sep"
-        android:layout_marginEnd="@dimen/button_row_horiz_margin"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/button_row_vert_sep"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:onClick="onClick"
         app:buttonsText="0;1;2;3;+;|"
         app:layout_constraintBottom_toTopOf="@+id/btn_equals"
@@ -120,20 +146,34 @@
         android:id="@+id/btn_equals"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_row_horiz_margin"
-        android:layout_marginTop="@dimen/button_row_sep"
-        android:layout_marginEnd="@dimen/button_row_horiz_margin"
-        android:layout_marginBottom="@dimen/outer_vertical_margin"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/button_row_vert_sep"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:onClick="onClick"
         android:text="@string/btn_equals_text"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/equals_text_size"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_status"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/brv_4"
         app:layout_constraintVertical_weight="1.0" />
 
-
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/button_row_vert_sep"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
+        android:layout_marginBottom="@dimen/outer_vertical_margin"
+        android:clickable="false"
+        android:text=""
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_equals"
+        tools:text="bits: 64" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

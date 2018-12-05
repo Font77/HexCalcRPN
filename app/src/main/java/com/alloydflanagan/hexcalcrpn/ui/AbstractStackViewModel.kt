@@ -13,7 +13,7 @@ abstract class AbstractStackViewModel<T>: ViewModel() {
     abstract fun getStack(): LiveData<ReadStack<T>>
 
     /**
-     * The _current value being edited. Note there may be no such value, in which case we return [null]
+     * The _current value being edited. Note there may be no such value, in which case we return <code>null</code>.
      */
     abstract fun getCurrent(): LiveData<T>
 
@@ -26,4 +26,10 @@ abstract class AbstractStackViewModel<T>: ViewModel() {
     abstract fun handleInput(input: Char)
 
     abstract fun hasCurrentValue(): Boolean
+
+    /**
+     * Process input that causes a mode change --> word size, (un)signed,
+     * etc.
+     */
+    abstract fun handleModeInput(input: Char)
 }

@@ -1,6 +1,8 @@
 package com.alloydflanagan.hexcalcrpn.ui
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.HexStack
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
 import java.math.BigInteger
@@ -8,23 +10,25 @@ import java.math.BigInteger
 class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
 
     /**
-     * we maintain a value as a StringBuilder privately so we can just stick digits on to the end.
+     * we maintain a value as a [StringBuilder] privately so we can just stick digits on to the end.
      */
-    private var _currStr = StringBuilder()
+    private var mCurrStr = StringBuilder()
 
     /**
      * Implementation for `stack` value.
      */
-    private val _stack = MutableLiveData<HexStack>()
+    private val mStack = MutableLiveData<HexStack>()
 
     /**
-     * private mutable BigiInteger value being entered by user. We expose it read-only in
+     * private mutable [BigInteger] value being entered by user. We expose it read-only in
      * [HexStackViewModel.getCurrent].
      */
-    val _current = MutableLiveData<BigInteger>()
+    private val mCurrent = MutableLiveData<BigInteger>()
+
 
     init {
-        _stack.postValue(HexStack())
+        mStack.postValue(HexStack())
+        mCurrent.postValue(BigInteger.valueOf(0))
     }
 
     /**
@@ -33,33 +37,33 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
      * anyway. Use [HexStackViewModel.hasCurrentValue] to distinguish this case.
      */
     override fun getCurrent(): LiveData<BigInteger> {
-        return _current
+        return mCurrent
     }
 
     // helper for frequent conversion to BigInteger
-    private fun currentBigInt() = _currStr.toString().toBigInteger(16)
+    private fun currentBigInt() = mCurrStr.toString().toBigInteger(16)
 
     /**
-     * [true] if there is a valid current value. Note the value of [HexStackViewModel.getCurrent]
-     * will be 0 even when this is [false]
+     * True if there is a valid current value. Note the value of [HexStackViewModel.getCurrent]
+     * will be 0 even when this is false.
      */
-    override fun hasCurrentValue() = _currStr.isNotEmpty()
+    override fun hasCurrentValue() = mCurrStr.isNotEmpty()
 
     /**
      * Clear any value entered by the user. After this, [HexStackViewModel.getCurrent] will
-     * return [BigInteger.ZERO] and [HexStackViewModel.hasCurrentValue] will return [false]
+     * return [BigInteger.ZERO] and [HexStackViewModel.hasCurrentValue] will return false.
      */
     private fun clearCurrentValue() {
-        _currStr = StringBuilder()
-        _current.postValue(BigInteger.ZERO)
+        mCurrStr = StringBuilder()
+        mCurrent.postValue(BigInteger.ZERO)
     }
 
     /**
-     * a stack of [BigIntegers], observable.
+     * a stack of [BigInteger]s, observable.
      */
     @Suppress("UNCHECKED_CAST")  // because type erasure, of course.
     override fun getStack(): LiveData<ReadStack<BigInteger>> =
-            _stack as LiveData<ReadStack<BigInteger>>
+            mStack as LiveData<ReadStack<BigInteger>>
 
     /**
      * Execute an operator. If the user has typed in a value but not pushed it, push the current
@@ -67,28 +71,28 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
      */
     private fun doBinaryOp(op: Char) {
         if (hasCurrentValue()) {
-            _stack.value?.push(currentBigInt())
+            mStack.value?.push(currentBigInt())
             clearCurrentValue()
         }
         when (op) {
-            '+' -> _stack.value?.add()
-            '-' -> _stack.value?.subtract()
-            '*' -> _stack.value?.multiply()
-            '/' -> _stack.value?.divide()
-            '%' -> _stack.value?.mod()
-            'X' -> _stack.value?.xor()
-            '&' -> _stack.value?.and()
-            '|' -> _stack.value?.or()
+            '+' -> mStack.value?.add()
+            '-' -> mStack.value?.subtract()
+            '*' -> mStack.value?.multiply()
+            '/' -> mStack.value?.divide()
+            '%' -> mStack.value?.mod()
+            'X' -> mStack.value?.xor()
+            '&' -> mStack.value?.and()
+            '|' -> mStack.value?.or()
             else -> throw IllegalStateException("op must be an operator: got '$op'")
         }
-        _stack.postValue(_stack.value)
+        mStack.postValue(mStack.value)
     }
 
     /**
      * If there is a current value, a unary op acts on it. If not, it acts on TOS.
      */
     private fun doUnaryOp(op: Char) {
-        val hs = _stack.value
+        val hs = mStack.value
         if (hs != null) {
             if (hasCurrentValue()) {
                 hs.push(currentBigInt())
@@ -97,15 +101,15 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
                     else -> throw IllegalStateException("op must be unary operator: got '$op'")
                 }
                 val temp = hs.pop()
-                _currStr = StringBuilder()
-                _currStr.append(temp.toString(16).toUpperCase())
-                _current.postValue(temp)
+                mCurrStr = StringBuilder()
+                mCurrStr.append(temp.toString(16).toUpperCase())
+                mCurrent.postValue(temp)
             } else {
                 if (hs.size > 0) {
                     when (op) {
                         '~' -> {
                             hs.invert()
-                            _stack.postValue(hs)
+                            mStack.postValue(hs)
                         }
                         else -> throw IllegalStateException("op must be unary operator: got '$op'")
                     }
@@ -117,29 +121,29 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
     override fun handleInput(input: Char) {
         when (input) {
             in '0'..'9'-> {
-                _currStr.append(input)
-                _current.postValue(currentBigInt())
+                mCurrStr.append(input)
+                mCurrent.postValue(currentBigInt())
             }
             in 'A'..'F' -> {
-                _currStr.append(input)
-                _current.postValue(currentBigInt())
+                mCurrStr.append(input)
+                mCurrent.postValue(currentBigInt())
             }
             '=' -> {
-                _stack.value?.push(currentBigInt())
+                mStack.value?.push(currentBigInt())
                 // weird, but must trigger onChange()
-                _stack.postValue(_stack.value)
+                mStack.postValue(mStack.value)
                 clearCurrentValue()
             }
             in BINARY_OPS -> {
                 // do we have enough values?
-                var count = _stack.value?.size ?: 0
-                if (_currStr.length > 0) count += 1  // because current will be added to stack
+                var count = mStack.value?.size ?: 0
+                if (mCurrStr.isNotEmpty()) count += 1  // because current will be added to stack
                 if (count >= 2)
                     doBinaryOp(input)
             }
             in UNARY_OPS -> {
-                var count = _stack.value?.size ?: 0
-                if (_currStr.length > 0) count += 1  // because current will be added to stack
+                var count = mStack.value?.size ?: 0
+                if (mCurrStr.isNotEmpty()) count += 1  // because current will be added to stack
                 if (count >= 1)
                     doUnaryOp(input)
             }
@@ -147,12 +151,27 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
             'c' -> {
                 if (hasCurrentValue())
                     clearCurrentValue()
-                else if (_stack.value?.size ?: 0 > 0){
-                    _stack.value?.pop()
-                    _stack.postValue(_stack.value)
+                else if (mStack.value?.size ?: 0 > 0){
+                    mStack.value?.pop()
+                    mStack.postValue(mStack.value)
                 }
             }
             else -> throw IllegalStateException("I don't know how to handle input '$input'")
+        }
+    }
+
+    override fun handleModeInput(input: Char) {
+        val stack = mStack.value
+        if (stack != null) {
+            when (input) {
+                '8' -> stack.bits = BitsMode.EIGHT
+                '1' -> stack.bits = BitsMode.SIXTEEN
+                '3' -> stack.bits = BitsMode.THIRTY_TWO
+                '6' -> stack.bits = BitsMode.SIXTY_FOUR
+                '\u221E' -> stack.bits = BitsMode.INFINITE
+                // '2' ->
+            }
+            mStack.postValue(stack)
         }
     }
 

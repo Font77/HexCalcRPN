@@ -4,5 +4,6 @@
         <!-- these attributes are the same for each button -->
         <attr name="textSize" format="dimension" />
         <attr name="textColor" format="color" />
+        <attr name="disabledTextColor" format="color" />
     </declare-styleable>
 </resources>

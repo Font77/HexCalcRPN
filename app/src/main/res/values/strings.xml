@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">HexCalcRPN</string>
     <string name="btn_equals_text">"==>"</string>
+    <string name="bits_label">bits</string>
+    <string name="mode_display">%s: %s</string>
+    <string name="action_settings">Settings</string>
 </resources>

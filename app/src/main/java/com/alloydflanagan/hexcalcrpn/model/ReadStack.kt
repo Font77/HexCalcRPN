@@ -1,5 +1,13 @@
 package com.alloydflanagan.hexcalcrpn.model
 
+enum class BitsMode(private val numBits: Int) {
+    EIGHT(8), SIXTEEN(16), THIRTY_TWO(32), SIXTY_FOUR(64), INFINITE(0);
+
+    override fun toString(): String {
+        return if (numBits == 0) "\u221E" else numBits.toString()
+    }
+}
+
 /**
  * An interface to a stack of values. This implements only read operations.
  *
@@ -9,6 +17,8 @@ package com.alloydflanagan.hexcalcrpn.model
 
 interface ReadStack<T> {
     val isEmpty: Boolean
+
+    var bits: BitsMode
 
     /**
      * Returns the _current top of the stack, without altering the stack.
