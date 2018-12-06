@@ -7,6 +7,13 @@ import com.alloydflanagan.hexcalcrpn.model.HexStack
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
 import java.math.BigInteger
 
+/**
+ * A ViewModel for a stack-based calculator.
+ *
+ * This class implements the operations taken in response to user key presses.
+ *
+ * The model is an instance of HexStack + a BigInteger for the currently entered value.
+ */
 class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
 
     /**
@@ -160,17 +167,10 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
         }
     }
 
-    override fun handleModeInput(input: Char) {
+    override fun handleModeInput(input: BitsMode) {
         val stack = mStack.value
         if (stack != null) {
-            when (input) {
-                '8' -> stack.bits = BitsMode.EIGHT
-                '1' -> stack.bits = BitsMode.SIXTEEN
-                '3' -> stack.bits = BitsMode.THIRTY_TWO
-                '6' -> stack.bits = BitsMode.SIXTY_FOUR
-                '\u221E' -> stack.bits = BitsMode.INFINITE
-                // '2' ->
-            }
+            stack.bits = input
             mStack.postValue(stack)
         }
     }

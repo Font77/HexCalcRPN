@@ -7,8 +7,11 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.alloydflanagan.hexcalcrpn.R
+import com.alloydflanagan.hexcalcrpn.model.BitsMode
+import com.alloydflanagan.hexcalcrpn.model.HexStack
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
 import com.alloydflanagan.hexcalcrpn.ui.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,14 +40,23 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    override fun onFragmentInteraction(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onModesFragmentInteraction(bit_mode: BitsMode) = viewModel.handleModeInput(bit_mode)
+
+    override fun onDigitsFragmentInteraction(digit: Char) = viewModel.handleInput(digit)
+
+    override fun onOperatorFragmentInteraction(operator: String) = viewModel.handleInput(operator[0])
+
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.btn_equals) {
+            viewModel.handleInput('=')
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(hex_app_bar)
+        // brv_modes.highlightedButton = BitsMode.INFINITE.toString()
 
         viewModel.getCurrent().observe(this, Observer {
             val fred = it?.toString(16)?.toUpperCase() ?: ""
@@ -54,31 +66,8 @@ class MainActivity : AppCompatActivity(),
         viewModel.getStack().observe(this, Observer {
             val txt = it.toString().toUpperCase()
             if (txt != tv_output.text) tv_output.text = txt
-            updateStatus(it)
+            brv_modes.highlightedButton = it.bits.toString()
         })
-    }
 
-    private fun updateStatus(stack: ReadStack<BigInteger>) {
-        // some operations don't make sense in some modes
-//        if (stack.bits == BitsMode.INFINITE) {
-//            brv_2.disableButton(5)  // '~'
-//            brv_modes.disableButton(5) // SIGN
-//        } else {
-//            brv_2.enableButton(5)  // '~'
-//            brv_modes.enableButton(5) // SIGN
-//        }
-    }
-
-    override fun onClick(v: View) {
-        when (v) {
-            is ButtonRowView ->
-                if (v.clickedText != "") {  // right now clickedText == "" is how we know button is disabled
-                    if (v.id == brv_modes.id)
-                        viewModel.handleModeInput(v.clickedText[0])
-                    else
-                        viewModel.handleInput(v.clickedText[0])
-                }
-            is Button -> viewModel.handleInput(v.text[0])
-        }
     }
 }

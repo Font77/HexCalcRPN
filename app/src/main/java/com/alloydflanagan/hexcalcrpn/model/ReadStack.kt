@@ -1,10 +1,27 @@
 package com.alloydflanagan.hexcalcrpn.model
 
+import java.lang.Exception
+
 enum class BitsMode(private val numBits: Int) {
     EIGHT(8), SIXTEEN(16), THIRTY_TWO(32), SIXTY_FOUR(64), INFINITE(0);
 
+    // required: toString() value should match button text (see [MainActivity.onCreate])
     override fun toString(): String {
         return if (numBits == 0) "\u221E" else numBits.toString()
+    }
+
+    companion object {
+        @JvmStatic
+        fun fromString(mode: String): BitsMode {
+            return when (mode) {
+                EIGHT.toString() -> EIGHT
+                SIXTEEN.toString() -> SIXTEEN
+                THIRTY_TWO.toString() -> THIRTY_TWO
+                SIXTY_FOUR.toString() -> SIXTY_FOUR
+                INFINITE.toString() -> INFINITE
+                else -> throw Exception("BitsMode.fromString() got invalid argument ${mode}")
+            }
+        }
     }
 }
 

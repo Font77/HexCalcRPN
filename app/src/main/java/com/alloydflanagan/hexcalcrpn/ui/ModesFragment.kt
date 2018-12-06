@@ -1,22 +1,23 @@
 package com.alloydflanagan.hexcalcrpn.ui
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import com.alloydflanagan.hexcalcrpn.R
+import com.alloydflanagan.hexcalcrpn.model.BitsMode
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_BIT_MODE = "bit_mode"
 
 /**
- * A simple [Fragment] subclass.
+ * A [Fragment] subclass to present a row of buttons to select a bit mode.
+ *
+ * The button for the current bit mode is highlighted.
+ *
  * Activities that contain this fragment must implement the
  * [ModesFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
@@ -24,29 +25,31 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class ModesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class ModesFragment : Fragment(), View.OnClickListener {
+    /** track chosen bit mode so we can highlight corresponding button */
+    private var bit_mode = BitsMode.INFINITE
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            val bmode = it.getString(ARG_BIT_MODE)
+            if (bmode != null) bit_mode = BitsMode.fromString(bmode)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_modes, container, false)
+        val view = inflater.inflate(R.layout.fragment_modes, container, false)
+        val modes = view.findViewById<ButtonRowView>(R.id.brv_modes)
+        modes.setOnClickListener(this)
+        return view
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    override fun onClick(v: View?) {
+        bit_mode = BitsMode.fromString((v as ButtonRowView).clickedText)
+        listener?.onModesFragmentInteraction(bit_mode)
     }
 
     override fun onAttach(context: Context) {
@@ -76,7 +79,7 @@ class ModesFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onModesFragmentInteraction(bit_mode: BitsMode)
     }
 
     companion object {
@@ -84,17 +87,15 @@ class ModesFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
+         * @param bit_mode The initial bit mode.
          * @return A new instance of fragment ModesFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(bit_mode: BitsMode) =
                 ModesFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+                        putString(ARG_BIT_MODE, bit_mode.toString())
                     }
                 }
     }

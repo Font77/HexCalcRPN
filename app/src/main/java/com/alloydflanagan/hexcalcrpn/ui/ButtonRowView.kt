@@ -30,10 +30,12 @@ import timber.log.Timber
  * @param attrs Initial values of attributes.
  * @param defStyle Style to be used if none is set by `attrs`.
  */
-class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle), OnClickListener {
-    /** read only tag for log messages, etc. */
-    @Suppress("UNUSED")
-    val tag = "ButtonRowView"
+class ButtonRowView(context: Context,
+                    attrs: AttributeSet? = null,
+                    defStyle: Int = 0,
+                    @Suppress("PRIVATE") var showHighlight: Boolean = false) : LinearLayout(context, attrs, defStyle), OnClickListener {
+
+    private var listener: View.OnClickListener? = null
 
     private val buttons = ArrayList<Button>()
 
@@ -89,6 +91,12 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
             invalidate()
         }
 
+    var highlightedButton = ""
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     /**
      * Set up component from XML attributes.
      */
@@ -105,9 +113,14 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
                     Color.GRAY)
             // set text last, it will trigger creation of buttons
             buttonsText = a.getString(R.styleable.ButtonRowView_buttonsText) ?: ""
+            highlightedButton = a.getString(R.styleable.ButtonRowView_highlightedButton) ?: ""
         } finally {
             a.recycle()
         }
+    }
+
+    override fun setOnClickListener(ocl: OnClickListener) {
+        listener = ocl
     }
 
     /**
@@ -122,6 +135,10 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
             btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
             btn.text = p
             btn.setOnClickListener(this)
+            if (showHighlight && highlightedButton == p) {
+                @Suppress("DEPRECATION")
+                btn.setBackgroundColor(resources.getColor(R.color.colorAccent))
+            }
             addView(btn)
             btn.updateLayoutParams<LinearLayout.LayoutParams> {
                 weight = 1.0f
@@ -132,6 +149,7 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
         Timber.d("Created buttons with textColor ${textColor.toString(16).toUpperCase()} and textSize $textSize")
     }
 
+    @Suppress("UNUSED")
     fun disableButton(position: Int) {
         buttons[position].isEnabled = false
         buttons[position].isClickable = false
@@ -141,6 +159,7 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
                 Color.blue(disabledTextColor)))
     }
 
+    @Suppress("UNUSED")
     fun enableButton(position: Int) {
         buttons[position].isEnabled = true
         buttons[position].isClickable = true
@@ -159,12 +178,22 @@ class ButtonRowView(context: Context, attrs: AttributeSet? = null, defStyle: Int
      * Calls onClick handlers. Handlers can determine what key was clicked using the clickedText
      * property.
      */
-    // FIXME:  Currently the OnClick callback for the row cannot tell if the clicked button was
-    // disabled, except that clickedText == ""
     override fun onClick(view: View) {
-        clickedText = (view as Button).text.toString()
-        Timber.d("Click on button set clickedText to $clickedText")
-        // and this is NOT sufficient to keep ButtonRowView client OnClick from being called.
-        if (view.isEnabled) performClick()
+        val index = buttons.indexOf(view as Button)
+        if (index < 0) {
+            Timber.w("onClick() failed to find button in buttons ArrayList!")
+            return
+        }
+        val button = buttons[index]
+
+        if (button.isEnabled) {
+            clickedText = button.text.toString()
+            Timber.d("Click on button set clickedText to $clickedText")
+            highlightedButton = clickedText
+            listener?.onClick(this)
+        } else {
+            clickedText = ""
+            highlightedButton = ""
+        }
     }
 }

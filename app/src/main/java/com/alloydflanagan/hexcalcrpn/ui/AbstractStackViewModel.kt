@@ -1,6 +1,7 @@
 package com.alloydflanagan.hexcalcrpn.ui
 
 import androidx.lifecycle.*
+import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
 
 /**
@@ -31,5 +32,5 @@ abstract class AbstractStackViewModel<T>: ViewModel() {
      * Process input that causes a mode change --> word size, (un)signed,
      * etc.
      */
-    abstract fun handleModeInput(input: Char)
+    abstract fun handleModeInput(input: BitsMode)
 }
