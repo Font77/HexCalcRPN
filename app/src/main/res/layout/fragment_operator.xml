@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/operator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.OperatorFragment" >
+
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        android:id="@+id/brv_op_0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:buttonsText="C;CE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:textSize="@dimen/ops_button_text_size" />
+
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        android:id="@+id/brv_op_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:buttonsText="~;2s"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brv_op_0"
+        app:textSize="@dimen/ops_button_text_size" />
+
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        android:id="@+id/brv_op_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:buttonsText="&amp;;|"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brv_op_1"
+        app:textSize="@dimen/ops_button_text_size" />
+
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        android:id="@+id/brv_op_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:buttonsText="*;/"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brv_op_2"
+        app:textSize="@dimen/ops_button_text_size" />
+
+    <com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+        android:id="@+id/brv_op_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:buttonsText="+;-"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/brv_op_3"
+        app:textSize="@dimen/ops_button_text_size" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

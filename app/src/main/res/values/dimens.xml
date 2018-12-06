@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="button_row_vert_sep">0dp</dimen>
     <dimen name="outer_horizontal_margin">10dp</dimen>
-    <dimen name="button_text_size">5sp</dimen>
+    <dimen name="outer_vertical_margin">10sp</dimen>
+
+    <dimen name="tv_border_thickness">3dip</dimen>
+
     <dimen name="tv_output_horiz_padding">10sp</dimen>
     <dimen name="tv_output_vert_padding">5sp</dimen>
-    <dimen name="outer_vertical_margin">10sp</dimen>
+    <dimen name="tv_output_text_size">20sp</dimen>
+    <dimen name="tv_output_border_corner_radius">10dp</dimen>
+
+    <dimen name="tv_current_padding">6sp</dimen>
+
+    <dimen name="button_row_vert_sep">0dp</dimen>
+    <dimen name="button_text_size">5sp</dimen>
+    <dimen name="ops_button_text_size">4sp</dimen>
     <dimen name="equals_text_size">20sp</dimen>
-    <dimen name="current_padding">6sp</dimen>
-    <dimen name="output_text_size">20sp</dimen>
-    <dimen name="border_thickness">3dip</dimen>
-    <dimen name="border_corner_radius">10dp</dimen>
-    <dimen name="output_height">40dp</dimen>
+    <dimen name="frame_padding">5dp</dimen>
+    <dimen name="keys_border_thickness">1dip</dimen>
+    <dimen name="frame_separation">5dp</dimen>
 </resources>

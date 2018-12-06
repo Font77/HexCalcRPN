@@ -2,8 +2,8 @@
 <selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <stroke android:width="@dimen/border_thickness" android:color="@color/borderColor" />
-            <corners android:radius="@dimen/border_corner_radius" />
+            <stroke android:width="@dimen/tv_border_thickness" android:color="@color/borderColor" />
+            <corners android:radius="@dimen/tv_output_border_corner_radius" />
             <solid android:color="@color/currentValueBkgrnd" />
         </shape>
     </item>

@@ -1,19 +1,18 @@
 package com.alloydflanagan.hexcalcrpn.main
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.alloydflanagan.hexcalcrpn.R
-import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.ReadStack
-import com.alloydflanagan.hexcalcrpn.ui.AbstractStackViewModel
-import com.alloydflanagan.hexcalcrpn.ui.ButtonRowView
+import com.alloydflanagan.hexcalcrpn.ui.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_modes.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
@@ -22,7 +21,12 @@ import java.math.BigInteger
 /**
  * Main activity: displays output, _current entry, and keys. Handles key clicks.
  */
-class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
+class MainActivity : AppCompatActivity(),
+        OnClickListener,
+        ModesFragment.OnFragmentInteractionListener,
+        OperatorFragment.OnFragmentInteractionListener,
+        DigitsFragment.OnFragmentInteractionListener,
+        KodeinAware {
 
     override val kodein by closestKodein()
 
@@ -31,6 +35,10 @@ class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_main, menu)
         return true
+    }
+
+    override fun onFragmentInteraction(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,19 +59,14 @@ class MainActivity : AppCompatActivity(), OnClickListener, KodeinAware {
     }
 
     private fun updateStatus(stack: ReadStack<BigInteger>) {
-        tv_status.text = getString(R.string.mode_display,
-                getString(R.string.bits_label),
-                stack.bits.toString()
-        )
-
         // some operations don't make sense in some modes
-        if (stack.bits == BitsMode.INFINITE) {
-            brv_2.disableButton(5)  // '~'
-            brv_modes.disableButton(5) // SIGN
-        } else {
-            brv_2.enableButton(5)  // '~'
-            brv_modes.enableButton(5) // SIGN
-        }
+//        if (stack.bits == BitsMode.INFINITE) {
+//            brv_2.disableButton(5)  // '~'
+//            brv_modes.disableButton(5) // SIGN
+//        } else {
+//            brv_2.enableButton(5)  // '~'
+//            brv_modes.enableButton(5) // SIGN
+//        }
     }
 
     override fun onClick(v: View) {

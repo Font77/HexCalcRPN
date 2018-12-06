@@ -22,28 +22,33 @@ import org.hamcrest.TypeSafeMatcher
 abstract class MainActivityTest {
 
     // useful curries for button rows
-    private fun buttonInRow1(position: Int) = buttonAt(R.id.brv_1, position)
-
-    private fun buttonInRow2(position: Int) = buttonAt(R.id.brv_2, position)
-    private fun buttonInRow3(position: Int) = buttonAt(R.id.brv_3, position)
-    private fun buttonInRow4(position: Int) = buttonAt(R.id.brv_4, position)
     private fun buttonInModes(position: Int) = buttonAt(R.id.brv_modes, position)
+    private fun buttonInDigits0(position: Int) = buttonAt(R.id.brv_digits_0, position)
+    private fun buttonInDigits4(position: Int) = buttonAt(R.id.brv_digits_4, position)
+    private fun buttonInDigits8(position: Int) = buttonAt(R.id.brv_digits_8, position)
+    private fun buttonInDigitsC(position: Int) = buttonAt(R.id.brv_digits_C, position)
+    private fun buttonInOps0(position: Int) = buttonAt(R.id.brv_op_0, position)
+    private fun buttonInOps1(position: Int) = buttonAt(R.id.brv_op_1, position)
+    private fun buttonInOps2(position: Int) = buttonAt(R.id.brv_op_2, position)
+    private fun buttonInOps3(position: Int) = buttonAt(R.id.brv_op_3, position)
+    private fun buttonInOps4(position: Int) = buttonAt(R.id.brv_op_4, position)
+
 
     // map buttons to chars so we can express series of presses as a simple string
     private val buttonMap = mapOf(
-            '0' to buttonInRow4(0), '1' to buttonInRow4(1), '2' to buttonInRow4(2),
-            '3' to buttonInRow4(3), '+' to buttonInRow4(4), '|' to buttonInRow4(5),
-            '4' to buttonInRow3(0), '5' to buttonInRow3(1), '6' to buttonInRow3(2),
-            '7' to buttonInRow3(3), '-' to buttonInRow3(4), '&' to buttonInRow3(5),
-            '8' to buttonInRow2(0), '9' to buttonInRow2(1), 'A' to buttonInRow2(2),
-            'B' to buttonInRow2(3), '*' to buttonInRow2(4), '~' to buttonInRow2(5),
-            'C' to buttonInRow1(0), 'D' to buttonInRow1(1), 'E' to buttonInRow1(2),
-            'F' to buttonInRow1(3), '/' to buttonInRow1(4), 'c' to buttonInRow1(5),
+            '0' to buttonInDigits0(0), '1' to buttonInDigits0(1), '2' to buttonInDigits0(2),
+            '3' to buttonInDigits0(3), '+' to buttonInOps4(0), '|' to buttonInOps2(1),
+            '4' to buttonInDigits4(0), '5' to buttonInDigits4(1), '6' to buttonInDigits4(2),
+            '7' to buttonInDigits4(3), '-' to buttonInOps0(0), '&' to buttonInOps2(1),
+            '8' to buttonInDigits8(0), '9' to buttonInDigits8(1), 'A' to buttonInDigits8(2),
+            'B' to buttonInDigits8(3), '*' to buttonInOps3(0), '~' to buttonInOps1(0),
+            'C' to buttonInDigitsC(0), 'D' to buttonInDigitsC(1), 'E' to buttonInDigitsC(2),
+            'F' to buttonInDigitsC(3), '/' to buttonInOps3(1), 'c' to buttonInOps0(0),
             // and here we see the limitations of using chars as indexes...  :)
             // 8, 16, 32 bits
             'z' to buttonInModes(0), 'y' to buttonInModes(1), 'x' to buttonInModes(2),
             // 64, infinite bits, sign
-            'w' to buttonInModes(3), 'I' to buttonInModes(4), 'S' to buttonInModes(5)
+            'w' to buttonInModes(3), 'I' to buttonInModes(4)
     )
 
     // other controls
