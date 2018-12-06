@@ -11,7 +11,7 @@
         android:id="@+id/brv_op_0"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:buttonsText="C;CE"
+        app:buttonsText="c;ce"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

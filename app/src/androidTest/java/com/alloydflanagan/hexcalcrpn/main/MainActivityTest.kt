@@ -37,18 +37,19 @@ abstract class MainActivityTest {
     // map buttons to chars so we can express series of presses as a simple string
     private val buttonMap = mapOf(
             '0' to buttonInDigits0(0), '1' to buttonInDigits0(1), '2' to buttonInDigits0(2),
-            '3' to buttonInDigits0(3), '+' to buttonInOps4(0), '|' to buttonInOps2(1),
-            '4' to buttonInDigits4(0), '5' to buttonInDigits4(1), '6' to buttonInDigits4(2),
-            '7' to buttonInDigits4(3), '-' to buttonInOps0(0), '&' to buttonInOps2(1),
-            '8' to buttonInDigits8(0), '9' to buttonInDigits8(1), 'A' to buttonInDigits8(2),
-            'B' to buttonInDigits8(3), '*' to buttonInOps3(0), '~' to buttonInOps1(0),
+            '3' to buttonInDigits0(3), '4' to buttonInDigits4(0), '5' to buttonInDigits4(1),
+            '6' to buttonInDigits4(2), '7' to buttonInDigits4(3), '8' to buttonInDigits8(0),
+            '9' to buttonInDigits8(1), 'A' to buttonInDigits8(2), 'B' to buttonInDigits8(3),
             'C' to buttonInDigitsC(0), 'D' to buttonInDigitsC(1), 'E' to buttonInDigitsC(2),
-            'F' to buttonInDigitsC(3), '/' to buttonInOps3(1), 'c' to buttonInOps0(0),
+            'F' to buttonInDigitsC(3),
+
             // and here we see the limitations of using chars as indexes...  :)
-            // 8, 16, 32 bits
             'z' to buttonInModes(0), 'y' to buttonInModes(1), 'x' to buttonInModes(2),
-            // 64, infinite bits, sign
-            'w' to buttonInModes(3), 'I' to buttonInModes(4)
+            'w' to buttonInModes(3), 'I' to buttonInModes(4),
+
+            'c' to buttonInOps0(0), '~' to buttonInOps1(0), '&' to buttonInOps2(0),
+            '|' to buttonInOps2(1), '*' to buttonInOps3(0), '/' to buttonInOps3(1),
+            '+' to buttonInOps4(0), '-' to buttonInOps4(1)
     )
 
     // other controls
