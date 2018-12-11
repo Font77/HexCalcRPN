@@ -5,51 +5,65 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import com.alloydflanagan.hexcalcrpn.R
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
+import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_BIT_MODE = "bit_mode"
+private const val ARG_WORD_SIZE = "word_size"
 
 /**
- * A [Fragment] subclass to present a row of buttons to select a bit mode.
- *
- * The button for the current bit mode is highlighted.
+ * A group of radio buttons for selecting a word size.
  *
  * Activities that contain this fragment must implement the
- * [ModesFragment.OnFragmentInteractionListener] interface
+ * [WordSizeFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [ModesFragment.newInstance] factory method to
- * create an instance of this fragment.
  *
  */
-class ModesFragment : Fragment(), View.OnClickListener {
-    /** track chosen bit mode so we can highlight corresponding button */
-    private var bit_mode = BitsMode.INFINITE
+class WordSizeFragment : Fragment(), View.OnClickListener {
+    private var wordSize: BitsMode? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            val bmode = it.getString(ARG_BIT_MODE)
-            if (bmode != null) bit_mode = BitsMode.fromString(bmode)
+        arguments?.apply {
+            wordSize = BitsMode.fromString(getString(ARG_WORD_SIZE) ?: BitsMode.THIRTY_TWO.toString())
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_modes, container, false)
-        val modes = view.findViewById<ButtonRowView>(R.id.brv_modes)
-        modes.setOnClickListener(this)
+        val view = inflater.inflate(R.layout.fragment_word_size, container, false)
+        // why does setup default to making the Activity the OnClickListener? How is that modular?
+        // and doesn't it conflict with the idea of [OnFragmentInteractionListener]
+        val btns = arrayListOf(R.id.radio_8, R.id.radio_16,
+                R.id.radio_32, R.id.radio_64, R.id.radio_inf)
+        for (btn in btns) {
+            val btnView = view.findViewById<RadioButton>(btn)
+            btnView.setOnClickListener(this)
+        }
         return view
     }
 
-    override fun onClick(v: View?) {
-        bit_mode = BitsMode.fromString((v as ButtonRowView).clickedText)
-        listener?.onModesFragmentInteraction(bit_mode)
+    private fun onSizeSelected(bits: BitsMode) {
+        listener?.onWordSizeFragmentInteraction(bits)
+    }
+
+    @Suppress("UNUSED")
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.radio_8 -> onSizeSelected(BitsMode.EIGHT)
+            R.id.radio_16 -> onSizeSelected(BitsMode.SIXTEEN)
+            R.id.radio_32 -> onSizeSelected(BitsMode.THIRTY_TWO)
+            R.id.radio_64 -> onSizeSelected(BitsMode.SIXTY_FOUR)
+            R.id.radio_inf -> onSizeSelected(BitsMode.INFINITE)
+            else -> Timber.w("Unexpected radio button ID: $v.id")
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -78,8 +92,7 @@ class ModesFragment : Fragment(), View.OnClickListener {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onModesFragmentInteraction(bit_mode: BitsMode)
+        fun onWordSizeFragmentInteraction(bits: BitsMode)
     }
 
     companion object {
@@ -87,15 +100,16 @@ class ModesFragment : Fragment(), View.OnClickListener {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param bit_mode The initial bit mode.
-         * @return A new instance of fragment ModesFragment.
+         * @param word_size Initial word size. Should be output of [BitsMode.toString].
+
+         * @return A new instance of fragment WordSizeFragment.
          */
-        // TODO: Rename and change types and number of parameters
+        @Suppress("UNUSED")
         @JvmStatic
-        fun newInstance(bit_mode: BitsMode) =
-                ModesFragment().apply {
+        fun newInstance(word_size: BitsMode) =
+                WordSizeFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_BIT_MODE, bit_mode.toString())
+                        putString(ARG_WORD_SIZE, word_size.toString())
                     }
                 }
     }

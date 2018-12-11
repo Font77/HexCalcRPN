@@ -4,4 +4,9 @@
     <string name="bits_label">bits</string>
     <string name="mode_display">%s: %s</string>
     <string name="action_settings">Settings</string>
+    <string name="label_bits_8">8</string>
+    <string name="label_bits_16">16</string>
+    <string name="label_bits_32">32</string>
+    <string name="label_bits_64">64</string>
+    <string name="label_bits_inf">∞</string>
 </resources>

@@ -1,24 +1,20 @@
 package com.alloydflanagan.hexcalcrpn.main
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import android.view.View.OnClickListener
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.alloydflanagan.hexcalcrpn.R
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
-import com.alloydflanagan.hexcalcrpn.model.HexStack
-import com.alloydflanagan.hexcalcrpn.model.ReadStack
 import com.alloydflanagan.hexcalcrpn.ui.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_modes.*
+import kotlinx.android.synthetic.main.fragment_word_size.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
+import timber.log.Timber
 import java.math.BigInteger
 
 /**
@@ -26,9 +22,9 @@ import java.math.BigInteger
  */
 class MainActivity : AppCompatActivity(),
         OnClickListener,
-        ModesFragment.OnFragmentInteractionListener,
         OperatorFragment.OnFragmentInteractionListener,
         DigitsFragment.OnFragmentInteractionListener,
+        WordSizeFragment.OnFragmentInteractionListener,
         KodeinAware {
 
     override val kodein by closestKodein()
@@ -40,7 +36,9 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    override fun onModesFragmentInteraction(bit_mode: BitsMode) = viewModel.handleModeInput(bit_mode)
+    override fun onWordSizeFragmentInteraction(bits: BitsMode) {
+        viewModel.handleModeInput(bits)
+    }
 
     override fun onDigitsFragmentInteraction(digit: Char) = viewModel.handleInput(digit)
 
@@ -49,6 +47,20 @@ class MainActivity : AppCompatActivity(),
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_equals) {
             viewModel.handleInput('=')
+        }
+        if (v != null) {
+            Timber.d("onClick got view ID ${v.id} (${v.javaClass.name})")
+        }
+    }
+
+    private fun selectCurrentBitsMode() {
+        val bitSize = viewModel.getStack().value?.bits
+        when (bitSize) {
+            BitsMode.EIGHT -> radio_8.isChecked = true
+            BitsMode.SIXTEEN -> radio_16.isChecked = true
+            BitsMode.THIRTY_TWO -> radio_32.isChecked = true
+            BitsMode.SIXTY_FOUR -> radio_64.isChecked = true
+            BitsMode.INFINITE -> radio_inf.isChecked = true
         }
     }
 
@@ -66,7 +78,7 @@ class MainActivity : AppCompatActivity(),
         viewModel.getStack().observe(this, Observer {
             val txt = it.toString().toUpperCase()
             if (txt != tv_output.text) tv_output.text = txt
-            brv_modes.highlightedButton = it.bits.toString()
+            selectCurrentBitsMode()
         })
 
     }

@@ -21,12 +21,33 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/app_name" />
 
+    <FrameLayout
+        android:id="@+id/size_frame"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/outer_vertical_margin"
+        android:layout_marginEnd="@dimen/outer_horizontal_margin"
+        android:background="@drawable/output_border"
+        android:padding="@dimen/frame_padding"
+        app:layout_constraintBottom_toTopOf="@+id/tv_output"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hex_app_bar">
+
+        <fragment
+            android:id="@+id/size_fragment"
+            android:name="com.alloydflanagan.hexcalcrpn.ui.WordSizeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
     <TextView
         android:id="@+id/tv_output"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/outer_horizontal_margin"
-        android:layout_marginTop="@dimen/outer_vertical_margin"
+        android:layout_marginTop="@dimen/frame_separation"
         android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:background="@drawable/stack_border"
         android:outlineProvider="bounds"
@@ -37,7 +58,7 @@
         app:layout_constraintBottom_toTopOf="@id/tv_current"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hex_app_bar"
+        app:layout_constraintTop_toBottomOf="@id/size_frame"
         tools:text="14ABCD\n33A7" />
 
     <TextView
@@ -45,37 +66,25 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/outer_horizontal_margin"
-        android:layout_marginTop="@dimen/outer_vertical_margin"
+        android:layout_marginTop="@dimen/frame_separation"
         android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:background="@drawable/output_border"
         android:gravity="center_vertical|end"
         android:padding="@dimen/tv_current_padding"
         android:textSize="@dimen/tv_output_text_size"
-        app:layout_constraintBottom_toTopOf="@id/modes_fragment"
+        app:layout_constraintBottom_toTopOf="@+id/button_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_output"
         app:layout_constraintVertical_weight="1.0"
         tools:text="AB7D8832" />
 
-    <fragment
-        android:id="@+id/modes_fragment"
-        android:name="com.alloydflanagan.hexcalcrpn.ui.ModesFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/outer_horizontal_margin"
-        android:layout_marginEnd="@dimen/outer_horizontal_margin"
-        app:layout_constraintBottom_toTopOf="@id/button_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_current"
-        tools:layout="@layout/fragment_modes" />
-
     <LinearLayout
         android:id="@+id/button_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/frame_separation"
         android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:baselineAligned="false"
         android:gravity="center_vertical"
@@ -83,7 +92,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btn_equals"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/modes_fragment">
+        app:layout_constraintTop_toBottomOf="@+id/tv_current">
 
         <FrameLayout
             android:id="@+id/digits_frame"
@@ -125,7 +134,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/outer_horizontal_margin"
+        android:layout_marginTop="@dimen/frame_separation"
         android:layout_marginEnd="@dimen/outer_horizontal_margin"
+        android:layout_marginBottom="@dimen/outer_vertical_margin"
         android:elevation="8dp"
         android:onClick="onClick"
         android:text="@string/btn_equals_text"
