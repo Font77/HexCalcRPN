@@ -32,8 +32,7 @@ import timber.log.Timber
  */
 class ButtonRowView(context: Context,
                     attrs: AttributeSet? = null,
-                    defStyle: Int = 0,
-                    @Suppress("PRIVATE") var showHighlight: Boolean = false) : LinearLayout(context, attrs, defStyle), OnClickListener {
+                    defStyle: Int = 0) : LinearLayout(context, attrs, defStyle), OnClickListener {
 
     private var listener: View.OnClickListener? = null
 
@@ -55,47 +54,22 @@ class ButtonRowView(context: Context,
      * of buttons displayed.
      */
     private var buttonsText = ""
-        set(value) {
-            field = value
-            removeAllViewsInLayout()
-            createButtons()
-            invalidate()
-            requestLayout()
-        }
 
     /**
      * The font size of the button labels.
      */
     private var textSize = 0f
-        set(value) {
-            field = value
-            invalidate()
-            requestLayout()
-        }
 
     /**
      * The color of the text labels.
      */
     @ColorInt
     var textColor = 0
-        set(value) {
-            field = value
-            invalidate()
-            // shouldn't change layout
-        }
 
     @ColorInt
     var disabledTextColor = 0
-        set(value) {
-            field = value
-            invalidate()
-        }
 
     var highlightedButton = ""
-        set(value) {
-            field = value
-            invalidate()
-        }
 
     /**
      * Set up component from XML attributes.
@@ -103,17 +77,20 @@ class ButtonRowView(context: Context,
     init {
         // Load attributes
         val a = context.obtainStyledAttributes(attrs, R.styleable.ButtonRowView, defStyle, 0)
-        // do we need to do that again to get theme values for defaults??
+        // How do we get theme values for defaults??
         try {
             textSize = a.getDimension(R.styleable.ButtonRowView_textSize,
-                12f)
+                spToPixels(20f))
             textColor = a.getColor(R.styleable.ButtonRowView_textColor,
                     Color.BLACK)
             disabledTextColor = a.getColor(R.styleable.ButtonRowView_disabledTextColor,
                     Color.GRAY)
             // set text last, it will trigger creation of buttons
-            buttonsText = a.getString(R.styleable.ButtonRowView_buttonsText) ?: ""
             highlightedButton = a.getString(R.styleable.ButtonRowView_highlightedButton) ?: ""
+//            <attr name="buttonPaddingVert" format="dimension" />
+//            <attr name="buttonElevation" format="dimension" />
+            buttonsText = a.getString(R.styleable.ButtonRowView_buttonsText) ?: ""
+            createButtons()
         } finally {
             a.recycle()
         }
@@ -132,17 +109,18 @@ class ButtonRowView(context: Context,
             val btn = Button(context)
             // bit awkward setting color, possibly(?) because java ints are signed
             btn.setTextColor(Color.rgb(Color.red(textColor), Color.green(textColor), Color.blue(textColor)))
-            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
+            // I _think_ text size got converted to pixels when retrieved
+            btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             btn.text = p
             btn.setOnClickListener(this)
-            if (showHighlight && highlightedButton == p) {
-                @Suppress("DEPRECATION")
-                btn.setBackgroundColor(resources.getColor(R.color.colorAccent))
-            }
+            btn.setBackgroundResource(R.drawable.button_states)
+//            if (showHighlight && highlightedButton == p) {
+//             ,   @Suppress("DEPRECATION")
+//                btn.setBackgroundColor(resources.getColor(R.color.colorAccent))
+//            }
             addView(btn)
             btn.updateLayoutParams<LinearLayout.LayoutParams> {
                 weight = 1.0f
-
             }
             buttons.add(btn)
         }
@@ -195,5 +173,20 @@ class ButtonRowView(context: Context,
             clickedText = ""
             highlightedButton = ""
         }
+    }
+
+    /**
+     * Convert from "dp" units to pixels using the metrics of the current display.
+     */
+    @Suppress("UNUSED")
+    private fun dpToPixels(dps: Float): Float {
+        return resources.displayMetrics.density * dps
+    }
+
+    /**
+     * Convert from "sp" units to pixels using the metrics of the current display.
+     */
+    private fun spToPixels(sps: Float): Float {
+        return resources.displayMetrics.scaledDensity * sps
     }
 }

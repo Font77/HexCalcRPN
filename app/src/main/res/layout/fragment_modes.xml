@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:onClick="onClick"
         app:buttonsText="8;16;32;64;&#8734;"
-        app:textColor="?android:attr/colorFocusedHighlight" />
+        app:textColor="?android:attr/colorFocusedHighlight"
+        app:textSize="@dimen/button_text_size" />
 
 </FrameLayout>
