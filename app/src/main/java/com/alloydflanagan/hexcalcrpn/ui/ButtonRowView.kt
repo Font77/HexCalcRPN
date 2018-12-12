@@ -1,7 +1,9 @@
 package com.alloydflanagan.hexcalcrpn.ui
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
@@ -69,8 +71,6 @@ class ButtonRowView(context: Context,
     @ColorInt
     var disabledTextColor = 0
 
-    var highlightedButton = ""
-
     /**
      * Set up component from XML attributes.
      */
@@ -85,10 +85,9 @@ class ButtonRowView(context: Context,
                     Color.BLACK)
             disabledTextColor = a.getColor(R.styleable.ButtonRowView_disabledTextColor,
                     Color.GRAY)
-            // set text last, it will trigger creation of buttons
-            highlightedButton = a.getString(R.styleable.ButtonRowView_highlightedButton) ?: ""
 //            <attr name="buttonPaddingVert" format="dimension" />
 //            <attr name="buttonElevation" format="dimension" />
+            // set text last, it will trigger creation of buttons
             buttonsText = a.getString(R.styleable.ButtonRowView_buttonsText) ?: ""
             createButtons()
         } finally {
@@ -109,15 +108,10 @@ class ButtonRowView(context: Context,
             val btn = Button(context)
             // bit awkward setting color, possibly(?) because java ints are signed
             btn.setTextColor(Color.rgb(Color.red(textColor), Color.green(textColor), Color.blue(textColor)))
-            // I _think_ text size got converted to pixels when retrieved
             btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             btn.text = p
             btn.setOnClickListener(this)
             btn.setBackgroundResource(R.drawable.button_states)
-//            if (showHighlight && highlightedButton == p) {
-//             ,   @Suppress("DEPRECATION")
-//                btn.setBackgroundColor(resources.getColor(R.color.colorAccent))
-//            }
             addView(btn)
             btn.updateLayoutParams<LinearLayout.LayoutParams> {
                 weight = 1.0f
@@ -153,8 +147,10 @@ class ButtonRowView(context: Context,
     }
 
     /**
-     * Calls onClick handlers. Handlers can determine what key was clicked using the clickedText
-     * property.
+     * Calls onClick handlers.
+     *
+     * Handlers can determine what key was clicked using the [clickedText] property. Disabled
+     * buttons do NOT generate a click event.
      */
     override fun onClick(view: View) {
         val index = buttons.indexOf(view as Button)
@@ -166,17 +162,16 @@ class ButtonRowView(context: Context,
 
         if (button.isEnabled) {
             clickedText = button.text.toString()
-            Timber.d("Click on button set clickedText to $clickedText")
-            highlightedButton = clickedText
             listener?.onClick(this)
         } else {
             clickedText = ""
-            highlightedButton = ""
         }
     }
 
     /**
      * Convert from "dp" units to pixels using the metrics of the current display.
+     *
+     * Useful for providing default values for dimensional properties
      */
     @Suppress("UNUSED")
     private fun dpToPixels(dps: Float): Float {
@@ -185,6 +180,8 @@ class ButtonRowView(context: Context,
 
     /**
      * Convert from "sp" units to pixels using the metrics of the current display.
+     *
+     * Useful for providing default values for dimensional properties
      */
     private fun spToPixels(sps: Float): Float {
         return resources.displayMetrics.scaledDensity * sps

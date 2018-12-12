@@ -4,6 +4,5 @@
         <attr name="textSize" format="dimension" />
         <attr name="textColor" format="color" />
         <attr name="disabledTextColor" format="color" />
-        <attr name="highlightedButton" format="string" />
     </declare-styleable>
 </resources>

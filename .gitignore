@@ -3,10 +3,11 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/dictionaries/*
+/.idea/inspectionProfiles/*
+/.idea/caches
+/.idea/assetWizardSettings.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
-.idea/dictionaries/*
-.idea/inspectionProfiles/*
-.idea/caches
