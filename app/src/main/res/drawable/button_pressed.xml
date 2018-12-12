@@ -2,9 +2,9 @@
 <selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
 <item>
     <shape android:shape="rectangle">
-        <stroke android:width="@dimen/keys_border_thickness" android:color="@color/colorAccent" />
+        <stroke android:width="@dimen/keys_border_thickness" android:color="@color/borderColor" />
         <corners android:radius="@dimen/tv_output_border_corner_radius" />
-        <solid android:color="@color/colorAccentLight" />
+        <solid android:color="@color/secondaryLightColor" />
     </shape>
 </item>
 </selector>

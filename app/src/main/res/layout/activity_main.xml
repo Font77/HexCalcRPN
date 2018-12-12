@@ -99,8 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/frame_separation"
-            android:layout_weight=".33"
-            android:background="@drawable/button_default">
+            android:layout_weight=".33">
 
             <fragment
                 android:id="@+id/digits_fragment"
@@ -116,8 +115,7 @@
             android:id="@+id/operator_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".67"
-            android:background="@drawable/button_default">
+            android:layout_weight=".67">
 
             <fragment
                 android:id="@+id/operator_fragment"
@@ -137,10 +135,8 @@
         android:layout_marginTop="@dimen/frame_separation"
         android:layout_marginEnd="@dimen/outer_horizontal_margin"
         android:layout_marginBottom="@dimen/outer_vertical_margin"
-        android:elevation="8dp"
         android:onClick="onClick"
         android:text="@string/btn_equals_text"
-        android:textColor="@color/colorPrimary"
         android:textSize="@dimen/equals_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

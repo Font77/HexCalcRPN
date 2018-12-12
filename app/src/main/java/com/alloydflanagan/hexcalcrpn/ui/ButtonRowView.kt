@@ -1,15 +1,13 @@
 package com.alloydflanagan.hexcalcrpn.ui
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import android.view.View.OnClickListener
-import android.widget.Button
-import android.widget.LinearLayout
+import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.annotation.ColorInt
 import androidx.core.view.updateLayoutParams
 import com.alloydflanagan.hexcalcrpn.R
@@ -34,11 +32,11 @@ import timber.log.Timber
  */
 class ButtonRowView(context: Context,
                     attrs: AttributeSet? = null,
-                    defStyle: Int = 0) : LinearLayout(context, attrs, defStyle), OnClickListener {
+                    defStyle: Int = 0) : LinearLayoutCompat(context, attrs, defStyle), OnClickListener {
 
     private var listener: View.OnClickListener? = null
 
-    private val buttons = ArrayList<Button>()
+    private val buttons = ArrayList<AppCompatButton>()
 
     // would think this would be redundant, but initialization from XML apparently requires it
     constructor(context: Context, attrs: AttributeSet?): this(context, attrs, 0)
@@ -105,15 +103,15 @@ class ButtonRowView(context: Context,
     private fun createButtons() {
         buttons.clear() // just in case
         for (p in buttonsText.split(";".toRegex())) {
-            val btn = Button(context)
+            val btn = AppCompatButton(context)
             // bit awkward setting color, possibly(?) because java ints are signed
             btn.setTextColor(Color.rgb(Color.red(textColor), Color.green(textColor), Color.blue(textColor)))
             btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
             btn.text = p
             btn.setOnClickListener(this)
-            btn.setBackgroundResource(R.drawable.button_states)
+            // btn.setBackgroundResource(R.drawable.button_states)
             addView(btn)
-            btn.updateLayoutParams<LinearLayout.LayoutParams> {
+            btn.updateLayoutParams<LinearLayoutCompat.LayoutParams> {
                 weight = 1.0f
             }
             buttons.add(btn)
@@ -153,7 +151,7 @@ class ButtonRowView(context: Context,
      * buttons do NOT generate a click event.
      */
     override fun onClick(view: View) {
-        val index = buttons.indexOf(view as Button)
+        val index = buttons.indexOf(view as AppCompatButton)
         if (index < 0) {
             Timber.w("onClick() failed to find button in buttons ArrayList!")
             return
