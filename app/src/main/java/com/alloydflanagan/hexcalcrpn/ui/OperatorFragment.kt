@@ -11,13 +11,11 @@ import com.alloydflanagan.hexcalcrpn.R
 
 /**
  * A simple [Fragment] subclass to display a grid of buttons denoting operators.
-
- * Activities that contain this fragment must implement the
- * [OperatorFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [OperatorFragment.newInstance] factory method to
- * create an instance of this fragment.
  *
+ * Activities that contain this fragment must implement the
+ * [OperatorFragment.OnFragmentInteractionListener] interface to handle interaction events.
+ *
+ * Use the [OperatorFragment.newInstance] factory method to create an instance of this fragment.
  */
 class OperatorFragment : Fragment(), View.OnClickListener {
     private var listener: OnFragmentInteractionListener? = null
@@ -26,6 +24,12 @@ class OperatorFragment : Fragment(), View.OnClickListener {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_operator, container, false)
+        /*
+         * Default click listener is containing activity, not fragment (why?????).
+         * We want to communicate through [OnFragmentInteractionListener] only. So, reset click
+         * listeners to this fragment.
+         */
+
         val brvList = arrayOf(R.id.brv_op_0, R.id.brv_op_1, R.id.brv_op_2, R.id.brv_op_3, R.id.brv_op_4)
         for (id in brvList) {
             val brv = view.findViewById<ButtonRowView>(id)
@@ -34,6 +38,9 @@ class OperatorFragment : Fragment(), View.OnClickListener {
         return view
     }
 
+    /**
+     * Dispatch clicked key to listeners using [OnFragmentInteractionListener] interface.
+     */
     override fun onClick(v: View?) {
         if (v != null) {
             val btn = v as ButtonRowView
@@ -41,6 +48,9 @@ class OperatorFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    /**
+     * Verify that container can receive events from this fragment.
+     */
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
@@ -56,15 +66,10 @@ class OperatorFragment : Fragment(), View.OnClickListener {
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
+     * This interface must be implemented by activities that contain this fragment.
      *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
+     * [onOperatorFragmentInteraction] will be called whenever a key is pressed, and will be passed
+     * the text of that key.
      */
     interface OnFragmentInteractionListener {
         fun onOperatorFragmentInteraction(operator: String)
@@ -72,12 +77,10 @@ class OperatorFragment : Fragment(), View.OnClickListener {
 
     companion object {
         /**
-         * Use this factory method to create a new instance of
-         * this fragment.
+         * Use this factory method to create a new instance of this fragment.
          *
          * @return A new instance of fragment OperatorFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() = OperatorFragment()
     }
