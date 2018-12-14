@@ -1,6 +1,5 @@
 package com.alloydflanagan.hexcalcrpn
 
-import android.util.Log
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.HexStack
 import java.math.BigInteger

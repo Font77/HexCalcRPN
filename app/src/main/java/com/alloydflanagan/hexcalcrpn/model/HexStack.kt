@@ -203,10 +203,10 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     override operator fun contains(o: Int) = stack.contains(BigInteger.valueOf(o.toLong()))
 
     companion object {
-        val MOD_8 = BigInteger.valueOf(0x100)
-        val MOD_16 = BigInteger.valueOf(0x1_0000)
-        val MOD_32 = BigInteger.valueOf(0x1_0000_0000)
+        val MOD_8: BigInteger = BigInteger.valueOf(0x100)
+        val MOD_16: BigInteger = BigInteger.valueOf(0x1_0000)
+        val MOD_32: BigInteger = BigInteger.valueOf(0x1_0000_0000)
         // can't represent 64 bits as long literal
-        val MOD_64 = BigInteger.valueOf(0x1000_0000_0000_0000) * BigInteger.valueOf(0x10)
+        val MOD_64: BigInteger = BigInteger.valueOf(0x1000_0000_0000_0000) * BigInteger.valueOf(0x10)
     }
 }

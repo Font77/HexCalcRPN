@@ -11,6 +11,7 @@ import org.kodein.di.generic.singleton
 import timber.log.Timber
 import java.math.BigInteger
 
+@Suppress("UNUSED")
 class MainApplication: Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidModule(this@MainApplication))

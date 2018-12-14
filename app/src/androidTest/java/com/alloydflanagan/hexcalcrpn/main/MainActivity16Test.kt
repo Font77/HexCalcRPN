@@ -1,6 +1,5 @@
 package com.alloydflanagan.hexcalcrpn.main
 
-
 import androidx.test.InstrumentationRegistry
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule

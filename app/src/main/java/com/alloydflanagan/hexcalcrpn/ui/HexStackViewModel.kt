@@ -48,7 +48,7 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
     }
 
     // helper for frequent conversion to BigInteger
-    private fun currentBigInt() = if (mCurrStr.length > 0) mCurrStr.toString().toBigInteger(16) else BigInteger.ZERO
+    private fun currentBigInt() = if (mCurrStr.isNotEmpty()) mCurrStr.toString().toBigInteger(16) else BigInteger.ZERO
 
     /**
      * True if there is a valid current value. Note the value of [HexStackViewModel.getCurrent]

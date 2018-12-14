@@ -1,12 +1,8 @@
 package com.alloydflanagan.hexcalcrpn.main
 
-
-import androidx.test.InstrumentationRegistry
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-import kotlinx.android.synthetic.main.activity_main.*
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

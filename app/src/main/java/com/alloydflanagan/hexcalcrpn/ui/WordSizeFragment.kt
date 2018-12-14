@@ -6,13 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import com.alloydflanagan.hexcalcrpn.R
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import timber.log.Timber
 
-// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_WORD_SIZE = "word_size"
 
@@ -54,7 +52,6 @@ class WordSizeFragment : Fragment(), View.OnClickListener {
         listener?.onWordSizeFragmentInteraction(bits)
     }
 
-    @Suppress("UNUSED")
     override fun onClick(v: View) {
         when (v.id) {
             R.id.radio_8 -> onSizeSelected(BitsMode.EIGHT)

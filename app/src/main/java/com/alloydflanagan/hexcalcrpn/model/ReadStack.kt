@@ -19,7 +19,7 @@ enum class BitsMode(private val numBits: Int) {
                 THIRTY_TWO.toString() -> THIRTY_TWO
                 SIXTY_FOUR.toString() -> SIXTY_FOUR
                 INFINITE.toString() -> INFINITE
-                else -> throw Exception("BitsMode.fromString() got invalid argument ${mode}")
+                else -> throw Exception("BitsMode.fromString() got invalid argument $mode")
             }
         }
     }
