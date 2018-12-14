@@ -24,17 +24,6 @@ class HexStackUnitTest8Bit {
     }
 
     @Test
-    fun constructFromCollection() {
-        val list = arrayListOf(10L, 0xBEEFL,
-                37L)
-        val hs = HexStack(list, BitsMode.EIGHT)
-        assertEquals(BigInteger.TEN, hs.pop())
-        assertEquals(0xEF, hs.pop())
-        assertEquals(37, hs.pop())
-        assertEquals(0, hs.size)
-    }
-
-    @Test
     fun addition_isCorrect() {
         stack.push(7)
         stack.push(3)
@@ -176,5 +165,29 @@ class HexStackUnitTest8Bit {
         stack.push(7L)
         assertEquals(7L, stack.pop())
         assertFailsWith(NoSuchElementException::class) { stack.pop() }
+    }
+
+    @Test
+    fun twosComplementIsCorrect() {
+        stack.push(7)
+        stack.twosComplement()
+        var actual = stack.pop()
+        assertEquals(0xF9, actual)
+
+        stack.push(7)
+        stack.push(0xF9)
+        stack.add()
+        actual = stack.pop()
+        assertEquals(0, actual)
+
+        stack.push(0xF9)
+        stack.twosComplement()
+        actual = stack.pop()
+        assertEquals(7, actual)
+
+        stack.push(0)  // edge case :)
+        stack.twosComplement()
+        actual = stack.pop()
+        assertEquals(0, actual)
     }
 }

@@ -193,4 +193,28 @@ class HexStackUnitTest16Bit {
         assertEquals(7, stack.pop())
         assertFailsWith(NoSuchElementException::class) { stack.pop() }
     }
+
+    @Test
+    fun twosComplementIsCorrect() {
+        stack.push(7)
+        stack.twosComplement()
+        var actual = stack.pop()
+        assertEquals(0xFFF9, actual)
+
+        stack.push(7)
+        stack.push(0xFFF9)
+        stack.add()
+        actual = stack.pop()
+        assertEquals(0, actual)
+
+        stack.push(0xFFF9)
+        stack.twosComplement()
+        actual = stack.pop()
+        assertEquals(7, actual)
+
+        stack.push(0)  // edge case :)
+        stack.twosComplement()
+        actual = stack.pop()
+        assertEquals(0, actual)
+    }
 }

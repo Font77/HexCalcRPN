@@ -133,7 +133,11 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      * pop() -> 11
      * ```
      */
-    fun subtract() = push(pop().subtract(pop()).negate())
+    fun subtract(){
+        val b = pop()
+        val a = pop()
+        push(a.subtract(b))
+    }
 
     /**
      * Replaces top two items on stack with the sum.
@@ -146,6 +150,19 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     fun add() = push(pop().add(pop()))
 
     fun invert() = push(pop().not())
+
+    fun twosComplement() {
+        val a = pop()
+        val b = when(bits) {
+            // .mod(value) fixes result if a is <= 0
+            BitsMode.EIGHT -> MOD_8.subtract(a).mod(MOD_8)
+            BitsMode.SIXTEEN -> MOD_16.subtract(a).mod(MOD_16)
+            BitsMode.THIRTY_TWO -> MOD_32.subtract(a).mod(MOD_32)
+            BitsMode.SIXTY_FOUR -> MOD_64.subtract(a).mod(MOD_64)
+            BitsMode.INFINITE -> throw Exception("2's complement is meaningless with 'infinite' word size.")
+        }
+        push(b)
+    }
 
     fun or() = push(pop().or(pop()))
 

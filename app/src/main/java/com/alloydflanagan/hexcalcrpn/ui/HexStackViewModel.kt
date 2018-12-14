@@ -141,19 +141,12 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
                 mStack.postValue(mStack.value)
                 clearCurrentValue()
             }
-            in BINARY_OPS -> {
-                // do we have enough values?
-                var count = mStack.value?.size ?: 0
-                if (mCurrStr.isNotEmpty()) count += 1  // because current will be added to stack
-                if (count >= 2)
-                    doBinaryOp(input)
-            }
-            in UNARY_OPS -> {
-                var count = mStack.value?.size ?: 0
-                if (mCurrStr.isNotEmpty()) count += 1  // because current will be added to stack
-                if (count >= 1)
-                    doUnaryOp(input)
-            }
+            else -> throw IllegalStateException("I don't know how to handle input '$input'")
+        }
+    }
+
+    override fun handleOperator(op: Char) {
+        when (op) {
             // if user is entering value, 'c' clears it. if not removes one value from stack
             'c' -> {
                 if (hasCurrentValue())
@@ -163,7 +156,20 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
                     mStack.postValue(mStack.value)
                 }
             }
-            else -> throw IllegalStateException("I don't know how to handle input '$input'")
+            in BINARY_OPS -> {
+                // do we have enough values?
+                var count = mStack.value?.size ?: 0
+                if (mCurrStr.isNotEmpty()) count += 1  // because current will be added to stack
+                if (count >= 2)
+                    doBinaryOp(op)
+            }
+            in UNARY_OPS -> {
+                var count = mStack.value?.size ?: 0
+                if (mCurrStr.isNotEmpty()) count += 1  // because current will be added to stack
+                if (count >= 1)
+                    doUnaryOp(op)
+            }
+            else -> throw IllegalStateException("I don't know how to handle operator '$op'")
         }
     }
 
@@ -177,6 +183,6 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
 
     companion object {
         val BINARY_OPS = HashSet<Char>(arrayListOf('+', '-', '*', '/', '%', 'X', '&', '|'))
-        val UNARY_OPS = HashSet<Char>(arrayListOf('!', '~'))
+        val UNARY_OPS = HashSet<Char>(arrayListOf('!', '~', '2'))  // 2 => 2's complement
     }
 }

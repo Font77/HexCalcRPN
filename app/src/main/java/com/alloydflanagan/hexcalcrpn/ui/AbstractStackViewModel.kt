@@ -21,11 +21,18 @@ abstract class AbstractStackViewModel<T>: ViewModel() {
     /**
      * Process a character of input, either:
      * - a hex digit
-     * - an operator
      * - '=' --> push _current value
      */
     abstract fun handleInput(input: Char)
 
+    /**
+     * Process an input operator
+     */
+    abstract fun handleOperator(op: Char)
+
+    /**
+     * Does the stack have a current value input?
+     */
     abstract fun hasCurrentValue(): Boolean
 
     /**

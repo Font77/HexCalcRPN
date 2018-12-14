@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onDigitsFragmentInteraction(digit: Char) = viewModel.handleInput(digit)
 
-    override fun onOperatorFragmentInteraction(operator: String) = viewModel.handleInput(operator[0])
+    override fun onOperatorFragmentInteraction(operator: String) = viewModel.handleOperator(operator[0])
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.btn_equals) {

@@ -1,5 +1,6 @@
 package com.alloydflanagan.hexcalcrpn
 
+import android.util.Log
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.HexStack
 import java.math.BigInteger
@@ -201,5 +202,35 @@ class HexStackUnitTest64Bit {
         stack.push(7)
         assertEquals(7, stack.pop())
         assertFailsWith(NoSuchElementException::class) { stack.pop() }
+    }
+
+    @Test
+    fun twosComplementIsCorrect() {
+        val value = 0xABCD_EF01_1234
+        // FFFF543210FEEDCC
+        val complement = BigInteger.valueOf(0xFFF_F543_210F_EEDC)
+                .multiply(BigInteger.valueOf(16))
+                .add(BigInteger.valueOf(0xC))
+
+        stack.push(value)
+        stack.twosComplement()
+        var actual = stack.pop()
+        assertEquals(complement, actual)
+
+        stack.push(value)
+        stack.push(complement)
+        stack.add()
+        actual = stack.pop()
+        assertEquals(0, actual)
+
+        stack.push(complement)
+        stack.twosComplement()
+        actual = stack.pop()
+        assertEquals(value, actual)
+
+        stack.push(0)  // edge case :)
+        stack.twosComplement()
+        actual = stack.pop()
+        assertEquals(0, actual)
     }
 }
