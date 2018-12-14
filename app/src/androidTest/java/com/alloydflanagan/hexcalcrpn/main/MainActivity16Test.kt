@@ -192,4 +192,66 @@ class MainActivity16Test: MainActivityTest() {
         checkCurrentIs("0")
     }
 
+    @Test
+    override fun testInvert() {
+        enterKeys("ABCD")
+        enter()
+        checkOutputIs("ABCD")
+        enterKeys("~")
+        checkOutputIs("5432")
+        enterKeys("~")
+        checkOutputIs("ABCD")
+        enterKeys("c")
+        enter()
+        checkOutputIs("0")
+        enterKeys("~")
+        checkOutputIs("FFFF")
+    }
+
+    @Test
+    override fun test2sComplement() {
+        enterKeys("ABCD")
+        enter()
+        checkOutputIs("ABCD")
+        enterKeys("s")
+        checkOutputIs("5433")
+        enterKeys("s")
+        checkOutputIs("ABCD")
+        enterKeys("c")
+        enter()
+        checkOutputIs("0")
+        enterKeys("s")
+        checkOutputIs("0")
+    }
+
+    @Test
+    override fun testInvertCurrent() {
+        enterKeys("ABCD")
+        enterKeys("~")
+        checkCurrentIs("5432")
+        checkOutputIs("")
+        enterKeys("~")
+        checkCurrentIs("ABCD")
+        checkOutputIs("")
+        enterKeys("c")
+        checkCurrentIs("0")
+        checkOutputIs("")
+        enterKeys("0~")
+        checkCurrentIs("FFFF")
+        checkOutputIs("")
+    }
+
+    @Test
+    override fun test2sCompCurrent() {
+        enterKeys("ABCD")
+        enterKeys("s")
+        checkCurrentIs("5433")
+        enterKeys("s")
+        checkCurrentIs("ABCD")
+        enterKeys("c")
+        checkCurrentIs("0")
+        enterKeys("0s")
+        checkCurrentIs("0")
+        checkOutputIs("")
+    }
 }

@@ -176,4 +176,74 @@ class MainActivity32Test: MainActivityTest() {
         checkCurrentIs("0")
     }
 
+    @Test
+    override fun testInvert() {
+        enterKeys("89AB_CDEF")
+        enter()
+        checkOutputIs("89AB_CDEF")
+        enterKeys("~")
+        checkOutputIs("7654_3210")
+        enterKeys("~")
+        checkOutputIs("89AB_CDEF")
+        enterKeys("cF")
+        enter()
+        enterKeys("~")
+        checkOutputIs("FFFF_FFF0")
+        enterKeys("c")
+        enter()
+        checkOutputIs("0")
+        enterKeys("~")
+        checkOutputIs("FFFF_FFFF")
+    }
+
+    @Test
+    override fun test2sComplement() {
+        enterKeys("89AB_CDEF")
+        enter()
+        checkOutputIs("89AB_CDEF")
+        enterKeys("s")
+        checkOutputIs("7654_3211")
+        enterKeys("s")
+        checkOutputIs("89AB_CDEF")
+        enterKeys("cF")
+        enter()
+        enterKeys("s")
+        checkOutputIs("FFFF_FFF1")
+        enterKeys("c")
+        enter()
+        checkOutputIs("0")
+        enterKeys("s")
+        checkOutputIs("0")
+    }
+
+    @Test
+    override fun testInvertCurrent() {
+        enterKeys("89AB_CDEF")
+        enterKeys("~")
+        checkCurrentIs("7654_3210")
+        checkOutputIs("")
+        enterKeys("~")
+        checkCurrentIs("89AB_CDEF")
+        checkOutputIs("")
+        enterKeys("c")
+        checkCurrentIs("0")
+        checkOutputIs("")
+        enterKeys("0~")
+        checkCurrentIs("FFFF_FFFF")
+        checkOutputIs("")
+    }
+
+    @Test
+    override fun test2sCompCurrent() {
+        enterKeys("89AB_CDEF")
+        enterKeys("s")
+        checkCurrentIs("7654_3211")
+        enterKeys("s")
+        checkCurrentIs("89AB_CDEF")
+        enterKeys("c")
+        checkCurrentIs("0")
+        enterKeys("0s")
+        checkCurrentIs("0")
+        checkOutputIs("")
+    }
 }

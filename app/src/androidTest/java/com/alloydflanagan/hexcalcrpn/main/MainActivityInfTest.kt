@@ -191,4 +191,33 @@ class MainActivityInfTest: MainActivityTest() {
         checkCurrentIs("0")
     }
 
+    @Test
+    override fun testInvert() {
+        // TODO: Disable key for infinite mode, test for that
+        enterKeys("FDEC")
+        enter()
+        enterKeys("~")
+        checkOutputIs("FDEC")
+    }
+
+    @Test
+    override fun test2sComplement() {
+        // TODO: Disable key for infinite mode, test for that
+        enterKeys("FDEC")
+        enter()
+        enterKeys("s")
+        checkOutputIs("FDEC")
+    }
+
+    @Test
+    override fun testInvertCurrent() {
+        enterKeys("FDEC~")
+        checkCurrentIs("FDEC")
+    }
+
+    @Test
+    override fun test2sCompCurrent() {
+        enterKeys("FDECs")
+        checkCurrentIs("FDEC")
+    }
 }

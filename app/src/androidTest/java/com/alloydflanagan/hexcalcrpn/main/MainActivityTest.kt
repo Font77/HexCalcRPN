@@ -22,7 +22,6 @@ import org.hamcrest.TypeSafeMatcher
 abstract class MainActivityTest {
 
     // useful curries for button rows
-    private fun buttonInModes(position: Int) = buttonAt(R.id.brv_modes, position)
     private fun buttonInDigits0(position: Int) = buttonAt(R.id.brv_digits_0, position)
     private fun buttonInDigits4(position: Int) = buttonAt(R.id.brv_digits_4, position)
     private fun buttonInDigits8(position: Int) = buttonAt(R.id.brv_digits_8, position)
@@ -33,6 +32,18 @@ abstract class MainActivityTest {
     private fun buttonInOps3(position: Int) = buttonAt(R.id.brv_op_3, position)
     private fun buttonInOps4(position: Int) = buttonAt(R.id.brv_op_4, position)
 
+    // but word size buttons are special case
+    private fun modeRadioButton(@IdRes btnId: Int): ViewInteraction {
+        return onView(
+                allOf(withId(btnId),
+                        isDisplayed()))
+    }
+
+    private fun word8() = modeRadioButton(R.id.radio_8)
+    private fun word16() = modeRadioButton(R.id.radio_16)
+    private fun word32() = modeRadioButton(R.id.radio_32)
+    private fun word64() = modeRadioButton(R.id.radio_64)
+    private fun wordInf() = modeRadioButton(R.id.radio_inf)
 
     // map buttons to chars so we can express series of presses as a simple string
     private val buttonMap = mapOf(
@@ -44,11 +55,12 @@ abstract class MainActivityTest {
             'F' to buttonInDigitsC(3),
 
             // and here we see the limitations of using chars as indexes...  :)
-            'z' to buttonInModes(0), 'y' to buttonInModes(1), 'x' to buttonInModes(2),
-            'w' to buttonInModes(3), 'I' to buttonInModes(4),
+            'z' to word8(), 'y' to word16(), 'x' to word32(), 'w' to word64(), 'I' to wordInf(),
 
-            'c' to buttonInOps0(0), '~' to buttonInOps1(0), '&' to buttonInOps2(0),
-            '|' to buttonInOps2(1), '*' to buttonInOps3(0), '/' to buttonInOps3(1),
+            'c' to buttonInOps0(0), 'e' to buttonInOps0(1),
+            '~' to buttonInOps1(0), 's' to buttonInOps1(1),
+            '&' to buttonInOps2(0), '|' to buttonInOps2(1),
+            '*' to buttonInOps3(0), '/' to buttonInOps3(1),
             '+' to buttonInOps4(0), '-' to buttonInOps4(1)
     )
 
@@ -57,8 +69,11 @@ abstract class MainActivityTest {
     private val tvCurrent = onView(allOf(withId(R.id.tv_current), isDisplayed()))
     private val tvOutput = onView(allOf(withId(R.id.tv_output), isDisplayed()))
 
-    protected fun checkCurrentIs(value: String): ViewInteraction = tvCurrent.check(matches(withText(value)))
-    protected fun checkOutputIs(value: String): ViewInteraction = tvOutput.check(matches(withText(value)))
+    protected fun checkCurrentIs(value: String): ViewInteraction = tvCurrent.check(matches(withText(value.replace("_", ""))))
+    protected fun checkOutputIs(value: String): ViewInteraction {
+        val fixed = value.replace("_", "")
+        return tvOutput.check(matches(withText(fixed)))
+    }
 
     /**
      * Given a string, clicks the button associated with each char in the string, in order.
@@ -124,5 +139,9 @@ abstract class MainActivityTest {
     abstract fun testSubtract()
     abstract fun testAND()
     abstract fun testOR()
+    abstract fun testInvert()
+    abstract fun test2sComplement()
     abstract fun testClearNull()
+    abstract fun testInvertCurrent()
+    abstract fun test2sCompCurrent()
 }

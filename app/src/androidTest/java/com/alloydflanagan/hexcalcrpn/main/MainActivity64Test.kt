@@ -180,4 +180,70 @@ class MainActivity64Test: MainActivityTest() {
         checkCurrentIs("0")
     }
 
+    @Test
+    override fun testInvert() {
+        enterKeys("0123_4567_89AB_CDEF")
+        enter()
+        checkOutputIs("123_4567_89AB_CDEF")
+        enterKeys("~")
+        checkOutputIs("FEDC_BA98_7654_3210")
+        enterKeys("~")
+        checkOutputIs("123_4567_89AB_CDEF")
+        enterKeys("cF")
+        enter()
+        enterKeys("~")
+        checkOutputIs("FFFF_FFFF_FFFF_FFF0")
+        enterKeys("c")
+        enter()
+        enterKeys("~")
+        checkOutputIs("FFFF_FFFF_FFFF_FFFF")
+    }
+
+    @Test
+    override fun test2sComplement() {
+        enterKeys("123_4567_89AB_CDEF")
+        enter()
+        checkOutputIs("123_4567_89AB_CDEF")
+        enterKeys("s")
+        checkOutputIs("FEDC_BA98_7654_3211")
+        enterKeys("s")
+        checkOutputIs("123_4567_89AB_CDEF")
+        enterKeys("cF")
+        enter()
+        enterKeys("s")
+        checkOutputIs("FFFF_FFFF_FFFF_FFF1")
+        enterKeys("c")
+        enter()
+        enterKeys("s")
+        checkOutputIs("0")
+    }
+
+    @Test
+    override fun testInvertCurrent() {
+        enterKeys("0123_4567_89AB_CDEF")
+        checkCurrentIs("123_4567_89AB_CDEF")
+        enterKeys("~")
+        checkCurrentIs("FEDC_BA98_7654_3210")
+        enterKeys("~")
+        checkCurrentIs("123_4567_89AB_CDEF")
+        enterKeys("cF")
+        enterKeys("~")
+        checkCurrentIs("FFFF_FFFF_FFFF_FFF0")
+        enterKeys("c0~")
+        checkCurrentIs("FFFF_FFFF_FFFF_FFFF")
+    }
+
+    @Test
+    override fun test2sCompCurrent() {
+        enterKeys("123_4567_89AB_CDEF")
+        checkCurrentIs("123_4567_89AB_CDEF")
+        enterKeys("s")
+        checkCurrentIs("FEDC_BA98_7654_3211")
+        enterKeys("s")
+        checkCurrentIs("123_4567_89AB_CDEF")
+        enterKeys("cFs")
+        checkCurrentIs("FFFF_FFFF_FFFF_FFF1")
+        enterKeys("cs")
+        checkCurrentIs("0")
+    }
 }

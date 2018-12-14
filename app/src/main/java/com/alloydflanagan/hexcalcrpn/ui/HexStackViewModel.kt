@@ -101,25 +101,33 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
     private fun doUnaryOp(op: Char) {
         val hs = mStack.value
         if (hs != null) {
-            if (hasCurrentValue()) {
+            // currently all unary ops don't work in infinite mode, so
+            if (hs.bits == BitsMode.INFINITE) return
+            // if stack is empty, operate on current value even if it is "0"
+            if (hasCurrentValue() || hs.isEmpty) {
                 hs.push(currentBigInt())
                 when (op) {
                     '~' -> hs.invert()
+                    '2' -> hs.twosComplement()
                     else -> throw IllegalStateException("op must be unary operator: got '$op'")
                 }
                 val temp = hs.pop()
                 mCurrStr = StringBuilder()
                 mCurrStr.append(temp.toString(16).toUpperCase())
                 mCurrent.postValue(temp)
+                // Note mStack is unchanged!
             } else {
-                if (hs.size > 0) {
-                    when (op) {
-                        '~' -> {
-                            hs.invert()
-                            mStack.postValue(hs)
-                        }
-                        else -> throw IllegalStateException("op must be unary operator: got '$op'")
+                // hs.isEmpty == false
+                when (op) {
+                    '~' -> {
+                        hs.invert()
+                        mStack.postValue(hs)
                     }
+                    '2' -> {
+                        hs.twosComplement()
+                        mStack.postValue(hs)
+                    }
+                    else -> throw IllegalStateException("op must be unary operator: got '$op'")
                 }
             }
         }
