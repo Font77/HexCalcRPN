@@ -60,7 +60,7 @@ dependencies {
 
     // dependency injection
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodeinVersion"
-    implementation "org.kodein.di:kodein-di-framework-android:$kodeinVersion"
+    implementation "org.kodein.di:kodein-di-framework-android-x:$kodeinVersion"
 
     // mocks for testing
     testImplementation "org.mockito:mockito-core:$mockitoVersion"

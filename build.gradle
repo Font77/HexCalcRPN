@@ -39,10 +39,11 @@ ext {
     preferencesVersion = '1.1.0-alpha02'
     legacySupportVersion = '1.0.0'
 
-    // kodein artifacts for 5.2.0 fail to resolve (?)
-    kodeinVersion = '5.1.1'
+    kodeinVersion = '6.0.1'
+
     mockitoVersion = '2.19.0'
     mockitoKotlinVersion = '2.0.0-RC1'
+
     timberVersion = '4.7.1'
 
     coreKtxVersion = '1.0.1'
