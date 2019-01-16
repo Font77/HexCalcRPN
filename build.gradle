@@ -8,11 +8,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // tell lint I don't want the *(*&)*&Y)ing alpha version
-        //noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:3.4.0-alpha08'
+        classpath 'com.android.tools.build:gradle:3.5.0-alpha01'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:${dokka_version}"
+        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -32,12 +30,14 @@ task clean(type: Delete) {
 ext {
     androidxVersion = '1.0.2'
     androidxTestVersion = '1.1.0-alpha4'
-    constraintLayoutVersion = '2.0.0-alpha2'
+    constraintLayoutVersion = '2.0.0-alpha3'
     espressoVersion = '3.1.0-alpha4'
     junitVersion = '4.12'
     lifecycleVersion = '2.0.0'
-    navigationVersion = '1.0.0-alpha08'
+    navigationVersion = '1.0.0-alpha09'
     navigationTestVersion = '1.0.0-alpha06'
+    preferencesVersion = '1.1.0-alpha02'
+    legacySupportVersion = '1.0.0'
 
     // kodein artifacts for 5.2.0 fail to resolve (?)
     kodeinVersion = '5.1.1'
