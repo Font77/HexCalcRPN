@@ -55,6 +55,7 @@
         android:paddingTop="@dimen/tv_output_vert_padding"
         android:paddingEnd="@dimen/tv_output_horiz_padding"
         android:paddingBottom="@dimen/tv_output_vert_padding"
+        android:textAlignment="viewEnd"
         app:layout_constraintBottom_toTopOf="@id/tv_current"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
