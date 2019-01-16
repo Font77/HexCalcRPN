@@ -9,4 +9,13 @@
     <string name="label_bits_32">32</string>
     <string name="label_bits_64">64</string>
     <string name="label_bits_inf">∞</string>
+    <string name="app_description">A hexadecimal calculator using RPN notation.</string>
+
+    <!-- Preferences -->
+    <string name="pref_init_size_desc">The word size set on startup.</string>
+    <string name="pref_digits_sep_desc">App puts a small space between every four hex digits,
+    for readability. Recommended, but turn off if you don\'t want it.</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_init_size_title">Initial Word Size</string>
+    <string name="pref_digits_sep_title">Digit Grouping</string>
 </resources>

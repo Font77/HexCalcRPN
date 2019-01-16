@@ -10,17 +10,35 @@ enum class BitsMode(private val numBits: Int) {
         return if (numBits == 0) "\u221E" else numBits.toString()
     }
 
+    /// Convert to a preferences setting
+    fun toPreference(): BitsPreference = when(this) {
+        EIGHT -> BitsPreference.EIGHT
+        SIXTEEN -> BitsPreference.SIXTEEN
+        THIRTY_TWO -> BitsPreference.THIRTY_TWO
+        SIXTY_FOUR -> BitsPreference.SIXTY_FOUR
+        INFINITE -> BitsPreference.INFINITE
+    }
+
     companion object {
         @JvmStatic
-        fun fromString(mode: String): BitsMode {
-            return when (mode) {
-                EIGHT.toString() -> EIGHT
-                SIXTEEN.toString() -> SIXTEEN
-                THIRTY_TWO.toString() -> THIRTY_TWO
-                SIXTY_FOUR.toString() -> SIXTY_FOUR
-                INFINITE.toString() -> INFINITE
-                else -> throw Exception("BitsMode.fromString() got invalid argument $mode")
-            }
+        fun fromString(mode: String): BitsMode = when (mode) {
+            EIGHT.toString() -> EIGHT
+            SIXTEEN.toString() -> SIXTEEN
+            THIRTY_TWO.toString() -> THIRTY_TWO
+            SIXTY_FOUR.toString() -> SIXTY_FOUR
+            INFINITE.toString() -> INFINITE
+            else -> throw Exception("BitsMode.fromString() got invalid argument $mode")
+        }
+
+        @JvmStatic
+        fun fromPreference(pref: BitsPreference): BitsMode = when (pref) {
+            BitsPreference.EIGHT -> EIGHT
+            BitsPreference.SIXTEEN -> SIXTEEN
+            BitsPreference.THIRTY_TWO -> THIRTY_TWO
+            BitsPreference.SIXTY_FOUR -> SIXTY_FOUR
+            BitsPreference.INFINITE -> INFINITE
+            // if we get here some other code screwed up
+            BitsPreference.PREVIOUS -> throw Exception("Don't know how to handle pref PREVIOUS")
         }
     }
 }
