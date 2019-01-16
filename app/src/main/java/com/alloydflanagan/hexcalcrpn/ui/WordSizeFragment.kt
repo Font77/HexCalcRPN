@@ -11,9 +11,6 @@ import com.alloydflanagan.hexcalcrpn.R
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import timber.log.Timber
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_WORD_SIZE = "word_size"
-
 /**
  * A group of radio buttons for selecting a word size.
  *
@@ -23,14 +20,10 @@ private const val ARG_WORD_SIZE = "word_size"
  *
  */
 class WordSizeFragment : Fragment(), View.OnClickListener {
-    private var wordSize: BitsMode? = null
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.apply {
-            wordSize = BitsMode.fromString(getString(ARG_WORD_SIZE) ?: BitsMode.THIRTY_TWO.toString())
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +32,9 @@ class WordSizeFragment : Fragment(), View.OnClickListener {
         val view = inflater.inflate(R.layout.fragment_word_size, container, false)
         // why does setup default to making the Activity the OnClickListener? How is that modular?
         // and doesn't it conflict with the idea of [OnFragmentInteractionListener]
+
+        // for some reason, kotlin's synthetic objects aren't set up here, so still have to
+        // use [findViewById]
         val btns = arrayListOf(R.id.radio_8, R.id.radio_16,
                 R.id.radio_32, R.id.radio_64, R.id.radio_inf)
         for (btn in btns) {
@@ -93,21 +89,15 @@ class WordSizeFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
+
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param word_size Initial word size. Should be output of [BitsMode.toString].
-
          * @return A new instance of fragment WordSizeFragment.
          */
         @Suppress("UNUSED")
         @JvmStatic
-        fun newInstance(word_size: BitsMode) =
-                WordSizeFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_WORD_SIZE, word_size.toString())
-                    }
-                }
+        fun newInstance() = WordSizeFragment()
     }
 }
