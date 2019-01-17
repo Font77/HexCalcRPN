@@ -1,3 +1,19 @@
+//    HexCalcRPN - Android application to do arithmetic on hexadecimal values
+//    Copyright (C) 2019 Adrian L Flanagan
+//
+//    This program is free software: you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation, either version 3 of the License, or
+//    (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//        GNU General Public License for more details.
+//
+//    You should have received a copy of the GNU General Public License
+//            along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 package com.alloydflanagan.hexcalcrpn.main
 
 import android.app.Application
@@ -11,6 +27,9 @@ import org.kodein.di.generic.singleton
 import timber.log.Timber
 import java.math.BigInteger
 
+/**
+ * Application object. Sets up Kodein and Timber.
+ */
 @Suppress("UNUSED")
 class MainApplication: Application(), KodeinAware {
     override val kodein = Kodein.lazy {
@@ -18,6 +37,9 @@ class MainApplication: Application(), KodeinAware {
         bind<AbstractStackViewModel<BigInteger>>() with singleton { HexStackViewModel() }
     }
 
+    /**
+     * "Plants" a Timber debug tree.
+     */
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
