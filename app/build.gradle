@@ -29,15 +29,15 @@ android {
 
 
 dependencies {
+    implementation "androidx.preference:preference:$preferencesVersion"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
     // compatibility
     implementation "androidx.appcompat:appcompat:$androidxVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
 
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.legacy:legacy-support-v4:$legacySupportVersion"
-    implementation "androidx.preference:preference:$preferencesVersion"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
 
     // ktx extensions
     implementation "androidx.core:core-ktx:$coreKtxVersion"
@@ -54,8 +54,10 @@ dependencies {
 
     // testing basics
     testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     androidTestImplementation "androidx.test:runner:$androidxTestVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation "androidx.test:rules:$androidxTestVersion"
 
     // dependency injection
@@ -63,9 +65,9 @@ dependencies {
     implementation "org.kodein.di:kodein-di-framework-android-x:$kodeinVersion"
 
     // mocks for testing
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
-    testImplementation "org.mockito:mockito-inline:$mockitoVersion"
-    androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
+//    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+//    testImplementation "org.mockito:mockito-inline:$mockitoVersion"
+//    androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
 
     // mockito with kotlin sugar
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
