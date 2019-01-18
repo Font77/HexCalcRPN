@@ -25,7 +25,7 @@ import kotlin.test.assertEquals
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class SaveLastWordSizeTest {
+class WordSizePreferenceTests {
 
     private lateinit var prefs: AppPreferences
 
