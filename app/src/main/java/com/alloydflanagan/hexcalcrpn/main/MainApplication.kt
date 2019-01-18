@@ -30,7 +30,7 @@ import java.math.BigInteger
 /**
  * Application object. Sets up Kodein and Timber.
  */
-@Suppress("UNUSED")
+@Suppress("UNUSED")  // linter doesn't understand Android manifest, apparently
 class MainApplication: Application(), KodeinAware {
     override val kodein = Kodein.lazy {
         import(androidModule(this@MainApplication))
