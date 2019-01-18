@@ -17,7 +17,6 @@
 package com.alloydflanagan.hexcalcrpn.main
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -25,7 +24,6 @@ import android.view.View
 import android.view.View.OnClickListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import com.alloydflanagan.hexcalcrpn.R
 import com.alloydflanagan.hexcalcrpn.model.AppPreferences
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
@@ -48,7 +46,6 @@ class MainActivity : AppCompatActivity(),
         OperatorFragment.OnFragmentInteractionListener,
         DigitsFragment.OnFragmentInteractionListener,
         WordSizeFragment.OnFragmentInteractionListener,
-        SharedPreferences.OnSharedPreferenceChangeListener,
         KodeinAware {
 
     /** access to <a href="https://kodein.org/">Kodein</a> bindings */
@@ -174,7 +171,6 @@ class MainActivity : AppCompatActivity(),
             if (txt != tv_output.text) tv_output.text = txt
             selectCurrentBitsMode()
         })
-
     }
 
     /**
@@ -190,10 +186,5 @@ class MainActivity : AppCompatActivity(),
         }
         setBitsModeFromPrefs()
         selectCurrentBitsMode()
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        Timber.w("Received notification of a shared preferences change for key $key")
-        Timber.w("Did nothing!")
     }
 }

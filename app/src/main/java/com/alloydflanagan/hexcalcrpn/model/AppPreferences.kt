@@ -74,7 +74,7 @@ class AppPreferences(context: Context) {
         const val PREF_INIT_WORD_SIZE_KEY = "init_size"
         const val PREF_INIT_WORD_SIZE_DEFAULT = "bits32"
 
-        const val PREF_SEPARATE_DIGITS_KEY = "digit_sep"
+        const val PREF_SEPARATE_DIGITS_KEY = "digit_group"
         const val PREF_SEPARATE_DIGITS_DEFAULT = true
 
         const val PREF_LAST_WORD_SIZE_KEY = "last_size"

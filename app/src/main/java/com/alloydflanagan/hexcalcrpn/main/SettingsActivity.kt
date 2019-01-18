@@ -6,6 +6,8 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference.SummaryProvider
 import androidx.preference.PreferenceFragmentCompat
 import com.alloydflanagan.hexcalcrpn.R
+import com.alloydflanagan.hexcalcrpn.model.AppPreferences
+import timber.log.Timber
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -23,13 +25,15 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-            val bitsPreference = findPreference("init_size") as ListPreference
+            val bitsPreference: ListPreference? = findPreference(AppPreferences.PREF_INIT_WORD_SIZE_KEY)
 
-            bitsPreference.summaryProvider = SummaryProvider<ListPreference> {
-                "Currently: ${it.entry}\n${getString(R.string.pref_init_size_desc)}"
+            if (bitsPreference != null) {
+                bitsPreference.summaryProvider = SummaryProvider<ListPreference> {
+                    "Currently: ${it.entry}\n${getString(R.string.pref_init_size_desc)}"
+                }
+            } else {
+                Timber.e("Unable to find ${AppPreferences.PREF_INIT_WORD_SIZE_KEY} preference!!")
             }
         }
     }
-
-
 }
