@@ -35,10 +35,19 @@ class AppPreferences(context: Context) {
      */
     private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-    val prefInitSize: BitsPreference
+    var prefInitSize: BitsPreference
         get() {
             val setting = prefs.getString(PREF_INIT_WORD_SIZE_KEY, PREF_INIT_WORD_SIZE_DEFAULT)
             return BitsPreference.fromValue(setting) ?: BitsPreference.THIRTY_TWO
+        }
+        set(value) {
+            val setting = prefs.getString(PREF_INIT_WORD_SIZE_KEY, PREF_INIT_WORD_SIZE_DEFAULT)
+            val current = BitsPreference.fromValue(setting)
+            if (current != value) {
+                prefs.edit {
+                    putString(PREF_INIT_WORD_SIZE_KEY, value.toValue())
+                }
+            }
         }
 
     @Suppress("unused")
