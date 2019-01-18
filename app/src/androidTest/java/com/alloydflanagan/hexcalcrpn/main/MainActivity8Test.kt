@@ -2,7 +2,7 @@ package com.alloydflanagan.hexcalcrpn.main
 
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.Before
 import org.junit.Rule
@@ -35,6 +35,7 @@ class MainActivity8Test:  MainActivityTest() {
      * Verify that pressing a series of digits creates a number in the current value register,
      * and that pressing "clear" resets that number to 0.
      */
+    @Suppress("SpellCheckingInspection")
     @Test
     override fun testEntry() {
         enterKeys("8")
@@ -50,6 +51,7 @@ class MainActivity8Test:  MainActivityTest() {
     /**
      * Verify that we can do simple addition.
      */
+    @Suppress("SpellCheckingInspection")
     @Test
     override fun testAdd() {
         enterKeys("1234")
@@ -184,6 +186,7 @@ class MainActivity8Test:  MainActivityTest() {
         checkCurrentIs("0")
     }
 
+    @Suppress("SpellCheckingInspection")
     @Test
     override fun testInvert() {
         enterKeys("ABCD")
@@ -202,6 +205,7 @@ class MainActivity8Test:  MainActivityTest() {
 
     @Test
     override fun test2sComplement() {
+        @Suppress("SpellCheckingInspection")
         enterKeys("ABCD")
         enter()
         checkOutputIs("CD")
@@ -218,6 +222,7 @@ class MainActivity8Test:  MainActivityTest() {
 
     @Test
     override fun testInvertCurrent() {
+        @Suppress("SpellCheckingInspection")
         enterKeys("ABCD")
         enterKeys("~")
         checkCurrentIs("32")
@@ -235,6 +240,7 @@ class MainActivity8Test:  MainActivityTest() {
 
     @Test
     override fun test2sCompCurrent() {
+        @Suppress("SpellCheckingInspection")
         enterKeys("ABCD")
         enterKeys("s")
         checkCurrentIs("33")

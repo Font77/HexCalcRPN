@@ -1,10 +1,10 @@
 package com.alloydflanagan.hexcalcrpn.main
 
 
-import androidx.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.Assert
 import org.junit.Before
@@ -14,6 +14,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
+@Suppress("SpellCheckingInspection")
 class MainActivityInfTest: MainActivityTest() {
 
     @Rule
@@ -42,7 +43,7 @@ class MainActivityInfTest: MainActivityTest() {
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        val appContext = InstrumentationRegistry.getTargetContext()
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         Assert.assertEquals("com.alloydflanagan.hexcalcrpn", appContext.packageName)
     }
 

@@ -12,3 +12,4 @@
 /captures
 .externalNativeBuild
 .idea/kotlinc.xml
+.idea/codeStyles/

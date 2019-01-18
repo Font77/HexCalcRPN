@@ -53,8 +53,10 @@ dependencies {
     implementation "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
 
     // testing basics
-    testImplementation "junit:junit:$junitVersion"
+    testImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     androidTestImplementation "androidx.test:runner:$androidxTestVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
@@ -63,11 +65,6 @@ dependencies {
     // dependency injection
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodeinVersion"
     implementation "org.kodein.di:kodein-di-framework-android-x:$kodeinVersion"
-
-    // mocks for testing
-//    testImplementation "org.mockito:mockito-core:$mockitoVersion"
-//    testImplementation "org.mockito:mockito-inline:$mockitoVersion"
-//    androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
 
     // mockito with kotlin sugar
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
