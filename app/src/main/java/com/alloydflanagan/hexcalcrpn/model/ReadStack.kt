@@ -20,6 +20,7 @@ enum class BitsMode(private val numBits: Int) {
     }
 
     companion object {
+        @Suppress("unused")
         @JvmStatic
         fun fromString(mode: String): BitsMode = when (mode) {
             EIGHT.toString() -> EIGHT

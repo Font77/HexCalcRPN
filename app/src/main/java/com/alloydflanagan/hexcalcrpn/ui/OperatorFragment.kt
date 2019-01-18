@@ -56,7 +56,7 @@ class OperatorFragment : Fragment(), View.OnClickListener {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -82,6 +82,7 @@ class OperatorFragment : Fragment(), View.OnClickListener {
          * @return A new instance of fragment OperatorFragment.
          */
         @JvmStatic
+        @Suppress("unused")
         fun newInstance() = OperatorFragment()
     }
 }

@@ -30,6 +30,7 @@ import timber.log.Timber
  * @param attrs Initial values of attributes.
  * @param defStyle Style to be used if none is set by `attrs`.
  */
+@Suppress("SpellCheckingInspection")
 class ButtonRowView(context: Context,
                     attrs: AttributeSet? = null,
                     defStyle: Int = 0) : LinearLayoutCompat(context, attrs, defStyle), OnClickListener {
@@ -45,7 +46,7 @@ class ButtonRowView(context: Context,
      * The text label of the last button clicked by the user.
      */
     // ktlint is falsely saying this could be private, even though it's accessed in MainActivity
-    @Suppress("PRIVATE")
+    @Suppress("PRIVATE", "SpellCheckingInspection")
     var clickedText = ""
         private set
 

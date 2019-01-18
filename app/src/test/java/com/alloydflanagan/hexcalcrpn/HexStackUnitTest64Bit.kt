@@ -107,8 +107,8 @@ class HexStackUnitTest64Bit {
         stack.push(-5)
         stack.multiply()
         assertEquals(1, stack.size)
-        val twosComplOf75 = BIG_INT_MAX_64 - BigInteger.valueOf(74)
-        assertEquals(twosComplOf75, stack.pop())
+        val twosComplementOf75 = BIG_INT_MAX_64 - BigInteger.valueOf(74)
+        assertEquals(twosComplementOf75, stack.pop())
         stack.push(0xBAD_BEEF)
         stack.push(0xFFF)
         // == BAD0413111 ==> D0413111
@@ -167,6 +167,7 @@ class HexStackUnitTest64Bit {
 
         stack.push(0x1234_FACE_0FF1)
         stack.push(0x5678_BEEF_FACE)
+        @Suppress("SpellCheckingInspection")
         assertEquals("1234FACE0FF1\n5678BEEFFACE", stack.toString())
     }
 
@@ -206,6 +207,7 @@ class HexStackUnitTest64Bit {
     @Test
     fun twosComplementIsCorrect() {
         val value = 0xABCD_EF01_1234
+        @Suppress("SpellCheckingInspection")  // should be better way
         // FFFF543210FEEDCC
         val complement = BigInteger.valueOf(0xFFF_F543_210F_EEDC)
                 .multiply(BigInteger.valueOf(16))

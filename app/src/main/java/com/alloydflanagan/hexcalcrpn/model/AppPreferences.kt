@@ -3,11 +3,11 @@ package com.alloydflanagan.hexcalcrpn.model
 import android.content.Context
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.alloydflanagan.hexcalcrpn.R
 
 /**
  * BitsPreference enum for startup bitsmode preference setting. Not to be confused with [BitsMode]!
  */
+@Suppress("SpellCheckingInspection")
 enum class BitsPreference(private val value: String) {
     EIGHT("bits8"), SIXTEEN("bits16"), THIRTY_TWO("bits32"),
     SIXTY_FOUR("bits64"), INFINITE("bitsinf"), PREVIOUS("bitslast");
@@ -15,7 +15,7 @@ enum class BitsPreference(private val value: String) {
     fun toValue() = this.value
 
     companion object {
-        val mapping = mapOf("bits8" to EIGHT, "bits16" to SIXTEEN,
+        private val mapping = mapOf("bits8" to EIGHT, "bits16" to SIXTEEN,
                 "bits32" to THIRTY_TWO, "bits64" to SIXTY_FOUR, "bitsinf" to INFINITE,
                 "bitslast" to PREVIOUS)
 
@@ -27,21 +27,22 @@ enum class BitsPreference(private val value: String) {
 /**
  * Class for getting application-wide user preference settings.
  *
- * These settings are set by [PreferenceFragmentCompat] so setters are not required.
+ * These settings are set by [androidx.preference.PreferenceFragmentCompat] so setters are not required.
  */
-class AppPreferences(private val context: Context) {
+class AppPreferences(context: Context) {
     /**
-     * The preferences file used by the [PreferenceFragmentCompat] fragments.
+     * The preferences file used by the [androidx.preference.PreferenceFragmentCompat] fragments.
      */
     private val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-    var prefInitSize: BitsPreference = BitsPreference.THIRTY_TWO
+    val prefInitSize: BitsPreference
         get() {
             val setting = prefs.getString(PREF_INIT_WORD_SIZE_KEY, PREF_INIT_WORD_SIZE_DEFAULT)
             return BitsPreference.fromValue(setting) ?: BitsPreference.THIRTY_TWO
         }
 
-    var prefDigitSep: Boolean = true // initializer required but never used
+    @Suppress("unused")
+    val prefDigitSep: Boolean
         // can't just set in initializer
         get() = prefs.getBoolean(PREF_SEPARATE_DIGITS_KEY, PREF_SEPARATE_DIGITS_DEFAULT)
 

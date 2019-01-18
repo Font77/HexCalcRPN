@@ -22,10 +22,6 @@ import timber.log.Timber
 class WordSizeFragment : Fragment(), View.OnClickListener {
     private var listener: OnFragmentInteractionListener? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -35,10 +31,10 @@ class WordSizeFragment : Fragment(), View.OnClickListener {
 
         // for some reason, kotlin's synthetic objects aren't set up here, so still have to
         // use [findViewById]
-        val btns = arrayListOf(R.id.radio_8, R.id.radio_16,
+        val buttons = arrayListOf(R.id.radio_8, R.id.radio_16,
                 R.id.radio_32, R.id.radio_64, R.id.radio_inf)
-        for (btn in btns) {
-            val btnView = view.findViewById<RadioButton>(btn)
+        for (button in buttons) {
+            val btnView = view.findViewById<RadioButton>(button)
             btnView.setOnClickListener(this)
         }
         return view
@@ -64,7 +60,7 @@ class WordSizeFragment : Fragment(), View.OnClickListener {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

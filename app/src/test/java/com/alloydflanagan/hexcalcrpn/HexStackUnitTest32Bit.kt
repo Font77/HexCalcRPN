@@ -148,6 +148,7 @@ class HexStackUnitTest32Bit {
 
         stack.push(0x1234_FACE_0FF1)
         stack.push(0x5678_BEEF_FACE)
+        @Suppress("SpellCheckingInspection")
         assertEquals("FACE0FF1\nBEEFFACE", stack.toString())
     }
 

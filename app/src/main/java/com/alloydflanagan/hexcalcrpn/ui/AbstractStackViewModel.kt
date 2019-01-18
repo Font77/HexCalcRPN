@@ -33,6 +33,7 @@ abstract class AbstractStackViewModel<T>: ViewModel() {
     /**
      * Does the stack have a current value input?
      */
+    @Suppress("unused")
     abstract fun hasCurrentValue(): Boolean
 
     /**

@@ -4,15 +4,19 @@ import java.io.Serializable
 import java.math.BigInteger
 import java.util.*
 
-/**
- * A class to manage a stack of BigIntegers with operators.
- */
 
+/**
+ * A class to manage a stack of [BigInteger]s with operators.
+ */
+@Suppress("unused")
 class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
-    // Underlying stack. We don't inherit from Deque because we haven't implemented all the methods
+    // Underlying stack. We don't inherit from [Deque] because we haven't implemented all the methods
     private var stack: Deque<BigInteger> = ArrayDeque<BigInteger>(numElements)
 
+   /**
+     * The emulated word size for calculations.
+     */
     override var bits = BitsMode.INFINITE
             /**
              * Set number of bits assumed for calculations. NOTE: resets the
@@ -27,6 +31,9 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     override val size
         get() = stack.size
 
+    /**
+     * Returns a copy of the current stack of [BigInteger]s.
+     */
     // safe because BigInteger is immutable class
     override val contents
         get() = stack.map { it }
@@ -45,7 +52,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     }
 
     /**
-     * Constructs a HexStack containing the elements of the specified
+     * Constructs a [HexStack] containing the elements of the specified
      * collection, in the order they are returned by the collection's
      * iterator.
      *
@@ -59,7 +66,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     }
 
     /**
-     * Constructs a HexStack with non-default BitsMode
+     * Constructs a [HexStack] with non-default [BitsMode]
      *
      * @param bits Number of bits in word size
      */
@@ -68,7 +75,7 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     }
 
     /**
-     * Copy constructor. We do not implement Cloneable.
+     * Copy constructor. We do not implement [kotlin::Cloneable].
      */
     constructor(hs: HexStack) : this(hs.size) {
         bits = hs.bits
@@ -83,27 +90,27 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
      * TOS will be at the bottom, stack grows up.
      */
     override fun toString(): String {
-        val bldr = StringBuilder()
+        val builder = StringBuilder()
         // pop each item, convert to string, add it back to deque
         for (i in 0 until stack.size) {
             val value = stack.pop()
             val asString = value.toString(16).toUpperCase()
-            if (i != 0) bldr.insert(0, '\n')
-            bldr.insert(0, asString)
+            if (i != 0) builder.insert(0, '\n')
+            builder.insert(0, asString)
             stack.addLast(value)
         }
-        return bldr.toString()
+        return builder.toString()
     }
 
     /**
      * Pops the top two elements off the stack, and pushes the result of multiplying them.
      *
-     * ```
+     * <code>
      * push(AA)
      * push(BB)
      * multiply()
      * pop() -> 7C2E
-     * ```
+     * </code>
      */
     fun multiply() = push(pop().multiply(pop()))
 
@@ -189,11 +196,13 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
 
     override fun peek(): BigInteger? = stack.peek()
 
+    @Suppress("private")
     fun push(value: BigInteger) = stack.push(truncate(value))
 
     fun push(aNum: Long) = stack.push(truncate(BigInteger.valueOf(aNum)))
 
     /** @throws NoSuchElementException - if queue is empty */
+    @Suppress("private")
     fun pop(): BigInteger = stack.pop()
 
     override operator fun contains(o: BigInteger) = stack.contains(o)

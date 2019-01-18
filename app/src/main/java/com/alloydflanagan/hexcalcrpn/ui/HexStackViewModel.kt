@@ -189,6 +189,7 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
         }
     }
 
+    @Suppress("unused")
     companion object {
         val BINARY_OPS = HashSet<Char>(arrayListOf('+', '-', '*', '/', '%', 'X', '&', '|'))
         val UNARY_OPS = HashSet<Char>(arrayListOf('!', '~', '2'))  // 2 => 2's complement
