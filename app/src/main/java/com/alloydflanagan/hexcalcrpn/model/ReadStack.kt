@@ -83,4 +83,9 @@ interface ReadStack<T> {
      * Elements are copies, or references to immutable objects.
      */
     val contents: List<T>
+
+    /**
+     * Like [toString], but puts spaces between each group of four digits
+     */
+    fun toSpacedString(): String
 }

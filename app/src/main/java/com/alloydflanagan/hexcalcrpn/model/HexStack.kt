@@ -17,16 +17,16 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
    /**
      * The emulated word size for calculations.
      */
-    override var bits = BitsMode.INFINITE
-            /**
-             * Set number of bits assumed for calculations. NOTE: resets the
-             * stack to empty.
-             */
-            set(value) {
-                // decided not to check if _bits == value; always clear stack for consistency.
-                field = value
-                stack.clear()
-            }
+   override var bits = BitsMode.INFINITE
+       /**
+        * Set number of bits assumed for calculations. NOTE: resets the
+        * stack to empty.
+        */
+       set(value) {
+           // decided not to check if _bits == value; always clear stack for consistency.
+           field = value
+           stack.clear()
+       }
 
     override val size
         get() = stack.size
@@ -98,6 +98,38 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
             if (i != 0) builder.insert(0, '\n')
             builder.insert(0, asString)
             stack.addLast(value)
+        }
+        return builder.toString()
+    }
+
+    /**
+     * @return String with each element as a hex number, separated by newlines.
+     *
+     * TOS will be at the bottom, stack grows up.
+     */
+    override fun toSpacedString(): String {
+        val builder = StringBuilder()
+        // pop each item, convert to string, add it back to deque
+        for (i in 0 until stack.size) {
+            val value = stack.pop()
+            var asString = value.toString(16).toUpperCase()
+            if (i != 0) builder.insert(0, '\n')
+            asString = spacedString(asString)
+            builder.insert(0, asString)
+            stack.addLast(value)
+        }
+        return builder.toString()
+    }
+
+    private fun spacedString(value: String): String {
+        val builder = StringBuilder()
+        for (i in 0 until value.length) {
+            // distance from current pos to end of string
+            val digit_pos = value.length - i
+            if (i > 0 && digit_pos.rem(4) == 0) {
+                builder.append(' ')
+            }
+            builder.append(value[i])
         }
         return builder.toString()
     }

@@ -172,6 +172,25 @@ class HexStackUnitTest64Bit {
     }
 
     @Test
+    fun toSpacedString_isCorrect() {
+        stack.push(0x76DB_7168)
+        stack.push(0x41_3111)
+        stack.push(0xFFF)
+        assertEquals("76DB 7168\n41 3111\nFFF", stack.toSpacedString())
+        // verify stack not damaged
+        assertEquals(0xFFF, stack.pop())
+        assertEquals(0x41_3111, stack.pop())
+        assertEquals(0x76DB_7168, stack.pop())
+        assertEquals(0, stack.size)
+        assertEquals("", stack.toString())
+
+        stack.push(0x123_4FAC_E0FF)
+        stack.push(0x5678_BEEF_FACE)
+        @Suppress("SpellCheckingInspection")
+        assertEquals("123 4FAC E0FF\n5678 BEEF FACE", stack.toSpacedString())
+    }
+
+    @Test
     fun contains_isCorrect() {
         stack.push(15)
         stack.push(7)
