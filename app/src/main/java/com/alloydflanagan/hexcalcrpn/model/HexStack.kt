@@ -112,24 +112,10 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
         // pop each item, convert to string, add it back to deque
         for (i in 0 until stack.size) {
             val value = stack.pop()
-            var asString = value.toString(16).toUpperCase()
+            val asString = value.toSpacedString(16).toUpperCase()
             if (i != 0) builder.insert(0, '\n')
-            asString = spacedString(asString)
             builder.insert(0, asString)
             stack.addLast(value)
-        }
-        return builder.toString()
-    }
-
-    private fun spacedString(value: String): String {
-        val builder = StringBuilder()
-        for (i in 0 until value.length) {
-            // distance from current pos to end of string
-            val digit_pos = value.length - i
-            if (i > 0 && digit_pos.rem(4) == 0) {
-                builder.append(' ')
-            }
-            builder.append(value[i])
         }
         return builder.toString()
     }

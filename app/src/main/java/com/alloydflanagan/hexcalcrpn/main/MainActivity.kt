@@ -25,9 +25,7 @@ import android.view.View.OnClickListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.alloydflanagan.hexcalcrpn.R
-import com.alloydflanagan.hexcalcrpn.model.AppPreferences
-import com.alloydflanagan.hexcalcrpn.model.BitsMode
-import com.alloydflanagan.hexcalcrpn.model.BitsPreference
+import com.alloydflanagan.hexcalcrpn.model.*
 import com.alloydflanagan.hexcalcrpn.ui.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_word_size.*
@@ -162,15 +160,36 @@ class MainActivity : AppCompatActivity(),
         preferences = AppPreferences(this)
 
         viewModel.getCurrent().observe(this, Observer {
-            val fred = it?.toString(16)?.toUpperCase() ?: ""
-            if (fred != tv_current.text) tv_current.text = fred
+            if (it != null) {  // probably unnecessary
+                updateCurrent(it)
+            }
         })
 
         viewModel.getStack().observe(this, Observer {
-            val txt = it.toString().toUpperCase()
-            if (txt != tv_output.text) tv_output.text = txt
-            selectCurrentBitsMode()
+            updateStack(it)
         })
+    }
+
+    private fun updateStack(newValue: ReadStack<BigInteger>) {
+        val txt = if (preferences.prefDigitSep) {
+            newValue.toSpacedString().toUpperCase()
+        } else {
+            newValue.toString().toUpperCase()
+        }
+
+        if (txt != tv_output.text) tv_output.text = txt
+        selectCurrentBitsMode()
+    }
+
+    private fun updateCurrent(newValue: BigInteger) {
+        val fred = if (preferences.prefDigitSep) {
+            newValue.toSpacedString(16).toUpperCase()
+        }
+        else {
+            newValue.toString(16).toUpperCase()
+        }
+
+        if (fred != tv_current.text) tv_current.text = fred
     }
 
     /**
