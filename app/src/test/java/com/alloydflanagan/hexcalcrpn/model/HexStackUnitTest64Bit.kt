@@ -1,7 +1,5 @@
-package com.alloydflanagan.hexcalcrpn
+package com.alloydflanagan.hexcalcrpn.model
 
-import com.alloydflanagan.hexcalcrpn.model.BitsMode
-import com.alloydflanagan.hexcalcrpn.model.HexStack
 import java.math.BigInteger
 import kotlin.test.*
 

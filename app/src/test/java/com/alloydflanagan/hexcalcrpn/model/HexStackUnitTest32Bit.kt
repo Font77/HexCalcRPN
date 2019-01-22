@@ -1,4 +1,4 @@
-package com.alloydflanagan.hexcalcrpn
+package com.alloydflanagan.hexcalcrpn.model
 
 import com.alloydflanagan.hexcalcrpn.model.BitsMode
 import com.alloydflanagan.hexcalcrpn.model.HexStack
@@ -10,7 +10,7 @@ import kotlin.test.*
  *
  * @see [Testing documentation](http://d.android.com/tools/testing)
  */
-class HexStackUnitTest16Bit {
+class HexStackUnitTest32Bit {
 
     private lateinit var stack: HexStack
 
@@ -20,23 +20,23 @@ class HexStackUnitTest16Bit {
 
     @BeforeTest
     fun setup() {
-        stack = HexStack(BitsMode.SIXTEEN)
+        stack = HexStack(BitsMode.THIRTY_TWO)
     }
 
     @Test
     fun collectionConstructor_isCorrect() {
-        val list = arrayListOf(10L, 0xACBEEFL,
-                37L)
-        val hs = HexStack(list, BitsMode.SIXTEEN)
+        val list = arrayListOf(10, 0xBADBEEF,
+                0xBADFFFFFFFF)
+        val hs = HexStack(list, BitsMode.THIRTY_TWO)
         assertEquals(BigInteger.TEN, hs.pop())
-        assertEquals(0xBEEF, hs.pop())
-        assertEquals(37, hs.pop())
+        assertEquals(0xBADBEEF, hs.pop())
+        assertEquals(0xFFFFFFFF, hs.pop())
         assertEquals(0, hs.size)
     }
 
     @Test
     fun copyConstructor_isCorrect() {
-        stack.push(0xAA15)
+        stack.push(0xFFFFFFFF)
         stack.push(7)
         stack.push(23)
         val copy = HexStack(stack)
@@ -52,21 +52,21 @@ class HexStackUnitTest16Bit {
 
     @Test
     fun addition_isCorrect() {
-        stack.push(0xFFFF)
+        stack.push(7)
+        stack.push(3)
+        stack.add()
+        assertEquals(1, stack.size)
+        assertEquals(10, stack.pop())
+        stack.push(0xFFFFFFFF)
         stack.push(1)
         stack.add()
         assertEquals(1, stack.size)
         assertEquals(0, stack.pop())
-        stack.push(0xBE00)
-        stack.push(0xEF)
+        stack.push(53)
+        stack.push(0xFFFFFFE5)  // 2's comp of 27
         stack.add()
         assertEquals(1, stack.size)
-        assertEquals(0xBEEF, stack.pop())
-        stack.push(0xFFFF)
-        stack.push(0xBEF0) // 2's comp of 0x4110 for 16-bit word
-        stack.add()
-        assertEquals(1, stack.size)
-        assertEquals(0xBEEF, stack.pop())
+        assertEquals(26, stack.pop())
     }
 
     @Test
@@ -80,13 +80,12 @@ class HexStackUnitTest16Bit {
         stack.push(23)
         stack.subtract()
         assertEquals(1, stack.size)
-        assertEquals(0x1_0000 - 19, stack.pop())
-
-        stack.push(0xFFFFFF)
-        stack.push(0x4110)
+        assertEquals(0x1_0000_0000 - 19, stack.pop())
+        stack.push(0xFFFF_FFFF)
+        stack.push(0xABCD)
         stack.subtract()
         assertEquals(1, stack.size)
-        assertEquals(0xBEEF, stack.pop())
+        assertEquals(0xFFFF_5432, stack.pop())
     }
 
     @Test
@@ -99,12 +98,13 @@ class HexStackUnitTest16Bit {
         stack.push(-5)
         stack.multiply()
         assertEquals(1, stack.size)
-        assertEquals(0x10000 - 75, stack.pop())
-        stack.push(0x1234)
+        assertEquals(0x1_0000_0000 - 75, stack.pop())
+        stack.push(0xBADBEEF)
         stack.push(0xFFF)
+        // == BAD0413111 ==> D0413111
         stack.multiply()
         assertEquals(1, stack.size)
-        assertEquals(0x2DCC, stack.pop())
+        assertEquals(0xD0413111, stack.pop())
     }
 
     @Test
@@ -114,16 +114,11 @@ class HexStackUnitTest16Bit {
         stack.divide()
         assertEquals(1, stack.size)
         assertEquals(1, stack.pop())
-        stack.push(0xE699)
-        stack.push(0xF7)
+        stack.push(0xD0413111)
+        stack.push(0xFFF)
         stack.divide()
         assertEquals(1, stack.size)
-        assertEquals(0xEF, stack.pop())
-        stack.push(0xAAE699)
-        stack.push(0xF7)
-        stack.divide()
-        assertEquals(1, stack.size)
-        assertEquals(0xEF, stack.pop())
+        assertEquals(0xD04E3, stack.pop())
     }
 
     @Test
@@ -132,43 +127,39 @@ class HexStackUnitTest16Bit {
         stack.push(28)
         stack.mod()
         assertEquals(15, stack.pop())
-        stack.push(0xE699)
-        stack.push(0xF6)
+        stack.push(BigInteger("12341435134312", 10)) // 0x76DB7168
+        stack.push(BigInteger("1324322342", 10)) // 0x4EEF8E26
         stack.mod()
-        assertEquals(0xEF, stack.pop())
+        assertEquals(0x27EB_E342, stack.pop())
     }
 
     @Test
     fun toString_isCorrect() {
-        stack.push(15)
-        stack.push(7)
-        stack.push(23)
-        assertEquals("F\n7\n17", stack.toString())
+        stack.push(0x76DB_7168)
+        stack.push(0xD041_3111)
+        stack.push(0xFFF)
+        assertEquals("76DB7168\nD0413111\nFFF", stack.toString())
         // verify stack not damaged
-        assertEquals(23, stack.pop())
-        assertEquals(7, stack.pop())
-        assertEquals(15, stack.pop())
+        assertEquals(0xFFF, stack.pop())
+        assertEquals(0xD041_3111, stack.pop())
+        assertEquals(0x76DB_7168, stack.pop())
         assertEquals(0, stack.size)
         assertEquals("", stack.toString())
 
-        stack.push(0xFACE)
-        stack.push(0xBEEF)
-        assertEquals("FACE\nBEEF", stack.toString())
-        stack.pop()
-        stack.pop()
-        stack.push(0xBADFACE)
-        stack.push(0xBADBEEF)
-        assertEquals("FACE\nBEEF", stack.toString())
+        stack.push(0x1234_FACE_0FF1)
+        stack.push(0x5678_BEEF_FACE)
+        @Suppress("SpellCheckingInspection")
+        assertEquals("FACE0FF1\nBEEFFACE", stack.toString())
     }
 
     @Test
     fun contains_isCorrect() {
-        stack.push(0xAB15)
+        stack.push(15)
         stack.push(7)
         stack.push(23)
-        assert(stack.contains(0xAB15))
-        assert(stack.contains(0xAB15L))
-        assert(stack.contains(BigInteger.valueOf(0xAB15L)))
+        assert(stack.contains(15))
+        assert(stack.contains(15L))
+        assert(stack.contains(BigInteger.valueOf(15L)))
         assertFalse { stack.contains(12) }
         assertFalse { stack.contains(12L) }
         assertFalse { stack.contains(BigInteger.valueOf(12L)) }
@@ -196,21 +187,21 @@ class HexStackUnitTest16Bit {
 
     @Test
     fun twosComplementIsCorrect() {
-        stack.push(7)
+        stack.push(1234)
         stack.twosComplement()
         var actual = stack.pop()
-        assertEquals(0xFFF9, actual)
+        assertEquals(0xFFFF_FB2E, actual)
 
-        stack.push(7)
-        stack.push(0xFFF9)
+        stack.push(1234)
+        stack.push(0xFFFF_FB2E)
         stack.add()
         actual = stack.pop()
         assertEquals(0, actual)
 
-        stack.push(0xFFF9)
+        stack.push(0xFFFF_FB2E)
         stack.twosComplement()
         actual = stack.pop()
-        assertEquals(7, actual)
+        assertEquals(1234, actual)
 
         stack.push(0)  // edge case :)
         stack.twosComplement()
