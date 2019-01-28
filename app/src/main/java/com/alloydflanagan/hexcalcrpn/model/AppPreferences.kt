@@ -50,10 +50,16 @@ class AppPreferences(context: Context) {
             }
         }
 
-    @Suppress("unused")
-    val prefDigitSep: Boolean
-        // can't just set in initializer
+    var prefDigitSep: Boolean
         get() = prefs.getBoolean(PREF_SEPARATE_DIGITS_KEY, PREF_SEPARATE_DIGITS_DEFAULT)
+        set(value) {
+            val setting = prefs.getBoolean(PREF_SEPARATE_DIGITS_KEY, PREF_SEPARATE_DIGITS_DEFAULT)
+            if (setting != value) {
+                prefs.edit {
+                    putBoolean(PREF_SEPARATE_DIGITS_KEY, value)
+                }
+            }
+        }
 
     var lastWordSize: BitsPreference
         get() {
