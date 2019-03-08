@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(),
     /**
      * The view model. Owns the stack, and handles presentation and user input.
      */
-    private val viewModel: AbstractStackViewModel<BigInteger> by instance()
+    val viewModel: AbstractStackViewModel<BigInteger> by instance()
 
     private lateinit var preferences: AppPreferences
 
@@ -158,6 +158,12 @@ class MainActivity : AppCompatActivity(),
         // brv_modes.highlightedButton = BitsMode.INFINITE.toString()
 
         preferences = AppPreferences(this)
+
+        // our viewModel may have survived closing this activity and recreating
+        // so make sure our output is synched
+        updateCurrent(viewModel.getCurrent().value ?: BigInteger.ZERO)
+        val stack = viewModel.getStack().value
+        if (stack != null) updateStack(stack) else tv_output.text = ""
 
         viewModel.getCurrent().observe(this, Observer {
             if (it != null) {  // probably unnecessary
