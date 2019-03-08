@@ -223,6 +223,8 @@ class HexStack(numElements: Int = 16): ReadStack<BigInteger>, Serializable {
     @Suppress("private")
     fun pop(): BigInteger = stack.pop()
 
+    fun clear() = stack.clear()
+
     override operator fun contains(o: BigInteger) = stack.contains(o)
 
     operator fun contains(o: Long) = stack.contains(BigInteger.valueOf(o))

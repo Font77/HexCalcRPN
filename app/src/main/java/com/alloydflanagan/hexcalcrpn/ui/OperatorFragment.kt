@@ -44,6 +44,10 @@ class OperatorFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         if (v != null) {
             val btn = v as ButtonRowView
+            // this is rather lame
+            if (btn.id == R.id.brv_op_0 && btn.clickedIndex == 1) {
+                listener?.onOperatorFragmentInteraction("e")
+            }
             listener?.onOperatorFragmentInteraction(btn.clickedText)
         }
     }

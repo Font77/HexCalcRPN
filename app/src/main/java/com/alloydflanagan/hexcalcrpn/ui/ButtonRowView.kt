@@ -50,6 +50,9 @@ class ButtonRowView(context: Context,
     var clickedText = ""
         private set
 
+    var clickedIndex: Int? = null
+        private set
+
     /**
      * The texts of button labels, separated by ";". Number of labels given determines the number
      * of buttons displayed.
@@ -160,9 +163,11 @@ class ButtonRowView(context: Context,
         val button = buttons[index]
 
         if (button.isEnabled) {
+            clickedIndex = index
             clickedText = button.text.toString()
             listener?.onClick(this)
         } else {
+            clickedIndex = null
             clickedText = ""
         }
     }

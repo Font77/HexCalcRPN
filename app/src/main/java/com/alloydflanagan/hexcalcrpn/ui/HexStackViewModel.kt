@@ -164,6 +164,12 @@ class HexStackViewModel: AbstractStackViewModel<BigInteger>() {
                     mStack.postValue(mStack.value)
                 }
             }
+            // "ce" clears everything
+            'e' -> {
+                clearCurrentValue()
+                mStack.value?.clear()
+                mStack.postValue(mStack.value)
+            }
             in BINARY_OPS -> {
                 // do we have enough values?
                 var count = mStack.value?.size ?: 0
