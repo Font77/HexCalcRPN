@@ -1,34 +1,29 @@
 package com.alloydflanagan.hexcalcrpn.main
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import kotlinx.android.synthetic.main.activity_main.*
-import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivity8Test:  MainActivityTest() {
+class MainActivity8Test:  MainActivityUI(), MainActivityTest {
 
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
     /**
-     * clears both current value and stack outputs. Prevents failed test from affecting others.
+     * Sets bit mode, preferences to consistent values.
      */
-    @Before
-    fun clearOutputs() {
-        /** guard against infinite loop if other checks fail */
-        var limit = 15
-        while (mActivityTestRule.activity.tv_current.text != "0" || mActivityTestRule.activity.tv_output.text != "") {
-            enterKeys("c")
-            if (--limit < 0) break
-        }
+    @BeforeTest
+    fun setup() {
         enterKeys("z") // 8-bit mode
+        testSetup()
     }
 
     /**
@@ -42,7 +37,7 @@ class MainActivity8Test:  MainActivityTest() {
         checkCurrentIs("8")
         enterKeys("FA6540123456789ABCDEF")
 
-        checkCurrentIs("8FA6540123456789ABCDEF")
+        checkCurrentIs("8F A654 0123 4567 89AB CDEF")
 
         enterKeys("c")
         checkCurrentIs("0")

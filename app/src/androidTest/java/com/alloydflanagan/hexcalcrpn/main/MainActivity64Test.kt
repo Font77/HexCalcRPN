@@ -1,18 +1,18 @@
 package com.alloydflanagan.hexcalcrpn.main
 
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.test.BeforeTest
 
 @Suppress("SpellCheckingInspection")
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivity64Test: MainActivityTest() {
+class MainActivity64Test: MainActivityUI(), MainActivityTest {
 
     @Rule
     @JvmField
@@ -21,10 +21,11 @@ class MainActivity64Test: MainActivityTest() {
     /**
      * clears both current value and stack outputs. Prevents failed test from affecting others.
      */
-    @Before
-    fun clearOutputs() {
+    @BeforeTest
+    fun setup() {
         // enter 64-bit mode, clear input and output as side effect
         enterKeys("w")
+        testSetup()
     }
 
     /**
@@ -37,7 +38,7 @@ class MainActivity64Test: MainActivityTest() {
         checkCurrentIs("8")
         enterKeys("F_A654_0123_4567_89AB_CDEF")
 
-        checkCurrentIs("8FA6540123456789ABCDEF")
+        checkCurrentIs("8F A654 0123 4567 89AB CDEF")
 
         enterKeys("c")
         checkCurrentIs("0")
@@ -54,10 +55,10 @@ class MainActivity64Test: MainActivityTest() {
         enterKeys("FEDC_FEDC_FEDC_FEDC")
         enter()
 
-        checkOutputIs("1234123412341234\nFEDCFEDCFEDCFEDC")
+        checkOutputIs("1234 1234 1234 1234\nFEDC FEDC FEDC FEDC")
         enterKeys("+")
 
-        checkOutputIs("1111111111111110") // drop 1 from overflow
+        checkOutputIs("1111 1111 1111 1110") // drop 1 from overflow
     }
 
     /**
@@ -81,7 +82,7 @@ class MainActivity64Test: MainActivityTest() {
         // 0x778 - 0xABC == -0x344
         // 1100 1011 1100 ==> 0xCBC -- two's complement
         // 2's complement in 64 bits ==>
-        checkOutputIs("FFFFFFFFFFFFFCBC")
+        checkOutputIs("FFFF FFFF FFFF FCBC")
     }
 
     @Test
@@ -92,10 +93,10 @@ class MainActivity64Test: MainActivityTest() {
         enterKeys("2A_BBBB_BB91")
         enter()
 
-        checkOutputIs("5FD9A8F\n2ABBBBBB91")
+        checkOutputIs("5FD 9A8F\n2A BBBB BB91")
 
         enterKeys("*")
-        checkOutputIs("FFFFFFFFFFFFFFFF")
+        checkOutputIs("FFFF FFFF FFFF FFFF")
     }
 
     @Test
@@ -105,10 +106,10 @@ class MainActivity64Test: MainActivityTest() {
         enterKeys("2A_BBBB_BB91")
         enter()
 
-        checkOutputIs("FFFFFFFFFFFFFFFF\n2ABBBBBB91")
+        checkOutputIs("FFFF FFFF FFFF FFFF\n2A BBBB BB91")
 
         enterKeys("/")
-        checkOutputIs("5FD9A8F")
+        checkOutputIs("5FD 9A8F")
     }
 
     @Test
@@ -118,10 +119,10 @@ class MainActivity64Test: MainActivityTest() {
         enterKeys("BADB_ADBA_DBAD_BEEF")
         enter()
 
-        checkOutputIs("12FACE0FF0FFFACE\nBADBADBADBADBEEF")
+        checkOutputIs("12FA CE0F F0FF FACE\nBADB ADBA DBAD BEEF")
 
         enterKeys("&")
-        checkOutputIs("12DA8C0AD0ADBACE")
+        checkOutputIs("12DA 8C0A D0AD BACE")
     }
 
     @Test
@@ -131,11 +132,11 @@ class MainActivity64Test: MainActivityTest() {
         enterKeys("BADB_ADBA_DBAD_BEEF")
         enter()
 
-        checkOutputIs("12FACE0FF0FFFACE\n" +
-                "BADBADBADBADBEEF")
+        checkOutputIs("12FA CE0F F0FF FACE\n" +
+                "BADB ADBA DBAD BEEF")
 
         enterKeys("|")
-        checkOutputIs("BAFBEFBFFBFFFEEF")
+        checkOutputIs("BAFB EFBF FBFF FEEF")
     }
 
     /**
@@ -185,34 +186,34 @@ class MainActivity64Test: MainActivityTest() {
     override fun testInvert() {
         enterKeys("0123_4567_89AB_CDEF")
         enter()
-        checkOutputIs("123_4567_89AB_CDEF")
+        checkOutputIs("123 4567 89AB CDEF")
         enterKeys("~")
-        checkOutputIs("FEDC_BA98_7654_3210")
+        checkOutputIs("FEDC BA98 7654 3210")
         enterKeys("~")
-        checkOutputIs("123_4567_89AB_CDEF")
+        checkOutputIs("123 4567 89AB CDEF")
         enterKeys("cF")
         enter()
         enterKeys("~")
-        checkOutputIs("FFFF_FFFF_FFFF_FFF0")
+        checkOutputIs("FFFF FFFF FFFF FFF0")
         enterKeys("c")
         enter()
         enterKeys("~")
-        checkOutputIs("FFFF_FFFF_FFFF_FFFF")
+        checkOutputIs("FFFF FFFF FFFF FFFF")
     }
 
     @Test
     override fun test2sComplement() {
         enterKeys("123_4567_89AB_CDEF")
         enter()
-        checkOutputIs("123_4567_89AB_CDEF")
+        checkOutputIs("123 4567 89AB CDEF")
         enterKeys("s")
-        checkOutputIs("FEDC_BA98_7654_3211")
+        checkOutputIs("FEDC BA98 7654 3211")
         enterKeys("s")
-        checkOutputIs("123_4567_89AB_CDEF")
+        checkOutputIs("123 4567 89AB CDEF")
         enterKeys("cF")
         enter()
         enterKeys("s")
-        checkOutputIs("FFFF_FFFF_FFFF_FFF1")
+        checkOutputIs("FFFF FFFF FFFF FFF1")
         enterKeys("c")
         enter()
         enterKeys("s")
@@ -222,28 +223,28 @@ class MainActivity64Test: MainActivityTest() {
     @Test
     override fun testInvertCurrent() {
         enterKeys("0123_4567_89AB_CDEF")
-        checkCurrentIs("123_4567_89AB_CDEF")
+        checkCurrentIs("123 4567 89AB CDEF")
         enterKeys("~")
-        checkCurrentIs("FEDC_BA98_7654_3210")
+        checkCurrentIs("FEDC BA98 7654 3210")
         enterKeys("~")
-        checkCurrentIs("123_4567_89AB_CDEF")
+        checkCurrentIs("123 4567 89AB CDEF")
         enterKeys("cF")
         enterKeys("~")
-        checkCurrentIs("FFFF_FFFF_FFFF_FFF0")
+        checkCurrentIs("FFFF FFFF FFFF FFF0")
         enterKeys("c0~")
-        checkCurrentIs("FFFF_FFFF_FFFF_FFFF")
+        checkCurrentIs("FFFF FFFF FFFF FFFF")
     }
 
     @Test
     override fun test2sCompCurrent() {
         enterKeys("123_4567_89AB_CDEF")
-        checkCurrentIs("123_4567_89AB_CDEF")
+        checkCurrentIs("123 4567 89AB CDEF")
         enterKeys("s")
-        checkCurrentIs("FEDC_BA98_7654_3211")
+        checkCurrentIs("FEDC BA98 7654 3211")
         enterKeys("s")
-        checkCurrentIs("123_4567_89AB_CDEF")
+        checkCurrentIs("123 4567 89AB CDEF")
         enterKeys("cFs")
-        checkCurrentIs("FFFF_FFFF_FFFF_FFF1")
+        checkCurrentIs("FFFF FFFF FFFF FFF1")
         enterKeys("cs")
         checkCurrentIs("0")
     }

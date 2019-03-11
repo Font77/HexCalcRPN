@@ -2,20 +2,20 @@
 
 package com.alloydflanagan.hexcalcrpn.main
 
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.test.BeforeTest
+import kotlin.test.Test
 
 @Suppress("SpellCheckingInspection")
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivity16Test: MainActivityTest() {
+class MainActivity16Test: MainActivityUI(), MainActivityTest {
 
     @Rule
     @JvmField
@@ -24,17 +24,11 @@ class MainActivity16Test: MainActivityTest() {
     /**
      * clears both current value and stack outputs. Prevents failed test from affecting others.
      */
-    @Before
+    @BeforeTest
     fun clearOutputs() {
-        /** guard against infinite loop if other checks fail */
-//        var limit = 15
-//        val act = mActivityTestRule.activity
-//        while (act.tv_current.text != "0" || act.tv_output.text != "") {
-//            enterKeys("c")
-//            if (--limit < 0) break
-//        }
         // set 16-bit mode
         enterKeys("y")
+        testSetup()
     }
 
     /**
@@ -57,7 +51,7 @@ class MainActivity16Test: MainActivityTest() {
         checkCurrentIs("8")
         enterKeys("FA6540123456789ABCDEF")
 
-        checkCurrentIs("8FA6540123456789ABCDEF")
+        checkCurrentIs("8F A654 0123 4567 89AB CDEF")
 
         enterKeys("c")
         checkCurrentIs("0")

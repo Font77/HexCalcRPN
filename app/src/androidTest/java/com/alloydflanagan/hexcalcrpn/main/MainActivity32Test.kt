@@ -1,17 +1,17 @@
 package com.alloydflanagan.hexcalcrpn.main
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.test.BeforeTest
 
 @Suppress("SpellCheckingInspection")
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivity32Test: MainActivityTest() {
+class MainActivity32Test: MainActivityUI(), MainActivityTest {
 
     @Rule
     @JvmField
@@ -20,10 +20,11 @@ class MainActivity32Test: MainActivityTest() {
     /**
      * clears both current value and stack outputs. Prevents failed test from affecting others.
      */
-    @Before
-    fun clearOutputs() {
+    @BeforeTest
+    fun setup() {
         // 32-bit mode, also clears input and stack
         enterKeys("x")
+        testSetup(false) // test w/out seps just to mix it up
     }
 
     /**

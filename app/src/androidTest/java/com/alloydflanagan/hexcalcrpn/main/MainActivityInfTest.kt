@@ -1,21 +1,20 @@
 package com.alloydflanagan.hexcalcrpn.main
 
 
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.rule.ActivityTestRule
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.test.BeforeTest
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 @Suppress("SpellCheckingInspection")
-class MainActivityInfTest: MainActivityTest() {
+class MainActivityInfTest: MainActivityUI(), MainActivityTest {
 
     @Rule
     @JvmField
@@ -24,17 +23,10 @@ class MainActivityInfTest: MainActivityTest() {
     /**
      * clears both current value and stack outputs. Prevents failed test from affecting others.
      */
-    @Before
-    fun clearOutputs() {
-        /** guard against infinite loop if other checks fail */
-        var limit = 15
-        val act = mActivityTestRule.activity
-        while (act.tv_current.text != "0" || act.tv_output.text != "") {
-            enterKeys("c")
-            if (--limit < 0) break
-        }
-        // force infinite mode even though it's default
+    @BeforeTest
+    fun setup() {
         enterKeys("I")
+        testSetup(false)
     }
 
     /**
