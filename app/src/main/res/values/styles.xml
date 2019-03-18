@@ -9,7 +9,7 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryLightColor</item>
-        <item name="colorSecondary">@color/secondaryColor</item>
+        <!-- <item name="colorSecondary">@color/secondaryColor</item> -->
         <item name="colorControlNormal">@color/primaryLightColor</item>
         <item name="android:colorButtonNormal">@color/primaryDarkColor</item>
         <item name="colorControlHighlight">@color/primaryLightColor</item>
