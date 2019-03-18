@@ -45,13 +45,6 @@ dependencies {
     implementation "androidx.collection:collection-ktx:$collectionKtxVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
 
-    // ktx for navigation. not sure if really needed
-    implementation "android.arch.navigation:navigation-common-ktx:$navigationVersion"
-    implementation "android.arch.navigation:navigation-fragment-ktx:$navigationVersion"
-    implementation "android.arch.navigation:navigation-runtime-ktx:$navigationVersion"
-    implementation "android.arch.navigation:navigation-testing-ktx:$navigationTestVersion"
-    implementation "android.arch.navigation:navigation-ui-ktx:$navigationVersion"
-
     // testing basics
     testImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
